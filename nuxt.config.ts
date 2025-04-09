@@ -21,7 +21,7 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@nuxt/eslint', 'nuxtjs-naive-ui'],
+  modules: ['@nuxt/eslint', 'nuxtjs-naive-ui', '@pinia/nuxt'],
   vite: {
     plugins: [
       AutoImport({
