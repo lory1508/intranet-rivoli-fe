@@ -8,6 +8,11 @@ export default defineNuxtConfig({
   ssr: false,
   devtools: { enabled: false },
   css: ['~/assets/css/main.css'],
+  runtimeConfig: {
+    public: {
+      wordpressBaseUrl: process.env.NUXT_WORDPRESS_BASE_URL || '',
+    },
+  },
 
   postcss: {
     plugins: {

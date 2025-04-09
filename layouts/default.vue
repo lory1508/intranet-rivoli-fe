@@ -1,6 +1,6 @@
 <template>
   <n-space vertical size="large">
-    <div class="flex flex-row">
+    <div class="flex flex-row bg-neutralLight">
       <div
         collapse-mode="transform"
         :collapsed-width="120"
@@ -65,23 +65,22 @@
         <Icon
           icon="solar:alt-arrow-right-linear"
           height="36"
-          class="rounded-full bg-white border-2 border-primary cursor-pointer transition-all duration-500 ease-in-out"
+          class="rounded-full bg-neutralLight border-2 border-primary cursor-pointer transition-all duration-500 ease-in-out"
           :class="{
             'scale-x-[-1]': !collapsed,
           }"
           @click="collapseSidebar"
         />
       </div>
-      <div class="h-screen p-6">
+      <div class="h-screen py-4 px-2 w-full">
         <slot />
-        Ciao
       </div>
     </div>
   </n-space>
 </template>
 
 <script setup>
-  import { menu, websiteIdentity } from '~/utils/staticData.js'
+  import { menu, websiteIdentity } from '~/utils/staticData/menu.js'
   import { Icon } from '@iconify/vue'
 
   const router = useRouter()
