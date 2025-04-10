@@ -1,25 +1,25 @@
-// stores/department.js
+// stores/service.js
 import { defineStore } from 'pinia'
 
-export const useDepartmentStore = defineStore('departments', {
+export const useServiceStore = defineStore('services', {
   state: () => ({
-    departments: [], // Initial state for your departments array
+    services: [], // Initial state for your services array
   }),
   actions: {
-    setDepartments(departmentArray) {
-      this.departments = departmentArray
+    setServices(serviceArray) {
+      this.services = serviceArray
     },
-    addDepartment(department) {
-      this.departments.push(department)
+    addService(service) {
+      this.services.push(service)
     },
-    clearDepartments() {
-      this.departments = []
+    clearServices() {
+      this.services = []
     },
   },
   getters: {
-    getDepartments: (state) => state.departments,
-    departmentCount: (state) => state.departments.length,
-    getDepartmentById: (state) => (id) => state.departments.find((department) => department.id === id),
-    getDepartmentBySlug: (state) => (slug) => state.departments.find((department) => department.slug === slug),
+    getServices: (state) => state.services,
+    serviceCount: (state) => state.services.length,
+    getServiceById: (state) => (id) => state.services.find((service) => service.id === id),
+    getServiceBySlug: (state) => (slug) => state.services.find((service) => service.slug === slug),
   },
 })

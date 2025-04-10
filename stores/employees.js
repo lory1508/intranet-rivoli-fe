@@ -1,25 +1,37 @@
-// stores/department.js
+// stores/employee.js
 import { defineStore } from 'pinia'
 
-export const useDepartmentStore = defineStore('departments', {
+export const useEmployeeStore = defineStore('employees', {
   state: () => ({
-    departments: [], // Initial state for your departments array
+    employees: [], // Initial state for your employees array
   }),
   actions: {
-    setDepartments(departmentArray) {
-      this.departments = departmentArray
+    setEmployees(employeeArray) {
+      this.employees = employeeArray
     },
-    addDepartment(department) {
-      this.departments.push(department)
+    addEmployee(employee) {
+      this.employees.push(employee)
     },
-    clearDepartments() {
-      this.departments = []
+    clearEmployees() {
+      this.employees = []
     },
   },
   getters: {
-    getDepartments: (state) => state.departments,
-    departmentCount: (state) => state.departments.length,
-    getDepartmentById: (state) => (id) => state.departments.find((department) => department.id === id),
-    getDepartmentBySlug: (state) => (slug) => state.departments.find((department) => department.slug === slug),
+    getEmployees: (state) => state.employees,
+    employeeCount: (state) => state.employees.length,
+    searchEmployees: (state) => {
+      return (query) =>
+        state.employees.filter((employee) => {
+          return (
+            employee?.title?.rendered.toLowerCase().includes(query?.query?.toLowerCase()) ||
+            employee?.acf?.phone.toLowerCase().includes(query?.query?.toLowerCase()) ||
+            employee?.acf?.department.includes(query?.department) ||
+            employee?.acf?.office.includes(query?.office) ||
+            employee?.acf?.service.includes(query?.service)
+          )
+        })
+    },
+    getEmployeeById: (state) => (id) => state.employees.find((employee) => employee.id === id),
+    getEmployeeBySlug: (state) => (slug) => state.employees.find((employee) => employee.slug === slug),
   },
 })

@@ -1,10 +1,9 @@
-const config = useRuntimeConfig()
-const WORDPRESS_BASE_URL = config.public.wordpressBaseUrl
+import { WORDPRESS_BASE_URL } from '../utils/staticData/constants'
 
 export const getDepartments = async () => {
   try {
     const res = await useFetch(`${WORDPRESS_BASE_URL}/department`)
-    console.log(res)
+    return res?.data
   } catch (err) {
     console.error(err)
   }

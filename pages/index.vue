@@ -21,29 +21,47 @@
           <n-select v-model:value="rubricaSearch.service" :options="optionsService" placeholder="Servizio" />
         </div>
       </div>
+      <n-button strong secondary type="info" @click="searchEmployees">
+        Cerca
+        <template #icon>
+          <n-icon>
+            <Icon icon="solar:magnifer-line-duotone" height="24" />
+          </n-icon>
+        </template>
+      </n-button>
     </div>
+    <pre>{{ rubricaSearch }}</pre>
+    <pre>{{ employees }}</pre>
   </div>
 </template>
 
 <script setup>
   import { homeStaticData } from '~/utils/staticData/home'
   import { Icon } from '@iconify/vue'
-  import { getDepartments } from '~/api/departments'
+  import { useDepartmentStore } from '~/stores/departments'
+  import { useEmployeeStore } from '~/stores/employees'
+
+  const departmentStore = useDepartmentStore()
+  const employeeStore = useEmployeeStore()
+
+  const departments = computed(() => departmentStore.getDepartments)
+  const employees = computed(() => employeeStore.getEmployees)
 
   const rubricaSearch = ref({
-    query: '',
+    query: null,
     department: null,
     office: null,
     service: null,
   })
 
-  const optionsDepartment = [
-    { label: 'Direzione 1', value: 'Direzione 1' },
-    { label: 'Direzione 2', value: 'Direzione 2' },
-    { label: 'Direzione 3', value: 'Direzione 3' },
-  ]
+  const searchEmployees = () => {
+    console.log(employeeStore.searchEmployees(rubricaSearch.value))
+  }
 
-  onMounted(async () => {
-    await getDepartments()
-  })
+  const optionsDepartment = computed(() =>
+    departments.value.map((department) => ({ label: department.title.rendered, value: department.id }))
+  )
+
+  const optionsOffice = [{ label: 'Ufficio 1', value: 'Ufficio 1' }]
+  const optionsService = [{ label: 'Servizio 1', value: 'Servizio 1' }]
 </script>

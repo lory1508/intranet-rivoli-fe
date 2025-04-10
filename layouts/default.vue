@@ -3,11 +3,9 @@
     <div class="flex flex-row bg-neutralLight">
       <div
         collapse-mode="transform"
-        :collapsed-width="120"
-        :width="300"
         show-trigger="bar"
         bordered
-        class="bg-primary text-white transition-all duration-300"
+        class="fixed text-white transition-all duration-300 bg-primary"
         :class="{
           'w-24': collapsed,
           'w-80': !collapsed,
@@ -25,17 +23,17 @@
               <div
                 v-for="menuItem in menu"
                 :key="menuItem.path"
-                class="cursor-pointer py-1 px-2 justify-center items-center"
+                class="items-center justify-center px-2 py-1 cursor-pointer"
                 :class="{
                   'text-primary bg-white rounded-md font-semibold': active === menuItem.path,
                   'w-fit': collapsed,
                 }"
                 @click="goto(menuItem.path)"
               >
-                <div class="flex flex-row gap-2 items-center">
-                  <div v-if="!collapsed" class="flex flex-row gap-2 items-center">
+                <div class="flex flex-row items-center gap-2">
+                  <div v-if="!collapsed" class="flex flex-row items-center gap-2">
                     <Icon :icon="menuItem.icon" height="28" />
-                    <div class="hover:font-semibold text-lg">{{ menuItem.title }}</div>
+                    <div class="text-lg hover:font-semibold">{{ menuItem.title }}</div>
                   </div>
                   <n-tooltip v-else placement="right" trigger="hover">
                     <template #trigger>
@@ -49,7 +47,7 @@
               </div>
             </div>
           </div>
-          <div v-if="!collapsed" class="text-xs flex flex-col">
+          <div v-if="!collapsed" class="flex flex-col text-xs">
             <div class="flex flex-wrap">
               {{ footer.title }}
               {{ footer.address }}
@@ -61,19 +59,27 @@
           </div>
         </div>
       </div>
-      <div class="h-screen flex items-center -ml-5">
-        <Icon
-          icon="solar:alt-arrow-right-linear"
-          height="36"
-          class="rounded-full bg-neutralLight border-2 border-primary cursor-pointer transition-all duration-500 ease-in-out"
-          :class="{
-            'scale-x-[-1]': !collapsed,
-          }"
-          @click="collapseSidebar"
-        />
-      </div>
-      <div class="h-screen py-4 px-2 w-full">
-        <slot />
+      <div
+        class="flex flex-row w-full"
+        :class="{
+          'ml-24': collapsed,
+          'ml-80': !collapsed,
+        }"
+      >
+        <div class="flex items-center h-screen -ml-5">
+          <Icon
+            icon="solar:alt-arrow-right-linear"
+            height="36"
+            class="fixed z-50 transition-all duration-500 ease-in-out border-2 rounded-full cursor-pointer bg-neutralLight border-primary"
+            :class="{
+              'scale-x-[-1]': !collapsed,
+            }"
+            @click="collapseSidebar"
+          />
+        </div>
+        <div class="w-full h-screen px-2 py-4 ml-10">
+          <slot />
+        </div>
       </div>
     </div>
   </n-space>

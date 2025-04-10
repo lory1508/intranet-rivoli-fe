@@ -1,10 +1,9 @@
-const config = useRuntimeConfig()
-const WORDPRESS_BASE_URL = config.public.wordpressBaseUrl
+import { WORDPRESS_BASE_URL } from '../utils/staticData/constants'
 
 export const getServices = async () => {
   try {
     const res = await useFetch(`${WORDPRESS_BASE_URL}/service`)
-    console.log(res)
+    return res?.data
   } catch (err) {
     console.error(err)
   }
