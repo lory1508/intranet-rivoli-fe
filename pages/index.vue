@@ -30,8 +30,6 @@
         </template>
       </n-button>
     </div>
-    <pre>{{ rubricaSearch }}</pre>
-    <pre>{{ employees }}</pre>
   </div>
 </template>
 
@@ -45,7 +43,7 @@
   const employeeStore = useEmployeeStore()
 
   const departments = computed(() => departmentStore.getDepartments)
-  const employees = computed(() => employeeStore.getEmployees)
+  const employees = ref([])
 
   const rubricaSearch = ref({
     query: null,
@@ -55,7 +53,7 @@
   })
 
   const searchEmployees = () => {
-    console.log(employeeStore.searchEmployees(rubricaSearch.value))
+    employees.value = employeeStore.searchEmployees(rubricaSearch.value)
   }
 
   const optionsDepartment = computed(() =>
