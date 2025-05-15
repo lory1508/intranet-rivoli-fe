@@ -12,10 +12,19 @@
         />
 
         <!-- Strumenti personali -->
-        <PersonalTools :title="homeStaticData.personalTools.title" :icon="homeStaticData.personalTools.icon" />
+        <PersonalTools
+          :title="homeStaticData.personalTools.title"
+          :icon="homeStaticData.personalTools.icon"
+          :tools="personalTools"
+          :loading="loading"
+        />
 
         <!-- Link utili generali -->
-        <UsefulLinks :title="homeStaticData.usefulLinks.title" :icon="homeStaticData.usefulLinks.icon" />
+        <UsefulLinks
+          :title="homeStaticData.usefulLinks.title"
+          :icon="homeStaticData.usefulLinks.icon"
+          :links="usefulLinks"
+        />
       </div>
 
       <div class="flex flex-col w-full gap-4">
@@ -26,7 +35,11 @@
         <EmployeesBoard :title="homeStaticData.employeesBoard.title" :icon="homeStaticData.employeesBoard.icon" />
 
         <!-- Link utili edilizia -->
-        <UsefulLinks :title="homeStaticData.edilizia.title" :icon="homeStaticData.edilizia.icon" />
+        <UsefulLinks
+          :title="homeStaticData.edilizia.title"
+          :icon="homeStaticData.edilizia.icon"
+          :links="ediliziaLinks"
+        />
       </div>
     </div>
 
@@ -46,8 +59,14 @@
   import PersonalTools from '~/components/home/PersonalTools.vue'
   import HeaderComponent from '~/components/common/HeaderComponent.vue'
 
+  import { getExternalLinksByType } from '~/api/externalLinks'
   import { homeStaticData } from '~/utils/staticData/home'
 
+  const personalTools = ref([])
+  const usefulLinks = ref([])
+  const ediliziaLinks = ref([])
+
+  const loading = ref(false)
   const alertMessage = 'Dalle 14.00 alle 16.00 del 20/02/2025 sono previste interruzioni di rete.'
 
   const searchRubrica = async (query) => {
@@ -56,4 +75,21 @@
       query,
     })
   }
+
+  const getExternalLinksBySlug = async (slug) => {
+    try {
+      loading.value = true
+      return await getExternalLinksByType(slug)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  onMounted(async () => {
+    personalTools.value = await getExternalLinksBySlug('strumenti-personali')
+    usefulLinks.value = await getExternalLinksBySlug('link-utili')
+    ediliziaLinks.value = await getExternalLinksBySlug('edilizia')
+  })
 </script>

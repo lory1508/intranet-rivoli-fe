@@ -95,11 +95,4 @@
   const runSearch = () => {
     emits('search', rubricaSearch.value)
   }
-  const goToRubrica = async () => {
-    console.log(rubricaSearch.value)
-    await navigateTo({
-      path: '/rubrica',
-      query: rubricaSearch.value,
-    })
-  }
 </script>

@@ -33,6 +33,6 @@ export const personalTools = [
     slug: 'agenda',
     title: 'Agenda prenotazioni',
     icon: 'solar:calendar-bold-duotone',
-    href: 'https://www.comune.rivoli.to.it/accesso_redazione?r=2',
+    href: 'https://servizi.comune.rivoli.to.it/lang/it/operatori/login',
   },
 ]

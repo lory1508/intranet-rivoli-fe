@@ -2,6 +2,7 @@ import { getDepartments } from '~/api/departments'
 import { getOffices } from '~/api/offices'
 import { getServices } from '~/api/services'
 import { getEmployees } from '~/api/employees'
+import { getExternalLinks } from '~/api/externalLinks'
 
 export const updateDepartmentStore = async (departmentStore) => {
   try {
@@ -45,6 +46,18 @@ export const updateEmployeeStore = async (employeeStore) => {
     if (storeEmployees?.length === 0) {
       const employees = await getEmployees()
       employeeStore.setEmployees(employees)
+    }
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const updateExternalLinkStore = async (externalLinkStore) => {
+  try {
+    const storeExternalLinks = externalLinkStore.getExternalLinks
+    if (storeExternalLinks?.length === 0) {
+      const externalLinks = await getExternalLinks()
+      externalLinkStore.setExternalLinks(externalLinks)
     }
   } catch (err) {
     console.error(err)

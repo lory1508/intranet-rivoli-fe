@@ -124,7 +124,6 @@
           office: employee?.acf.office[0].post_title,
         }
       })
-      console.log(employees.value, rubricaSearch.value)
     } catch (error) {
       console.error(error)
     } finally {
