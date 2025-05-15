@@ -1,11 +1,15 @@
 <template>
   <div class="flex flex-col w-full gap-2">
-    <h1 class="pb-6 text-3xl font-bold text-primary">{{ homeStaticData.title }}</h1>
+    <HeaderComponent :title="homeStaticData.title" />
 
     <div class="flex flex-row w-full gap-4">
       <div class="flex flex-col w-full gap-4">
         <!-- Rubrica -->
-        <RubricaCard :title="homeStaticData.rubrica.title" :icon="homeStaticData.rubrica.icon" />
+        <RubricaCard
+          :title="homeStaticData.rubrica.title"
+          :icon="homeStaticData.rubrica.icon"
+          @search="searchRubrica"
+        />
 
         <!-- Strumenti personali -->
         <PersonalTools :title="homeStaticData.personalTools.title" :icon="homeStaticData.personalTools.icon" />
@@ -16,7 +20,7 @@
 
       <div class="flex flex-col w-full gap-4">
         <!-- Comunicazioni di servizio -->
-        <AlertCard :title="homeStaticData.alerts.title" :icon="homeStaticData.alerts.icon" />
+        <AlertCard :title="homeStaticData.alerts.title" :icon="homeStaticData.alerts.icon" :message="alertMessage" />
 
         <!-- Bacheca dipendenti -->
         <EmployeesBoard :title="homeStaticData.employeesBoard.title" :icon="homeStaticData.employeesBoard.icon" />
@@ -40,6 +44,16 @@
   import UsefulLinks from '~/components/home/UsefulLinks.vue'
   import LatestNews from '~/components/home/LatestNews.vue'
   import PersonalTools from '~/components/home/PersonalTools.vue'
+  import HeaderComponent from '~/components/common/HeaderComponent.vue'
 
   import { homeStaticData } from '~/utils/staticData/home'
+
+  const alertMessage = 'Dalle 14.00 alle 16.00 del 20/02/2025 sono previste interruzioni di rete.'
+
+  const searchRubrica = async (query) => {
+    await navigateTo({
+      path: '/rubrica',
+      query,
+    })
+  }
 </script>

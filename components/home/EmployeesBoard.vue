@@ -13,6 +13,7 @@
 
 <script setup>
   import { Icon } from '@iconify/vue'
+  import { getPosts } from '~/api/posts'
 
   const props = defineProps({
     icon: {
@@ -24,4 +25,6 @@
       default: '',
     },
   })
+
+  const posts = await getPosts({ categories: [''] })
 </script>
