@@ -96,12 +96,18 @@
   const footer = ref(websiteIdentity.footer)
   const active = ref(route.path)
 
+  watch(
+    () => route.path,
+    () => {
+      active.value = route.path
+    }
+  )
+
   const collapseSidebar = () => {
     collapsed.value = !collapsed.value
   }
 
   const goto = (path) => {
-    active.value = path
     router.push(path)
   }
 
