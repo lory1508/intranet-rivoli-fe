@@ -11,14 +11,6 @@
           @search="searchRubrica"
         />
 
-        <!-- Strumenti personali -->
-        <PersonalTools
-          :title="homeStaticData.personalTools.title"
-          :icon="homeStaticData.personalTools.icon"
-          :tools="personalTools"
-          :loading="loading"
-        />
-
         <!-- Link utili generali -->
         <UsefulLinks
           :title="homeStaticData.usefulLinks.title"
@@ -29,7 +21,15 @@
 
       <div class="flex flex-col w-full gap-4">
         <!-- Comunicazioni di servizio -->
-        <AlertCard :title="homeStaticData.alerts.title" :icon="homeStaticData.alerts.icon" :message="alertMessage" />
+        <!-- <AlertCard :title="homeStaticData.alerts.title" :icon="homeStaticData.alerts.icon" :message="alertMessage" /> -->
+
+        <!-- Strumenti personali -->
+        <PersonalTools
+          :title="homeStaticData.personalTools.title"
+          :icon="homeStaticData.personalTools.icon"
+          :tools="personalTools"
+          :loading="loading"
+        />
 
         <!-- Bacheca dipendenti -->
         <EmployeesBoard :title="homeStaticData.employeesBoard.title" :icon="homeStaticData.employeesBoard.icon" />

@@ -1,9 +1,9 @@
+import { delay } from '~/utils'
 import { WORDPRESS_BASE_URL } from '../utils/staticData/constants'
 
 export const getExternalLinks = async () => {
   try {
     const res = await useFetch(`${WORDPRESS_BASE_URL}/external-link?per_page=100`)
-    console.log(res.data.value)
     await delay(300)
     const externalLinks = res?.data?.value.map((el) => {
       return {
@@ -29,8 +29,6 @@ export const getExternalLinksByType = async (type) => {
     console.error(err)
   }
 }
-
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 const slugify = (text) => {
   return text

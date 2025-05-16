@@ -85,6 +85,7 @@
   import { useEmployeeStore } from '~/stores/employees'
   import { Icon } from '@iconify/vue'
   import { NEmpty } from 'naive-ui'
+  import { delay } from '~/utils'
   import { homeStaticData } from '~/utils/staticData/home'
 
   import RubricaCard from '~/components/home/RubricaCard.vue'
@@ -130,8 +131,6 @@
       loading.value = false
     }
   }
-
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
   const openImage = async (url) => {
     await navigateTo(url, { external: true, open: { target: '_blank' } })

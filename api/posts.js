@@ -1,12 +1,13 @@
 import { WORDPRESS_BASE_URL } from '../utils/staticData/constants'
 
-const categories = ref()
+const categories = ref([])
 
 export const getPosts = async (queryObj) => {
   try {
-    await getPostsCaregories()
+    await getPostsCategories()
     let queryString = ''
     if (queryObj?.categories) {
+      console.log(categories.value.value)
       const categoryIds = categories.value
         ?.filter((category) => queryObj?.categories?.includes(category?.slug))
         ?.map((category) => category?.id)
@@ -19,7 +20,7 @@ export const getPosts = async (queryObj) => {
   }
 }
 
-export const getPostsCaregories = async () => {
+export const getPostsCategories = async () => {
   try {
     const res = await useFetch(`${WORDPRESS_BASE_URL}/categories`)
     categories.value = res?.data

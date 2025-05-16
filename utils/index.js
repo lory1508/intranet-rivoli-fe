@@ -63,3 +63,11 @@ export const updateExternalLinkStore = async (externalLinkStore) => {
     console.error(err)
   }
 }
+
+export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+export const setIntervalMethod = (callback, interval) => {
+  callback()
+  const intervalId = setInterval(callback, interval)
+  return () => clearInterval(intervalId)
+}

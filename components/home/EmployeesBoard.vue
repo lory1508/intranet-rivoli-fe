@@ -26,5 +26,5 @@
     },
   })
 
-  const posts = await getPosts({ categories: [''] })
+  // const posts = await getPosts({ categories: [''] })
 </script>
