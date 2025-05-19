@@ -7,7 +7,6 @@ export const getPosts = async (queryObj) => {
     await getPostsCategories()
     let queryString = ''
     if (queryObj?.categories) {
-      console.log(categories.value.value)
       const categoryIds = categories.value
         ?.filter((category) => queryObj?.categories?.includes(category?.slug))
         ?.map((category) => category?.id)

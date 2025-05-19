@@ -1,8 +1,11 @@
 <template>
-  <div class="flex flex-row items-center justify-between gap-4 pb-6 pr-6 font-bold text-primary">
-    <div class="text-3xl shrink-0">{{ title }}</div>
+  <div class="flex flex-row items-start gap-8 pb-6 pr-6 font-bold text-primary">
+    <div class="flex flex-col gap-1 w-fit">
+      <div class="text-3xl">{{ title }}</div>
+      <div>Rivoli, {{ formattedToday }}</div>
+    </div>
 
-    <div class="flex flex-row items-center gap-2 max-w-[500px]">
+    <div class="flex flex-row items-center gap-2 max-w-[400px]">
       <span class="relative flex w-3 h-3">
         <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-amber-400"></span>
         <span class="relative inline-flex w-3 h-3 rounded-full bg-amber-500"></span>
@@ -20,8 +23,6 @@
         <span class="relative inline-flex w-3 h-3 rounded-full bg-amber-500"></span>
       </span>
     </div>
-
-    <div class="shrink-0">Rivoli, {{ formattedToday }}</div>
   </div>
 </template>
 
@@ -44,7 +45,6 @@
 
   const getLatestAlert = async () => {
     const res = await getAlert()
-    console.log(res.value)
     latestAlert.value = res.value[0].acf.content
   }
 

@@ -5,16 +5,18 @@ export const getExternalLinks = async () => {
   try {
     const res = await useFetch(`${WORDPRESS_BASE_URL}/external-link?per_page=100`)
     await delay(300)
-    const externalLinks = res?.data?.value.map((el) => {
-      return {
-        title: el.title.rendered,
-        icon: el?.acf?.icon || '',
-        href: el?.acf?.url,
-        type: el?.acf?.type || '',
-        slugType: slugify(el?.acf?.type),
-        slug: el?.slug,
-      }
-    })
+    const externalLinks = res?.data?.value
+      .map((el) => {
+        return {
+          title: el.title.rendered,
+          icon: el?.acf?.icon || '',
+          href: el?.acf?.url,
+          type: el?.acf?.type || '',
+          slugType: slugify(el?.acf?.type),
+          slug: el?.slug,
+        }
+      })
+      .sort((a, b) => (a.slugType > b.slugType ? 1 : -1))
     return externalLinks
   } catch (err) {
     console.error(err)

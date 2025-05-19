@@ -22,12 +22,16 @@ export const useEmployeeStore = defineStore('employees', {
     searchEmployees: (state) => {
       return (query) =>
         state.employees.filter((employee) => {
+          const departmentIds = employee?.acf?.department.map((dept) => dept.ID)
+          const officeIds = employee?.acf?.office.map((office) => office.ID)
+          const serviceIds = employee?.acf?.service.map((service) => service.ID)
+
           return (
             employee?.title?.rendered.toLowerCase().includes(query?.query?.toLowerCase()) ||
             employee?.acf?.phone.toLowerCase().includes(query?.query?.toLowerCase()) ||
-            employee?.acf?.department.includes(query?.department) ||
-            employee?.acf?.office.includes(query?.office) ||
-            employee?.acf?.service.includes(query?.service)
+            departmentIds.includes(Number(query?.department)) ||
+            officeIds.includes(Number(query?.office)) ||
+            serviceIds.includes(Number(query?.service))
           )
         })
     },
