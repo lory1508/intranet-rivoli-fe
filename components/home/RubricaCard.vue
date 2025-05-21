@@ -20,11 +20,24 @@
           :options="optionsDepartment"
           placeholder="Direzione"
           filterable
+          clearable
         />
       </div>
       <div class="flex gap-2" :class="compact ? 'flex-col' : 'flex-row'">
-        <n-select v-model:value="rubricaSearch.office" :options="optionsOffice" placeholder="Ufficio" filterable />
-        <n-select v-model:value="rubricaSearch.service" :options="optionsService" placeholder="Servizio" filterable />
+        <n-select
+          v-model:value="rubricaSearch.office"
+          :options="optionsOffice"
+          placeholder="Ufficio"
+          filterable
+          clearable
+        />
+        <n-select
+          v-model:value="rubricaSearch.service"
+          :options="optionsService"
+          placeholder="Servizio"
+          filterable
+          clearable
+        />
       </div>
     </div>
     <n-button strong secondary type="info" @click="runSearch">

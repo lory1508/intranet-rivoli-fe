@@ -36,7 +36,7 @@
     <NDivider />
 
     <!-- News -->
-    <LatestNews :title="homeStaticData.news.title" :icon="homeStaticData.news.icon" />
+    <LatestNews :title="homeStaticData.news.title" :icon="homeStaticData.news.icon" :news="news" />
   </div>
 </template>
 
@@ -48,12 +48,24 @@
   import PersonalTools from '~/components/home/PersonalTools.vue'
   import HeaderComponent from '~/components/common/HeaderComponent.vue'
 
+  import { useDepartmentStore } from '~/stores/departments'
+  import { useOfficeStore } from '~/stores/offices'
+  import { useServiceStore } from '~/stores/services'
+  import { useEmployeeStore } from '~/stores/employees'
+
   import { getExternalLinksByType, getExternalLinks } from '~/api/externalLinks'
   import { homeStaticData } from '~/utils/staticData/home'
 
+  import { updateDepartmentStore, updateOfficeStore, updateServiceStore, updateEmployeeStore } from '~/utils'
+
+  const departmentStore = useDepartmentStore()
+  const officeStore = useOfficeStore()
+  const serviceStore = useServiceStore()
+  const employeeStore = useEmployeeStore()
+
   const personalTools = ref([])
   const usefulLinks = ref([])
-  const ediliziaLinks = ref([])
+  const news = ref([])
 
   const loading = ref(false)
 
@@ -87,6 +99,11 @@
   }
 
   onMounted(async () => {
+    await updateDepartmentStore(departmentStore)
+    await updateOfficeStore(officeStore)
+    await updateServiceStore(serviceStore)
+    await updateEmployeeStore(employeeStore)
+
     personalTools.value = await getExternalLinksBySlug('strumenti-personali')
     const tmpLinks = await getAllLinks()
     usefulLinks.value = tmpLinks.filter((link) => link.slugType !== 'strumenti-personali')

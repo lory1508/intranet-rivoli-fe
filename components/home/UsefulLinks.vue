@@ -12,10 +12,10 @@
         :key="link.slug"
         :href="link.href"
         target="_blank"
-        class="flex flex-row items-center w-full font-semibold text-white transition-all duration-300 rounded-xl hover:ring-2 hover:ring-secondary hover:shadow-md"
+        class="flex flex-row items-center w-full font-semibold text-white transition-all duration-300 rounded-xl hover:ring-2 hover:shadow-md"
+        :class="getCustomColors(link.slugType).ring"
       >
         <div class="flex items-center w-full h-10 gap-2 pl-4 rounded-l-xl" :class="getCustomColors(link.slugType).bg">
-          <Icon v-if="link.slugType === 'edilizia'" icon="hugeicons:building-05" height="20" class="text-white" />
           {{ link.title }}
         </div>
         <div class="flex items-center h-10 px-2 rounded-r-xl" :class="getCustomColors(link.slugType).iconBg">

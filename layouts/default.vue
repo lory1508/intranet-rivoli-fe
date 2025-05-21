@@ -77,8 +77,8 @@
             @click="collapseSidebar"
           />
         </div>
-        <div class="w-full h-screen px-2 py-4 ml-10">
-          <slot />
+        <div class="w-full h-full px-2 py-4 ml-10">
+          <NuxtPage />
         </div>
       </div>
     </div>

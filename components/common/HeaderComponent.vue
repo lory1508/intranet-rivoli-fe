@@ -5,7 +5,7 @@
       <div>Rivoli, {{ formattedToday }}</div>
     </div>
 
-    <div class="flex flex-row items-center gap-2 max-w-[400px]">
+    <div v-if="!showAlert" class="flex flex-row items-center gap-2 max-w-[400px]">
       <span class="relative flex w-3 h-3">
         <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-amber-400"></span>
         <span class="relative inline-flex w-3 h-3 rounded-full bg-amber-500"></span>
@@ -45,6 +45,9 @@
 
   const getLatestAlert = async () => {
     const res = await getAlert()
+    const start = new Date(res.value[0]?.acf?.start)
+    const end = new Date(res.value[0]?.acf?.end)
+    const showAlert = start <= new Date() && end >= new Date()
     latestAlert.value = res.value[0].acf.content
   }
 

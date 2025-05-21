@@ -22,10 +22,6 @@ export default {
       },
     },
   },
-  safelist: [
-    {
-      pattern: /bg-./,
-    },
-  ],
+  safelist: [{ pattern: /bg-./ }, { pattern: /ring-/ }],
   plugins: [],
 }

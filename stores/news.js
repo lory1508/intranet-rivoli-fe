@@ -1,16 +1,16 @@
-// stores/employee.js
+// stores/news.js
 import { defineStore } from 'pinia'
 
-export const useEmployeeStore = defineStore('news', {
+export const useNewsStore = defineStore('news', {
   state: () => ({
     news: [], // Initial state for your news array
   }),
   actions: {
-    setNews(employeeArray) {
-      this.news = employeeArray
+    setNews(newsArray) {
+      this.news = newsArray
     },
-    addEmployee(employee) {
-      this.news.push(employee)
+    addNews(news) {
+      this.news.push(news)
     },
     clearNews() {
       this.news = []
@@ -18,20 +18,20 @@ export const useEmployeeStore = defineStore('news', {
   },
   getters: {
     getNews: (state) => state.news,
-    employeeCount: (state) => state.news.length,
+    newsCount: (state) => state.news.length,
     searchNews: (state) => {
       return (query) =>
-        state.news.filter((employee) => {
+        state.news.filter((news) => {
           return (
-            employee?.title?.rendered.toLowerCase().includes(query?.query?.toLowerCase()) ||
-            employee?.acf?.phone.toLowerCase().includes(query?.query?.toLowerCase()) ||
-            employee?.acf?.department.includes(query?.department) ||
-            employee?.acf?.office.includes(query?.office) ||
-            employee?.acf?.service.includes(query?.service)
+            news?.title?.rendered.toLowerCase().includes(query?.query?.toLowerCase()) ||
+            news?.acf?.phone.toLowerCase().includes(query?.query?.toLowerCase()) ||
+            news?.acf?.department.includes(query?.department) ||
+            news?.acf?.office.includes(query?.office) ||
+            news?.acf?.service.includes(query?.service)
           )
         })
     },
-    getEmployeeById: (state) => (id) => state.news.find((employee) => employee.id === id),
-    getEmployeeBySlug: (state) => (slug) => state.news.find((employee) => employee.slug === slug),
+    getNewsById: (state) => (id) => state.news.find((news) => news.id === id),
+    getNewsBySlug: (state) => (slug) => state.news.find((news) => news.slug === slug),
   },
 })
