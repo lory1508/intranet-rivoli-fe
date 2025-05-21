@@ -17,8 +17,19 @@ export const getPosts = async (queryObj) => {
     if (queryObj?.limit) {
       queryString += `per_page=${queryObj?.limit}&`
     }
-    const res = await useFetch(`${WORDPRESS_BASE_URL}/posts?${queryString}`)
-    const posts = res?.data?.value.map((post) => {
+    if (queryObj?.offset) {
+      queryString += `offset=${queryObj?.offset}&`
+    }
+    if (queryObj?.page) {
+      queryString += `page=${queryObj?.page}&`
+    }
+    const res = await fetch(`${WORDPRESS_BASE_URL}/posts?${queryString}`)
+    if (!res.ok) {
+      throw new Error(`Response status: ${res.status}`)
+    }
+    const json = await res.json()
+
+    const posts = json.map((post) => {
       return {
         title: post?.title?.rendered,
         content: post?.content?.rendered,
@@ -30,8 +41,14 @@ export const getPosts = async (queryObj) => {
         slug: post?.slug,
       }
     })
-    console.log(posts)
-    return posts
+    return {
+      posts: posts,
+      pagination: {
+        total: res.headers.get('x-wp-total'),
+        totalPages: res.headers.get('x-wp-totalpages'),
+        page: queryObj?.page || 1,
+      },
+    }
   } catch (err) {
     console.error(err)
   }

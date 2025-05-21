@@ -36,7 +36,7 @@
     <NDivider />
 
     <!-- News -->
-    <LatestNews :title="homeStaticData.news.title" :icon="homeStaticData.news.icon" :news="news" />
+    <LatestNews :title="homeStaticData.news.title" :icon="homeStaticData.news.icon" />
   </div>
 </template>
 
@@ -65,7 +65,6 @@
 
   const personalTools = ref([])
   const usefulLinks = ref([])
-  const news = ref([])
 
   const loading = ref(false)
 

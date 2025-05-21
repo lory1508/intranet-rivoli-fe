@@ -1,47 +1,28 @@
 <template>
   <div class="flex flex-col gap-8">
     <div
-      class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-secondaryLight text-darkAccent border-secondaryLight shadow-zinc-300"
+      class="flex flex-row items-center justify-between gap-2 p-4 rounded-lg shadow-md bg-secondaryLight text-darkAccent border-secondaryLight shadow-zinc-300"
     >
       <div class="flex flex-row gap-2 pb-2">
         <Icon :icon="icon" height="32" />
         <div class="text-2xl">{{ title }}</div>
       </div>
+      <div
+        class="flex flex-row items-center gap-2 px-4 py-2 font-semibold tracking-widest text-white uppercase transition-all duration-300 rounded-lg bg-secondary hover:cursor-pointer hover:bg-blue-500"
+        @click="goTo('/news')"
+      >
+        tutte le news
+        <Icon icon="solar:arrow-right-line-duotone" height="24" />
+      </div>
     </div>
     <div class="flex flex-wrap gap-4">
-      <div v-for="post in news" :key="post.slug" class="flex flex-col bg-white w-96 rounded-xl">
-        <div class="flex flex-col h-full gap-2 p-4">
-          <!-- Title -->
-          <span class="font-semibold text-primary">{{ post.title }}</span>
-
-          <!-- Excerpt -->
-          <div v-html="post.excerpt" />
-
-          <!-- Tags -->
-          <div v-if="post.tags.length" class="flex flex-row gap-2">
-            <TagComponent v-for="tag in post.tags" :key="tag.slug" :tag="tag" />
-          </div>
-
-          <!-- Dates -->
-          <div v-if="post.start && post.end" class="flex flex-row items-center gap-1 font-semibold">
-            {{ post.start }} <Icon icon="solar:arrow-right-linear" width="20" /> {{ post.end }}
-          </div>
-        </div>
-
-        <!-- Btn -->
-        <div
-          class="flex items-center justify-center py-4 font-semibold tracking-widest text-white cursor-pointer rounded-b-xl bg-primary"
-          @click="goToNews(post.slug)"
-        >
-          LEGGI LA NEWS
-        </div>
-      </div>
+      <NewsCard v-for="post in news" :key="post.slug" :post="post" />
     </div>
   </div>
 </template>
 
 <script setup>
-  import TagComponent from '~/components/common/TagComponent.vue'
+  import NewsCard from '~/components/common/NewsCard.vue'
   import { Icon } from '@iconify/vue'
   import { getPosts } from '~/api/posts'
 
@@ -56,14 +37,17 @@
     },
   })
 
-  const router = useRouter()
   const news = ref([])
+  const pagination = ref()
+  const router = useRouter()
 
-  const goToNews = (slug) => {
-    router.push(`/news/${slug}`)
+  const goTo = (path) => {
+    router.push(path)
   }
 
   onMounted(async () => {
-    news.value = await getPosts({ categories: ['news'], limit: 6 })
+    const res = await getPosts({ categories: ['news'], limit: 6 })
+    news.value = res.posts
+    pagination.value = res.pagination
   })
 </script>
