@@ -5,7 +5,7 @@
         collapse-mode="transform"
         show-trigger="bar"
         bordered
-        class="fixed text-white transition-all duration-300 bg-primary"
+        class="fixed text-white transition-all duration-300 shadow-lg shadow-zinc-800 bg-primary"
         :class="{
           'w-24': collapsed,
           'w-80': !collapsed,
