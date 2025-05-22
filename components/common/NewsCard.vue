@@ -1,8 +1,11 @@
 <template>
-  <div class="flex flex-col gap-2 bg-white rounded-xl" :class="vertical ? 'w-96' : 'w-full p-4'">
+  <div
+    class="flex flex-col gap-2 transition-all duration-500 bg-white rounded-xl hover:shadow-xl"
+    :class="vertical ? 'w-96 hover:scale-105' : 'w-full p-4'"
+  >
     <div class="flex flex-col h-full gap-2" :class="vertical ? 'p-4' : ''">
       <!-- Title -->
-      <span class="font-semibold text-primary">{{ post.title }}</span>
+      <span class="font-semibold text-secondary">{{ post.title }}</span>
 
       <!-- Excerpt -->
       <div v-html="post.excerpt" />
@@ -18,13 +21,17 @@
       </div>
     </div>
 
-    <!-- Btn -->
-    <div
-      class="flex items-center justify-center font-semibold tracking-widest text-white transition-all duration-300 cursor-pointer bg-primary hover:bg-red-600"
-      :class="vertical ? 'rounded-b-xl w-full py-4' : 'w-48 py-2 rounded-lg hover:shadow-md '"
-      @click="goToNews(post.slug)"
-    >
-      LEGGI LA NEWS
+    <div v-if="vertical" class="w-full px-4 text-sm text-secondary text-end">Creato il {{ post.createdAt }}</div>
+    <div class="flex flex-row items-end justify-between">
+      <!-- Btn -->
+      <div
+        class="flex items-center justify-center font-semibold tracking-widest text-white transition-all duration-300 cursor-pointer bg-secondary hover:bg-blue-600"
+        :class="vertical ? 'rounded-b-xl w-full py-4' : 'w-48 py-2 rounded-lg hover:shadow-md '"
+        @click="goToNews(post.slug)"
+      >
+        LEGGI LA NEWS
+      </div>
+      <div v-if="!vertical" class="w-full px-4 text-sm text-secondary text-end">Creato il {{ post.createdAt }}</div>
     </div>
   </div>
 </template>

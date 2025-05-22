@@ -23,6 +23,17 @@ export const getPosts = async (queryObj) => {
     if (queryObj?.page) {
       queryString += `page=${queryObj?.page}&`
     }
+    if (queryObj?.tags) {
+      queryString += `tags=${queryObj?.tags.join(',')}&`
+    }
+    if (queryObj?.search) {
+      queryString += `search=${queryObj?.search}&`
+    }
+    if (queryObj.range) {
+      const start = new Date(queryObj.range[0]).toISOString()
+      const end = new Date(queryObj.range[1]).toISOString()
+      queryString += `after=${start}&before=${end}&`
+    }
     const res = await fetch(`${WORDPRESS_BASE_URL}/posts?${queryString}`)
     if (!res.ok) {
       throw new Error(`Response status: ${res.status}`)
@@ -39,6 +50,7 @@ export const getPosts = async (queryObj) => {
         start: post?.acf?.start,
         end: post?.acf?.end,
         slug: post?.slug,
+        createdAt: new Date(post?.date).toLocaleDateString('it-IT'),
       }
     })
     return {
@@ -69,6 +81,7 @@ export const getPostBySlug = async (slug) => {
       start: post?.acf?.start,
       end: post?.acf?.end,
       slug: post?.slug,
+      createdAt: new Date(post?.date).toLocaleDateString('it-IT'),
       attachment: {
         id: post?.acf?.attachment?.ID,
         url: post?.acf?.attachment?.url,
@@ -82,7 +95,7 @@ export const getPostBySlug = async (slug) => {
   }
 }
 
-const getTags = async () => {
+export const getTags = async (tagsStore) => {
   try {
     const res = await useFetch(`${WORDPRESS_BASE_URL}/tags`)
     tags.value = res?.data?.value.map((tag) => {
@@ -92,12 +105,13 @@ const getTags = async () => {
         slug: tag?.slug,
       }
     })
+    if (tagsStore) tagsStore.setTags(tags.value)
   } catch (err) {
     console.error(err)
   }
 }
 
-export const getPostsCategories = async () => {
+export const getPostsCategories = async (categoriesStore) => {
   try {
     const res = await useFetch(`${WORDPRESS_BASE_URL}/categories`)
     categories.value = res?.data?.value.map((category) => {
@@ -107,6 +121,7 @@ export const getPostsCategories = async () => {
         slug: category?.slug,
       }
     })
+    if (categoriesStore) categoriesStore.setCategories(categories.value)
   } catch (err) {
     console.error(err)
   }
