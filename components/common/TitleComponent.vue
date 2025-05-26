@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-1">
+  <div class="flex flex-col gap-1 pt-4 pb-2">
     <div class="text-xl font-semibold text-primary">{{ title }}</div>
     <div class="flex flex-row gap-1 text-sm">
       <div

@@ -5,14 +5,21 @@
   >
     <div class="flex flex-col h-full gap-2" :class="vertical ? 'p-4' : ''">
       <!-- Title -->
-      <span class="font-semibold text-secondary">{{ post.title }}</span>
+      <span class="font-semibold text-secondary hover:cursor-pointer" @click="goToNews(post.slug)">{{
+        post.title
+      }}</span>
 
       <!-- Excerpt -->
       <div v-html="post.excerpt" />
 
-      <!-- Tags -->
-      <div v-if="post.tags.length" class="flex flex-row gap-2">
-        <TagComponent v-for="tag in post.tags" :key="tag.slug" :tag="tag" />
+      <div class="flex flex-row items-center gap-2">
+        <!-- Attachment -->
+        <Icon v-if="post?.attachment?.id" icon="solar:paperclip-bold" width="20" class="text-secondary" />
+
+        <!-- Tags -->
+        <div v-if="post.tags.length" class="flex flex-row gap-2">
+          <TagComponent v-for="tag in post.tags" :key="tag.slug" :tag="tag" />
+        </div>
       </div>
 
       <!-- Dates -->

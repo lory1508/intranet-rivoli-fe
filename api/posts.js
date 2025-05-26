@@ -51,6 +51,13 @@ export const getPosts = async (queryObj) => {
         end: post?.acf?.end,
         slug: post?.slug,
         createdAt: new Date(post?.date).toLocaleDateString('it-IT'),
+        attachment: {
+          id: post?.acf?.attachment?.ID,
+          url: post?.acf?.attachment?.url,
+          title: post?.acf?.attachment?.title,
+          type: post?.acf?.attachment?.subtype,
+          size: post?.acf?.attachment?.filesize,
+        },
       }
     })
     return {
