@@ -1,14 +1,35 @@
 <template>
   <div
-    class="flex flex-row items-center h-16 gap-4 pl-2 transition-all duration-300 bg-white border rounded-lg w-fit border-secondaryLight hover:shadow-lg hover:cursor-pointer"
-    @click="goToAttachment"
+    class="flex flex-col items-center gap-4 transition-all duration-300 bg-white border rounded-lg h-fit w-fit max-w-72 border-secondaryLight hover:shadow-lg"
   >
-    <Icon :icon="ICON_FILE_TYPE[props.type]" height="36" class="text-secondary" />
-    <div class="flex flex-col gap-1">
-      <div class="font-semibold">{{ title }}</div>
-      <div class="font-mono">{{ MbSize }}</div>
+    <div class="flex flex-row items-center gap-4 px-2 pt-2">
+      <Icon :icon="ICON_FILE_TYPE[props.type]" height="36" class="text-secondary" />
+      <div class="flex flex-col gap-1">
+        <div class="font-semibold">{{ title }}</div>
+        <div class="font-mono">{{ MbSize }}</div>
+      </div>
     </div>
-    <div class="flex items-center justify-center w-12 h-full rounded-r-lg bg-secondary">
+
+    <div class="flex w-full gap-4 px-2" :class="tags.length && categories.length ? 'flex-col' : 'flex-row'">
+      <!-- Tags -->
+      <div v-if="tags.length" class="flex flex-wrap gap-1">
+        <span class="pr-1 font-semibold text-emerald-700">Tag:</span>
+        <div v-for="tag in tags" :key="tag.id">
+          <TagComponent :tag="tag" color="emerald" />
+        </div>
+      </div>
+      <!-- Caegories -->
+      <div v-if="categories.length" class="flex flex-wrap gap-1">
+        <span class="pr-1 font-semibold text-purple-700">Categorie:</span>
+        <div v-for="category in categories" :key="category.id">
+          <TagComponent :tag="category" color="purple" />
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="flex items-center justify-center w-full h-full py-1 transition-all duration-300 rounded-b-lg bg-secondary hover:cursor-pointer hover:bg-blue-800"
+    >
       <Icon icon="material-symbols:download-rounded" height="36" class="h-full text-white" />
     </div>
   </div>
@@ -17,6 +38,8 @@
 <script setup>
   import { Icon } from '@iconify/vue'
   import { ICON_FILE_TYPE } from '~/utils/staticData/constants'
+
+  import TagComponent from '~/components/common/TagComponent.vue'
 
   const props = defineProps({
     title: {
@@ -34,6 +57,14 @@
     size: {
       type: String,
       default: 0,
+    },
+    categories: {
+      type: Array,
+      default: () => [],
+    },
+    tags: {
+      type: Array,
+      default: () => [],
     },
   })
 

@@ -26,10 +26,12 @@
     <div v-if="news?.attachment?.id" class="flex flex-col gap-2">
       <div class="text-xl font-semibold text-secondary">Allegato</div>
       <AttachmentComponent
-        :title="news.attachment.title"
-        :url="news.attachment.url"
-        :type="news.attachment.type"
-        :size="news.attachment.size"
+        :title="attachment.title"
+        :url="attachment.url"
+        :type="attachment.type"
+        :size="attachment.size"
+        :categories="attachment.categories"
+        :tags="attachment.tags"
       />
     </div>
   </div>
@@ -42,14 +44,19 @@
   import AttachmentComponent from '~/components/common/AttachmentComponent.vue'
 
   import { Icon } from '@iconify/vue'
-
-  import { getPostBySlug } from '~/api/posts'
+  import { getPostBySlug, getAttachmentDetails } from '~/api/posts'
+  import { useTagsStore } from '~/stores/tags'
+  import { useCategoriesStore } from '~/stores/categories'
 
   const route = useRoute()
+  const tagsStore = useTagsStore()
+  const categoriesStore = useCategoriesStore()
+  const tags = ref([])
+  const categories = ref([])
 
   const loading = ref(false)
   const news = ref([])
-  const showAttachment = computed(() => Boolean(news.value.attachment))
+  const attachment = ref(null)
 
   const breadcrumb = ref([
     {
@@ -65,7 +72,15 @@
   onMounted(async () => {
     try {
       loading.value = true
-      news.value = await getPostBySlug(route.params.slug)
+
+      categories.value = await categoriesStore.getCategories()
+      tags.value = await tagsStore.getTags()
+
+      news.value = await getPostBySlug(route.params.slug, categories.value, tags.value)
+
+      if (news.value?.attachment?.id) {
+        attachment.value = await getAttachmentDetails(news.value?.attachment?.id, categories.value, tags.value)
+      }
       breadcrumb.value.push({ title: news.value.title, slug: route.params.slug })
     } catch (error) {
       console.error(error)

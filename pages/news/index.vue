@@ -48,21 +48,25 @@
 <script setup>
   import { getPosts } from '~/api/posts'
   import { NPagination } from 'naive-ui'
-  import { useTagsStore } from '~/stores/tags'
   import { Icon } from '@iconify/vue'
 
   import LoaderComponent from '~/components/common/LoaderComponent.vue'
   import TitleComponent from '~/components/common/TitleComponent.vue'
   import NewsCard from '~/components/common/NewsCard.vue'
 
+  // store
+  import { useCategoriesStore } from '~/stores/categories'
+  import { useTagsStore } from '~/stores/tags'
+  const categoriesStore = useCategoriesStore()
   const tagsStore = useTagsStore()
+  const categories = ref([])
+  const tags = ref([])
 
   const filters = ref({
     search: null,
     tags: [],
     range: null,
   })
-  const tags = ref([])
   const optionsTags = computed(() => tags.value.map((tag) => ({ label: tag?.name, value: tag?.id })))
   const loading = ref(false)
   const news = ref([])
@@ -87,7 +91,11 @@
       const filtersToRun = { categories: ['news'], limit: 4, page: page, ...filters.value }
       if (filtersToRun.tags.length === 0) delete filtersToRun.tags
       if (!filtersToRun.range) delete filtersToRun.range
-      const res = await getPosts(filtersToRun)
+
+      categories.value = await categoriesStore.getCategories()
+      tags.value = await tagsStore.getTags()
+
+      const res = await getPosts(filtersToRun, categories.value, tags.value)
       news.value = res.posts
       pagination.value = res.pagination
     } catch (err) {
@@ -103,7 +111,11 @@
       const filtersToRun = { categories: ['news'], limit: 4, page: 1, ...filters.value }
       if (filtersToRun.tags.length === 0) delete filtersToRun.tags
       if (!filtersToRun.range) delete filtersToRun.range
-      const res = await getPosts(filtersToRun)
+
+      categories.value = await categoriesStore.getCategories()
+      tags.value = await tagsStore.getTags()
+
+      const res = await getPosts(filtersToRun, categories.value, tags.value)
       news.value = res.posts
       pagination.value = res.pagination
     } catch (err) {
@@ -115,6 +127,6 @@
 
   onMounted(async () => {
     await updatePage(1)
-    tags.value = tagsStore.getTags
+    // tags.value = tagsStore.getTags
   })
 </script>

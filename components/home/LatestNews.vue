@@ -26,6 +26,12 @@
   import { Icon } from '@iconify/vue'
   import { getPosts } from '~/api/posts'
 
+  // stores
+  import { useCategoriesStore } from '~/stores/categories'
+  import { useTagsStore } from '~/stores/tags'
+  const categoriesStore = useCategoriesStore()
+  const tagsStore = useTagsStore()
+
   const props = defineProps({
     icon: {
       type: String,
@@ -46,7 +52,9 @@
   }
 
   onMounted(async () => {
-    const res = await getPosts({ categories: ['news'], limit: 6 })
+    const categories = await categoriesStore.getCategories()
+    const tags = await tagsStore.getTags()
+    const res = await getPosts({ categories: ['news'], limit: 6 }, categories, tags)
     news.value = res.posts
     pagination.value = res.pagination
   })

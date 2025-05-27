@@ -33,4 +33,12 @@ export const ICON_FILE_TYPE = {
   jpg: 'hugeicons:image-01',
   jpeg: 'hugeicons:image-01',
   png: 'hugeicons:image-01',
+  'application/pdf': 'hugeicons:pdf-02',
+  'application/doc': 'hugeicons:doc-02',
+  'application/docx': 'hugeicons:doc-02',
+  'application/xlsx': 'hugeicons:xls-02',
+  'application/zip': 'hugeicons:zip-02',
+  'application/jpg': 'hugeicons:image-01',
+  'application/jpeg': 'hugeicons:image-01',
+  'application/png': 'hugeicons:image-01',
 }

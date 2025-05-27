@@ -1,25 +1,35 @@
 // stores/categorie.js
 import { defineStore } from 'pinia'
+import { WORDPRESS_BASE_URL } from '~/utils/staticData/constants'
 
 export const useCategoriesStore = defineStore('categories', {
   state: () => ({
     categories: [], // Initial state for your categories array
+    fetched: false,
   }),
+
   actions: {
-    setCategories(categoriesArray) {
-      this.categories = categoriesArray
+    async getCategories() {
+      if (this.fetched && this.categories.length > 0) {
+        return this.categories
+      }
+
+      try {
+        const res = await useFetch(`${WORDPRESS_BASE_URL}/categories`)
+        this.categories =
+          res?.data?.value.map((category) => {
+            return {
+              id: category?.id,
+              name: category?.name,
+              slug: category?.slug,
+            }
+          }) || []
+        this.fetched = true
+        return this.categories
+      } catch (err) {
+        console.error('Failed to fetch categories', err)
+        throw err
+      }
     },
-    addCategory(category) {
-      this.categories.push(category)
-    },
-    clearCategories() {
-      this.categories = []
-    },
-  },
-  getters: {
-    getCategories: (state) => state.categories,
-    categoriesCount: (state) => state.categories.length,
-    getCategoryById: (state) => (id) => state.categories.find((categorie) => categorie.id === id),
-    getCategoryBySlug: (state) => (slug) => state.categories.find((categorie) => categorie.slug === slug),
   },
 })

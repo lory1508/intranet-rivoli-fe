@@ -1,15 +1,10 @@
 import { WORDPRESS_BASE_URL } from '../utils/staticData/constants'
 
-const categories = ref([])
-const tags = ref([])
-
-export const getPosts = async (queryObj) => {
+export const getPosts = async (queryObj, categories, tags) => {
   try {
-    await getTags()
-    await getPostsCategories()
     let queryString = ''
     if (queryObj?.categories) {
-      const categoryIds = categories.value
+      const categoryIds = categories
         ?.filter((category) => queryObj?.categories?.includes(category?.slug))
         ?.map((category) => category?.id)
       queryString += `categories=${categoryIds?.join(',')}&`
@@ -45,8 +40,8 @@ export const getPosts = async (queryObj) => {
         title: post?.title?.rendered,
         content: post?.content?.rendered,
         excerpt: post?.excerpt?.rendered,
-        categories: post?.categories?.map((category) => categories.value.find((c) => c?.id === category)),
-        tags: post?.tags?.map((tag) => tags.value.find((t) => t?.id === tag)),
+        categories: post?.categories?.map((category) => categories.find((c) => c?.id === category)),
+        tags: post?.tags?.map((tag) => tags.find((t) => t?.id === tag)),
         start: post?.acf?.start,
         end: post?.acf?.end,
         slug: post?.slug,
@@ -73,18 +68,39 @@ export const getPosts = async (queryObj) => {
   }
 }
 
-export const getPostBySlug = async (slug) => {
+export const getAttachmentDetails = async (attachmentId, categories, tags) => {
   try {
-    await getTags()
-    await getPostsCategories()
+    const res = await fetch(`${WORDPRESS_BASE_URL}/media/${attachmentId}`)
+    if (!res.ok) {
+      throw new Error(`Response status: ${res.status}`)
+    }
+    const json = await res.json()
+
+    const attachment = {
+      id: json?.id,
+      categories: json?.categories?.map((category) => categories.find((c) => c?.id === category)),
+      tags: json?.tags?.map((tag) => tags.find((t) => t?.id === tag)),
+      size: json?.media_details?.filesize,
+      url: json?.guid?.rendered,
+      title: json?.title?.rendered,
+      type: json?.mime_type,
+    }
+    return attachment
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getPostBySlug = async (slug, categories, tags) => {
+  try {
     const res = await useFetch(`${WORDPRESS_BASE_URL}/posts?slug=${slug}`)
     const post = res?.data?.value[0]
     return {
       title: post?.title?.rendered,
       content: post?.content?.rendered,
       excerpt: post?.excerpt?.rendered,
-      categories: post?.categories?.map((category) => categories.value.find((c) => c?.id === category)),
-      tags: post?.tags?.map((tag) => tags.value.find((t) => t?.id === tag)),
+      categories: post?.categories?.map((category) => categories.find((c) => c?.id === category)),
+      tags: post?.tags?.map((tag) => tags.find((t) => t?.id === tag)),
       start: post?.acf?.start,
       end: post?.acf?.end,
       slug: post?.slug,
@@ -97,38 +113,6 @@ export const getPostBySlug = async (slug) => {
         size: post?.acf?.attachment?.filesize,
       },
     }
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-export const getTags = async (tagsStore) => {
-  try {
-    const res = await useFetch(`${WORDPRESS_BASE_URL}/tags`)
-    tags.value = res?.data?.value.map((tag) => {
-      return {
-        id: tag?.id,
-        name: tag?.name,
-        slug: tag?.slug,
-      }
-    })
-    if (tagsStore) tagsStore.setTags(tags.value)
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-export const getPostsCategories = async (categoriesStore) => {
-  try {
-    const res = await useFetch(`${WORDPRESS_BASE_URL}/categories`)
-    categories.value = res?.data?.value.map((category) => {
-      return {
-        id: category?.id,
-        name: category?.name,
-        slug: category?.slug,
-      }
-    })
-    if (categoriesStore) categoriesStore.setCategories(categories.value)
   } catch (err) {
     console.error(err)
   }

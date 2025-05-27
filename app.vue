@@ -12,13 +12,6 @@
   // import { NThemeEditor } from 'naive-ui'
   import { NConfigProvider } from 'naive-ui'
 
-  import { useCategoriesStore } from '~/stores/categories'
-  import { useTagsStore } from '~/stores/tags'
-  import { getPostsCategories, getTags } from './api/posts'
-
-  const categoriesStore = useCategoriesStore()
-  const tagsStore = useTagsStore()
-
   const themeOverrides = {
     Input: {
       caretColor: '#1857A0FF',
@@ -32,8 +25,5 @@
     },
   }
 
-  onMounted(async () => {
-    await getPostsCategories(categoriesStore)
-    await getTags(tagsStore)
-  })
+  onMounted(async () => {})
 </script>
