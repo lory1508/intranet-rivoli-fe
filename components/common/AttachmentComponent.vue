@@ -2,10 +2,15 @@
   <div
     class="flex flex-col items-center gap-4 transition-all duration-300 bg-white border rounded-lg h-fit w-fit max-w-72 border-secondaryLight hover:shadow-lg"
   >
-    <div class="flex flex-row items-center gap-4 px-2 pt-2">
-      <Icon :icon="ICON_FILE_TYPE[props.type]" height="36" class="text-secondary" />
-      <div class="flex flex-col gap-1">
-        <div class="font-semibold">{{ title }}</div>
+    <div class="flex flex-row items-center w-full gap-4 px-2 pt-2">
+      <Icon :icon="ICON_FILE_TYPE[props.type]" height="36" class="w-24 text-secondary" />
+      <div class="flex flex-col gap-1 overflow-hidden text-ellipsis">
+        <NTooltip trigger="hover">
+          <template #trigger>
+            <div class="font-semibold truncate">{{ title }}</div>
+          </template>
+          <div class="font-semibold">{{ title }}</div>
+        </NTooltip>
         <div class="font-mono">{{ MbSize }}</div>
       </div>
     </div>
@@ -29,6 +34,7 @@
 
     <div
       class="flex items-center justify-center w-full h-full py-1 transition-all duration-300 rounded-b-lg bg-secondary hover:cursor-pointer hover:bg-blue-800"
+      @click="goToAttachment"
     >
       <Icon icon="material-symbols:download-rounded" height="36" class="h-full text-white" />
     </div>
