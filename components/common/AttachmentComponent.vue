@@ -44,6 +44,7 @@
 <script setup>
   import { Icon } from '@iconify/vue'
   import { ICON_FILE_TYPE } from '~/utils/staticData/constants'
+  import { ByteToMega } from '~/utils/index'
 
   import TagComponent from '~/components/common/TagComponent.vue'
 
@@ -75,17 +76,6 @@
   })
 
   const MbSize = ref(0)
-
-  const ByteToMega = (bytes) => {
-    const MB = (bytes / (1024 * 1024)).toFixed(2)
-    if (MB > 1024) {
-      return `${(MB / 1024).toFixed(2)}GB`
-    }
-    if (MB < 1) {
-      return `${MB}KB`
-    }
-    return `${MB}MB`
-  }
 
   const goToAttachment = async () => {
     await navigateTo(props.url, { external: true, open: { target: '_blank' } })

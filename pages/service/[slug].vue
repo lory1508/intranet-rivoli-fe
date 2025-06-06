@@ -15,58 +15,34 @@
             <EmployeeCard :employee="employee" />
           </div>
         </div>
-        <RubricaCard
-          :title="homeStaticData.rubrica.title"
-          :icon="homeStaticData.rubrica.icon"
-          compact
-          @search="runSearch"
-        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-  import { useEmployeeStore } from '~/stores/employees'
   import { NEmpty } from 'naive-ui'
-  import { homeStaticData } from '~/utils/staticData/home'
-
-  import RubricaCard from '~/components/home/RubricaCard.vue'
-  import EmployeeCard from '~/components/common/EmployeeCard.vue'
-  import HeaderComponent from '~/components/common/HeaderComponent.vue'
   import LoaderComponent from '~/components/common/LoaderComponent.vue'
+  import HeaderComponent from '~/components/common/HeaderComponent.vue'
+  import EmployeeCard from '~/components/common/EmployeeCard.vue'
+
+  import { useEmployeeStore } from '~/stores/employees'
+  import { useServiceStore } from '~/stores/services'
 
   const route = useRoute()
-
-  const loading = ref(false)
   const employeeStore = useEmployeeStore()
   const employees = ref([])
-  const rubricaSearch = ref({
-    query: null,
-    department: null,
-    office: null,
-    service: null,
-  })
+  const serviceStore = useServiceStore()
+  const loading = ref(false)
 
-  const breadcrumb = ref([
-    {
-      title: 'Home',
-      slug: '/',
-    },
-    {
-      title: 'Rubrica',
-      slug: '/rubrica',
-    },
-  ])
-
-  const runSearch = async (query) => {
-    rubricaSearch.value = query
-    await searchEmployees()
-  }
-  const searchEmployees = async () => {
+  onMounted(async () => {
     try {
       loading.value = true
-      employees.value = employeeStore.searchEmployees(rubricaSearch.value)?.map((employee) => {
+      const slug = route.params.slug
+      const service = await serviceStore.getServiceBySlug(slug)
+      console.log('service', service)
+      const resEmps = await employeeStore.runEmployeeSearch('service', service[0]?.id)
+      employees.value = resEmps?.map((employee) => {
         return {
           id: employee?.id,
           name: employee?.title.rendered,
@@ -83,13 +59,6 @@
       console.error(error)
     } finally {
       loading.value = false
-    }
-  }
-
-  onMounted(async () => {
-    if (route.query) {
-      rubricaSearch.value = route.query
-      await searchEmployees()
     }
   })
 </script>

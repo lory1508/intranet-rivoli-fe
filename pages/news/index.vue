@@ -1,7 +1,7 @@
 <template>
   <LoaderComponent v-if="loading" />
   <div v-else class="flex flex-col gap-4">
-    <TitleComponent title="News" :breadcrumb="breadcrumb" />
+    <HeaderComponent title="News" :breadcrumb="breadcrumb" />
 
     <div class="flex flex-col-reverse gap-8 xl:flex-row">
       <div class="flex flex-col w-full gap-4 xl:w-2/3">
@@ -15,7 +15,7 @@
           @update:page="updatePage"
         />
       </div>
-      <div class="flex flex-col w-full gap-1 p-4 xl:w-1/3 h-fit bg-secondaryLight rounded-xl">
+      <div class="flex flex-col w-full gap-1 p-4 xl:w-1/3 h-fit bg-indigo-50 rounded-xl">
         <n-input
           v-model:value="filters.search"
           placeholder="Cerca..."
@@ -51,7 +51,7 @@
   import { Icon } from '@iconify/vue'
 
   import LoaderComponent from '~/components/common/LoaderComponent.vue'
-  import TitleComponent from '~/components/common/TitleComponent.vue'
+  import HeaderComponent from '~/components/common/HeaderComponent.vue'
   import NewsCard from '~/components/common/NewsCard.vue'
 
   // store

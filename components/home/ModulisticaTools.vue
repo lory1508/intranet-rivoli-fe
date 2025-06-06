@@ -2,12 +2,13 @@
   <div
     class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-indigo-50 text-darkAccent border-secondaryLight shadow-zinc-300"
   >
-    <div class="flex flex-wrap gap-2 pb-2">
+    <div class="flex flex-row gap-2 pb-2">
       <Icon :icon="icon" height="32" />
       <div class="text-xl">{{ title }}</div>
     </div>
     <div class="flex flex-wrap items-stretch gap-2">
       <LoaderComponent v-if="loading" />
+
       <div
         v-else
         v-for="tool in tools"

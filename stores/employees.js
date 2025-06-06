@@ -1,11 +1,40 @@
 // stores/employee.js
 import { defineStore } from 'pinia'
+import { WORDPRESS_BASE_URL } from '~/utils/staticData/constants'
 
 export const useEmployeeStore = defineStore('employees', {
   state: () => ({
     employees: [], // Initial state for your employees array
+    fetched: false,
   }),
   actions: {
+    async getEmployees() {
+      if (this.fetched && this.employees.length > 0) {
+        return this.employees
+      }
+
+      try {
+        const res = await useFetch(`${WORDPRESS_BASE_URL}/employee`)
+        this.employees = res?.data || []
+        this.fetched = true
+        return this.employees
+      } catch (err) {
+        console.error('Failed to fetch employees', err)
+        throw err
+      }
+    },
+    async runEmployeeSearch(section, id) {
+      try {
+        if (!section || !id) return
+        const res = await useFetch(`${WORDPRESS_BASE_URL}/employee?meta_key=${section}&meta_value=${id}`)
+        this.employees = res?.data || []
+        this.fetched = true
+        return this.employees
+      } catch (err) {
+        console.error('Failed to fetch employees', err)
+        throw err
+      }
+    },
     setEmployees(employeeArray) {
       this.employees = employeeArray
     },
@@ -17,7 +46,6 @@ export const useEmployeeStore = defineStore('employees', {
     },
   },
   getters: {
-    getEmployees: (state) => state.employees,
     employeeCount: (state) => state.employees.length,
     searchEmployees: (state) => {
       return (query) =>

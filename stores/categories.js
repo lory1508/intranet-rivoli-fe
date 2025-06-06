@@ -16,14 +16,20 @@ export const useCategoriesStore = defineStore('categories', {
 
       try {
         const res = await useFetch(`${WORDPRESS_BASE_URL}/categories`)
+        console.log('res', res)
         this.categories =
           res?.data?.value.map((category) => {
             return {
               id: category?.id,
               name: category?.name,
               slug: category?.slug,
+              link: category?.link
+                .replace(/.*\/category\//, '')
+                .slice(0, -1)
+                .replace(/\//g, '-'),
             }
           }) || []
+        console.log('this.categories', this.categories)
         this.fetched = true
         return this.categories
       } catch (err) {

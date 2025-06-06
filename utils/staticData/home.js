@@ -17,8 +17,8 @@ export const homeStaticData = {
     icon: 'hugeicons:unlink-01',
   },
   usefulLinks: {
-    title: 'Link utili',
-    icon: 'hugeicons:unlink-01',
+    title: 'Applicativi',
+    icon: 'hugeicons:dialpad-square-01',
   },
   news: {
     title: 'News',

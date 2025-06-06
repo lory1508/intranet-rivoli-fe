@@ -30,7 +30,7 @@ export const updateOfficeStore = async (officeStore) => {
 
 export const updateServiceStore = async (serviceStore) => {
   try {
-    const storeServices = serviceStore.getServices
+    const storeServices = await serviceStore.getServices()
     if (storeServices?.length === 0) {
       const services = await getServices()
       serviceStore.setServices(services)
@@ -70,4 +70,20 @@ export const setIntervalMethod = (callback, interval) => {
   callback()
   const intervalId = setInterval(callback, interval)
   return () => clearInterval(intervalId)
+}
+
+export const ByteToMega = (bytes) => {
+  const MB = (bytes / (1024 * 1024)).toFixed(2)
+  if (MB > 1024) {
+    return `${(MB / 1024).toFixed(2)}GB`
+  }
+  if (MB < 1) {
+    return `${MB}KB`
+  }
+  return `${MB}MB`
+}
+
+export const isDatePrefixedUrl = (url) => {
+  const datePrefixPattern = /^\/\d{4}\/\d{2}\/\d{2}/
+  return datePrefixPattern.test(url)
 }

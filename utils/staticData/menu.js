@@ -5,6 +5,11 @@ export const menu = [
     path: '/',
   },
   {
+    title: 'Applicativi',
+    icon: 'hugeicons:dialpad-square-01',
+    path: '/applicativi',
+  },
+  {
     title: 'Rubrica',
     icon: 'hugeicons:contact-01',
     path: '/rubrica',
@@ -20,11 +25,6 @@ export const menu = [
     path: '/bacheca-dipendenti',
   },
   {
-    title: 'Link utili',
-    icon: 'hugeicons:unlink-01',
-    path: '/link-utili',
-  },
-  {
     title: 'Avvocatura',
     icon: 'hugeicons:justice-scale-02',
     path: '/avvocatura',
@@ -33,6 +33,11 @@ export const menu = [
     title: 'Modulistica',
     icon: 'hugeicons:file-01',
     path: '/modulistica',
+  },
+  {
+    title: 'Manuali',
+    icon: 'streamline:manual-book',
+    path: '/manuali',
   },
   {
     title: 'Sicurezza lavoratori',

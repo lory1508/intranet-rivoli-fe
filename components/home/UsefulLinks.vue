@@ -1,30 +1,34 @@
 <template>
   <div
-    class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-secondaryLight text-darkAccent border-secondaryLight shadow-zinc-300"
+    class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-indigo-50 text-darkAccent border-secondaryLight shadow-zinc-300"
   >
     <div v-if="icon || title" class="flex flex-row gap-2 pb-2">
       <Icon v-if="icon" :icon="icon" height="32" />
-      <div v-if="title" class="text-2xl">{{ title }}</div>
+      <div v-if="title" class="text-xl">{{ title }}</div>
     </div>
-    <div class="grid gap-2" :class="monoColumn ? 'grid-cols-1 w-fit' : 'grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2'">
-      <a
-        v-for="link in links"
-        :key="link.slug"
-        :href="link.href"
-        target="_blank"
-        class="flex flex-row items-center w-full font-semibold text-white transition-all duration-300 rounded-xl hover:ring-2 hover:shadow-md"
-        :class="getCustomColors(link.slugType).ring"
-      >
+    <div>
+      <div v-for="type in categories" :key="type.slug">
+        <div class="pt-2 text-lg font-semibold">{{ type.title }}</div>
         <div
-          class="flex items-center w-full h-10 gap-2 pl-4 pr-4 rounded-l-xl"
-          :class="getCustomColors(link.slugType).bg"
+          class="grid gap-2 pb-2 border-b-2 border-indigo-200"
+          :class="monoColumn ? 'grid-cols-1 w-fit' : 'grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2'"
         >
-          {{ link.title }}
+          <a
+            v-for="link in links.filter((link) => link.slugType === type.slug)"
+            :key="link.slug"
+            :href="link.href"
+            target="_blank"
+            class="flex flex-row items-center w-full font-semibold text-white transition-all duration-300 rounded-xl hover:ring-2 hover:shadow-md ring-sky-300"
+          >
+            <div class="flex items-center w-full h-10 gap-2 pl-4 pr-4 text-xs bg-sky-700 rounded-l-xl">
+              {{ link.title }}
+            </div>
+            <div class="flex items-center h-10 px-2 bg-sky-900 rounded-r-xl">
+              <Icon icon="solar:arrow-right-up-line-duotone" height="24" />
+            </div>
+          </a>
         </div>
-        <div class="flex items-center h-10 px-2 rounded-r-xl" :class="getCustomColors(link.slugType).iconBg">
-          <Icon icon="solar:arrow-right-up-line-duotone" height="24" />
-        </div>
-      </a>
+      </div>
     </div>
   </div>
 </template>
@@ -49,6 +53,10 @@
     monoColumn: {
       type: Boolean,
       default: false,
+    },
+    categories: {
+      type: Array,
+      default: () => [],
     },
   })
 

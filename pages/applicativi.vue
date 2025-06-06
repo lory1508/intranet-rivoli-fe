@@ -2,16 +2,16 @@
   <div>
     <LoaderComponent v-if="loading" />
     <div v-else>
-      <TitleComponent title="Link utili" :breadcrumb="breadcrumb" />
+      <HeaderComponent title="Applicativi" :breadcrumb="breadcrumb" />
 
       <!-- Link utili generali -->
-      <UsefulLinks :links="usefulLinks" class="w-full" mono-column />
+      <UsefulLinks :links="usefulLinks" :categories="usefulLinksCategories" class="w-full" mono-column />
     </div>
   </div>
 </template>
 
 <script setup>
-  import TitleComponent from '~/components/common/TitleComponent.vue'
+  import HeaderComponent from '~/components/common/HeaderComponent.vue'
   import LoaderComponent from '~/components/common/LoaderComponent.vue'
 
   import UsefulLinks from '~/components/home/UsefulLinks.vue'
@@ -19,6 +19,7 @@
 
   const loading = ref(false)
   const usefulLinks = ref([])
+  const usefulLinksCategories = ref([])
 
   const breadcrumb = ref([
     {
@@ -26,8 +27,8 @@
       slug: '/',
     },
     {
-      title: 'Link Utili',
-      slug: '/link-utili',
+      title: 'Applicativi',
+      slug: '/applicativi',
     },
   ])
 
@@ -35,6 +36,13 @@
     try {
       loading.value = true
       usefulLinks.value = await getExternalLinks()
+      const tmpCats = [...new Set(usefulLinks.value.map((link) => link.slugType))]
+      tmpCats.forEach((cat) => {
+        usefulLinksCategories.value.push({
+          title: usefulLinks.value.find((link) => link.slugType === cat).type,
+          slug: cat,
+        })
+      })
     } catch (error) {
       console.error(error)
     } finally {

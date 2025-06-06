@@ -1,10 +1,8 @@
-import { delay } from '~/utils'
 import { WORDPRESS_BASE_URL } from '../utils/staticData/constants'
 
 export const getExternalLinks = async () => {
   try {
     const res = await useFetch(`${WORDPRESS_BASE_URL}/external-link?per_page=100`)
-    await delay(300)
     const externalLinks = res?.data?.value
       .map((el) => {
         return {

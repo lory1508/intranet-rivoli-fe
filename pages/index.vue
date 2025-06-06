@@ -2,8 +2,8 @@
   <div class="flex flex-col w-full gap-2">
     <HeaderComponent :title="homeStaticData.title" />
 
-    <div class="flex flex-col w-full gap-4 xl:flex-row">
-      <div class="flex flex-col w-full gap-4">
+    <div class="grid w-full grid-cols-1 gap-4 xl:grid-cols-3">
+      <div class="flex flex-col gap-4">
         <!-- Rubrica -->
         <RubricaCard
           :title="homeStaticData.rubrica.title"
@@ -11,15 +11,6 @@
           @search="searchRubrica"
         />
 
-        <!-- Link utili generali -->
-        <UsefulLinks
-          :title="homeStaticData.usefulLinks.title"
-          :icon="homeStaticData.usefulLinks.icon"
-          :links="usefulLinks"
-        />
-      </div>
-
-      <div class="flex flex-col w-full gap-4">
         <!-- Strumenti personali -->
         <PersonalTools
           :title="homeStaticData.personalTools.title"
@@ -28,9 +19,25 @@
           :loading="loading"
         />
 
-        <!-- Bacheca dipendenti -->
-        <EmployeesBoard :title="homeStaticData.employeesBoard.title" :icon="homeStaticData.employeesBoard.icon" />
+        <!-- Strumenti personali -->
+        <ModulisticaTools
+          title="Modulistica"
+          icon="hugeicons:document-validation"
+          :tools="personalTools"
+          :loading="loading"
+        />
       </div>
+
+      <!-- Applicativi -->
+      <UsefulLinks
+        :title="homeStaticData.usefulLinks.title"
+        :icon="homeStaticData.usefulLinks.icon"
+        :links="usefulLinks"
+        :categories="usefulLinksCategories"
+      />
+
+      <!-- Bacheca dipendenti -->
+      <EmployeesBoard :title="homeStaticData.employeesBoard.title" :icon="homeStaticData.employeesBoard.icon" />
     </div>
 
     <NDivider />
@@ -46,6 +53,7 @@
   import UsefulLinks from '~/components/home/UsefulLinks.vue'
   import LatestNews from '~/components/home/LatestNews.vue'
   import PersonalTools from '~/components/home/PersonalTools.vue'
+  import ModulisticaTools from '~/components/home/ModulisticaTools.vue'
   import HeaderComponent from '~/components/common/HeaderComponent.vue'
 
   import { useDepartmentStore } from '~/stores/departments'
@@ -65,6 +73,7 @@
 
   const personalTools = ref([])
   const usefulLinks = ref([])
+  const usefulLinksCategories = ref([])
 
   const loading = ref(false)
 
@@ -106,5 +115,12 @@
     personalTools.value = await getExternalLinksBySlug('strumenti-personali')
     const tmpLinks = await getAllLinks()
     usefulLinks.value = tmpLinks.filter((link) => link.slugType !== 'strumenti-personali')
+    const tmpCats = [...new Set(usefulLinks.value.map((link) => link.slugType))]
+    tmpCats.forEach((cat) => {
+      usefulLinksCategories.value.push({
+        title: tmpLinks.find((link) => link.slugType === cat).type,
+        slug: cat,
+      })
+    })
   })
 </script>

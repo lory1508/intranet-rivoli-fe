@@ -117,3 +117,31 @@ export const getPostBySlug = async (slug, categories, tags) => {
     console.error(err)
   }
 }
+
+export const getPostById = async (id, categories = [], tags = []) => {
+  try {
+    const res = await useFetch(`${WORDPRESS_BASE_URL}/posts/${id}`)
+    const post = res?.data?.value
+    console.log('post', post)
+    return {
+      title: post?.title?.rendered,
+      content: post?.content?.rendered,
+      excerpt: post?.excerpt?.rendered,
+      categories: post?.categories?.map((category) => categories.find((c) => c?.id === category)),
+      tags: post?.tags?.map((tag) => tags.find((t) => t?.id === tag)),
+      start: post?.acf?.start,
+      end: post?.acf?.end,
+      slug: post?.slug,
+      createdAt: new Date(post?.date).toLocaleDateString('it-IT'),
+      attachment: {
+        id: post?.acf?.attachment?.ID,
+        url: post?.acf?.attachment?.url,
+        title: post?.acf?.attachment?.title,
+        type: post?.acf?.attachment?.subtype,
+        size: post?.acf?.attachment?.filesize,
+      },
+    }
+  } catch (err) {
+    console.error(err)
+  }
+}

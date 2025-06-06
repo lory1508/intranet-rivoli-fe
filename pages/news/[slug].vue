@@ -2,10 +2,13 @@
 <template>
   <LoaderComponent v-if="loading" />
   <div v-else class="flex flex-col gap-4 pt-2">
-    <div class="sticky top-0 flex flex-col gap-2 px-2 pb-2 bg-white rounded-lg shadow-lg w-fit">
-      <TitleComponent :title="news.title" :breadcrumb="breadcrumb" />
+    <div class="sticky top-0 flex flex-col px-4 pb-2 -ml-6 shadow-lg w-fit">
+      <HeaderComponent :title="news.title" :breadcrumb="breadcrumb" />
 
-      <div class="flex flex-row items-center gap-2">
+      <div
+        v-if="(news.start && news.end) || news.tags?.length"
+        class="flex flex-row items-center gap-2 pt-2 backdrop-blur-sm"
+      >
         <!-- Dates -->
         <div v-if="news.start && news.end" class="flex flex-row items-center gap-1 font-semibold">
           <Icon icon="solar:calendar-bold-duotone" width="24" class="text-primary" />
@@ -40,6 +43,7 @@
 <script setup>
   import TagComponent from '~/components/common/TagComponent.vue'
   import LoaderComponent from '~/components/common/LoaderComponent.vue'
+  import HeaderComponent from '~/components/common/HeaderComponent.vue'
   import TitleComponent from '~/components/common/TitleComponent.vue'
   import AttachmentComponent from '~/components/common/AttachmentComponent.vue'
 

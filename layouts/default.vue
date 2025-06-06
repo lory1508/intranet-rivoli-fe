@@ -1,14 +1,14 @@
 <template>
   <n-space vertical size="large">
-    <div class="flex flex-row bg-neutralLight">
+    <div class="flex flex-row from-zinc-100 to-zinc-200 bg-gradient-to-b">
       <div
         collapse-mode="transform"
         show-trigger="bar"
         bordered
-        class="fixed text-white transition-all duration-300 shadow-lg shadow-zinc-800 bg-primary"
+        class="fixed text-white transition-all duration-300 shadow-lg from-red-800 to-red-600 bg-gradient-to-b shadow-zinc-800"
         :class="{
           'w-24': collapsed,
-          'w-80': !collapsed,
+          'w-72': !collapsed,
         }"
         @update:collapsed="updateCollapsed"
       >
@@ -16,7 +16,10 @@
           <div>
             <div class="flex flex-row items-center gap-4">
               <img :src="websiteIdentity.logo.img" :alt="websiteIdentity.logo.alt" width="50" />
-              <div v-if="!collapsed" class="text-2xl font-bold">{{ websiteIdentity.name }}</div>
+              <div class="flex flex-col">
+                <div v-if="!collapsed" class="text-2xl font-bold">{{ websiteIdentity.name }}</div>
+                <div class="pt-2 font-semibold">Rivoli, {{ formattedToday }}</div>
+              </div>
             </div>
             <n-divider />
             <div class="flex flex-col gap-1">
@@ -33,7 +36,7 @@
                 <div class="flex flex-row items-center gap-2">
                   <div v-if="!collapsed" class="flex flex-row items-center gap-2">
                     <Icon :icon="menuItem.icon" height="28" />
-                    <div class="text-lg hover:font-semibold">{{ menuItem.title }}</div>
+                    <div class="text-base hover:font-semibold">{{ menuItem.title }}</div>
                   </div>
                   <n-tooltip v-else placement="right" trigger="hover">
                     <template #trigger>
@@ -63,7 +66,7 @@
         class="flex flex-row w-full"
         :class="{
           'ml-24': collapsed,
-          'ml-80': !collapsed,
+          'ml-72': !collapsed,
         }"
       >
         <div class="flex items-center h-screen -ml-5">
@@ -95,6 +98,7 @@
   const collapsed = ref(false)
   const footer = ref(websiteIdentity.footer)
   const active = ref(route.path)
+  const formattedToday = ref(new Date().toLocaleDateString('it-IT'))
 
   watch(
     () => route.path,

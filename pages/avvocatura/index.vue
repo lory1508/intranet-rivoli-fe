@@ -7,7 +7,7 @@
 <script setup>
   import HeaderComponent from '~/components/common/HeaderComponent.vue'
 
-  const title = 'Bacheca Dipendenti'
+  const title = 'Avvocatura'
   const breadcrumb = ref([
     {
       title: 'Home',
@@ -15,7 +15,7 @@
     },
     {
       title: title,
-      slug: '/bacheca-dipendenti',
+      slug: '/avvocatura',
     },
   ])
 </script>
