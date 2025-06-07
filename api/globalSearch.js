@@ -20,7 +20,6 @@ export const postsGlobalSearchAPI = async (qs = '') => {
   try {
     const res = await useFetch(`${WORDPRESS_BASE_URL}/search/?search=${qs}&per_page=100`)
     let posts = cleanPostUrl(res?.data?.value)
-    console.log('posts', posts)
     return posts
   } catch (err) {
     console.error(err)

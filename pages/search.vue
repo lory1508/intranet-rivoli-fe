@@ -52,7 +52,6 @@
   import { mediaGlobalSearchAPI, postsGlobalSearchAPI } from '~/api/globalSearch'
 
   const route = useRoute()
-  const router = useRouter()
   const categoriesStore = useCategoriesStore()
   const tagsStore = useTagsStore()
 
@@ -74,17 +73,23 @@
     },
   ])
 
+  watch(
+    () => route.query,
+    async () => {
+      await runSearch()
+    }
+  )
+
   const goToPost = async (post) => {
-    console.log('post', post)
     try {
       if (CUSTOM_POST_TYPES.includes(post.subtype)) await navigateTo(`${post.url}`, { id: post.id })
       else {
         const resPost = await getPostById(post.id, categories.value, tags.value)
-        console.log('resPost', resPost)
         if (resPost?.categories[0]?.link)
           await navigateTo({
             name: `${resPost.categories[0].link}-slug`,
-            params: { slug: resPost.slug, id: resPost.id },
+            params: { slug: resPost.slug },
+            query: { id: post.id },
           })
       }
     } catch (error) {
@@ -92,7 +97,7 @@
     }
   }
 
-  onMounted(async () => {
+  const runSearch = async () => {
     try {
       loading.value = true
       if (route.query) {
@@ -107,5 +112,9 @@
     } finally {
       loading.value = false
     }
+  }
+
+  onMounted(async () => {
+    await runSearch()
   })
 </script>

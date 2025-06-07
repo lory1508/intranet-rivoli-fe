@@ -18,7 +18,7 @@
           >
             <div
               v-if="item.slug !== breadcrumb[breadcrumb.length - 1].slug"
-              @click="$router.push(item.slug)"
+              @click="goTo(item.slug)"
               class="hover:cursor-pointer"
             >
               {{ item.title }}
@@ -71,7 +71,7 @@
 </template>
 
 <script setup>
-  import { NMarquee, NInput, NTooltip } from 'naive-ui'
+  import { NMarquee, NInput } from 'naive-ui'
   import { Icon } from '@iconify/vue'
 
   import { setIntervalMethod } from '~/utils'
@@ -101,6 +101,19 @@
     const end = new Date(res.value[0]?.acf?.end)
     showAlert.value = start <= new Date() && end >= new Date()
     latestAlert.value = res.value[0].acf.content
+  }
+
+  const goTo = (path) => {
+    const itemIndex = props.breadcrumb.findIndex((item) => item.slug === path)
+    if (itemIndex > 1) {
+      const completePath = props.breadcrumb
+        .slice(1, props.breadcrumb.length - 1)
+        .map((item) => item.slug.slice(1))
+        .join('/')
+      navigateTo(`/${completePath}`)
+    } else {
+      navigateTo(path)
+    }
   }
 
   const runGlobalSearch = async () => {

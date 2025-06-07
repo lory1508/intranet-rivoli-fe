@@ -40,7 +40,6 @@
       loading.value = true
       const slug = route.params.slug
       const office = await officeStore.getOfficeBySlug(slug)
-      console.log('office', office[0]?.id)
       const resEmps = await employeeStore.runEmployeeSearch('office', office[0]?.id)
       employees.value = resEmps?.map((employee) => {
         return {

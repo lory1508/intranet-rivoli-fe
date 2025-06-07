@@ -44,7 +44,6 @@
   import TagComponent from '~/components/common/TagComponent.vue'
   import LoaderComponent from '~/components/common/LoaderComponent.vue'
   import HeaderComponent from '~/components/common/HeaderComponent.vue'
-  import TitleComponent from '~/components/common/TitleComponent.vue'
   import AttachmentComponent from '~/components/common/AttachmentComponent.vue'
 
   import { Icon } from '@iconify/vue'

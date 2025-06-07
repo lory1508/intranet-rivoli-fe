@@ -40,7 +40,6 @@
       loading.value = true
       const slug = route.params.slug
       const service = await serviceStore.getServiceBySlug(slug)
-      console.log('service', service)
       const resEmps = await employeeStore.runEmployeeSearch('service', service[0]?.id)
       employees.value = resEmps?.map((employee) => {
         return {

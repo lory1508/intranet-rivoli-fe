@@ -122,7 +122,6 @@ export const getPostById = async (id, categories = [], tags = []) => {
   try {
     const res = await useFetch(`${WORDPRESS_BASE_URL}/posts/${id}`)
     const post = res?.data?.value
-    console.log('post', post)
     return {
       title: post?.title?.rendered,
       content: post?.content?.rendered,
