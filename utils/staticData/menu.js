@@ -28,6 +28,40 @@ export const menu = [
     title: 'Avvocatura',
     icon: 'hugeicons:justice-scale-02',
     path: '/avvocatura',
+    submenu: [
+      {
+        title: 'Tutti gli articoli',
+        path: '/avvocatura',
+      },
+      {
+        title: 'Appalti ',
+        path: '/avvocatura/appalti',
+      },
+      {
+        title: 'Urbanistica',
+        path: '/avvocatura/urbanistica',
+      },
+      {
+        title: 'Risarcimento danno',
+        path: '/avvocatura/risarcimento-danno',
+      },
+      {
+        title: 'Sanzioni amministrative',
+        path: '/avvocatura/sanzioni-amministrative',
+      },
+      {
+        title: 'Tributi',
+        path: '/avvocatura/tributi',
+      },
+      {
+        title: 'Varie',
+        path: '/avvocatura/varie',
+      },
+      {
+        title: 'Formazione',
+        path: '/avvocatura/formazione',
+      },
+    ],
   },
   {
     title: 'Modulistica',

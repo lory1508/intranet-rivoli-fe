@@ -1,5 +1,5 @@
 <template>
-  <n-space vertical size="large">
+  <NSpace vertical size="large">
     <div class="flex flex-row from-zinc-100 to-zinc-200 bg-gradient-to-b">
       <div
         collapse-mode="transform"
@@ -21,31 +21,73 @@
                 <div class="pt-2 font-semibold">Rivoli, {{ formattedToday }}</div>
               </div>
             </div>
-            <n-divider />
+            <NDivider />
             <div class="flex flex-col gap-1">
               <div
                 v-for="menuItem in menu"
                 :key="menuItem.path"
                 class="items-center justify-center px-2 py-1 cursor-pointer"
                 :class="{
-                  'text-primary bg-white rounded-md font-semibold': active === menuItem.path,
+                  'text-primary bg-white rounded-md font-semibold': active === menuItem.path && !menuItem?.submenu,
                   'w-fit': collapsed,
                 }"
-                @click="goto(menuItem.path)"
               >
                 <div class="flex flex-row items-center gap-2">
-                  <div v-if="!collapsed" class="flex flex-row items-center gap-2">
-                    <Icon :icon="menuItem.icon" height="28" />
-                    <div class="text-base hover:font-semibold">{{ menuItem.title }}</div>
-                  </div>
-                  <n-tooltip v-else placement="right" trigger="hover">
-                    <template #trigger>
+                  <!-- Full Menu -->
+                  <div v-if="!collapsed" class="flex flex-row items-center w-full gap-2">
+                    <NCollapse
+                      v-if="menuItem.submenu"
+                      arrow-placement="right"
+                      class="w-full"
+                      :accordion="true"
+                      :expanded-names="subMenusCollapsed"
+                    >
+                      <template #arrow>
+                        <Icon icon="solar:alt-arrow-right-outline" class="text-white" height="24" />
+                      </template>
+                      <NCollapseItem :name="menuItem.title">
+                        <template #header>
+                          <div
+                            class="flex flex-row items-center w-full gap-2 text-white"
+                            @click="expandMenu(menuItem.title)"
+                          >
+                            <Icon :icon="menuItem.icon" height="28" />
+                            <div class="text-base transition-all duration-300 hover:font-semibold">
+                              {{ menuItem.title }}
+                            </div>
+                          </div>
+                        </template>
+                        <div class="flex flex-col gap-1 hover:cursor-default">
+                          <div v-for="subMenuItem in menuItem.submenu" :key="subMenuItem.path" class="w-full">
+                            <div
+                              class="pl-2 transition-all duration-300 hover:cursor-pointer hover:font-semibold"
+                              :class="{
+                                'text-primary bg-white rounded-md font-semibold': active === subMenuItem.path,
+                                'text-white': active !== subMenuItem.path,
+                              }"
+                              @click="goto(subMenuItem.path)"
+                            >
+                              {{ subMenuItem.title }}
+                            </div>
+                          </div>
+                        </div>
+                      </NCollapseItem>
+                    </NCollapse>
+                    <div v-else class="flex flex-row items-center gap-2" @click="goto(menuItem.path)">
                       <Icon :icon="menuItem.icon" height="28" />
+                      <div class="text-base transition-all duration-300 hover:font-semibold">{{ menuItem.title }}</div>
+                    </div>
+                  </div>
+
+                  <!-- Collapsed Menu -->
+                  <NTooltip v-else placement="right" trigger="hover">
+                    <template #trigger>
+                      <Icon :icon="menuItem.icon" height="28" @click="goto(menuItem.path)" />
                     </template>
                     <div>
                       {{ menuItem.title }}
                     </div>
-                  </n-tooltip>
+                  </NTooltip>
                 </div>
               </div>
             </div>
@@ -85,16 +127,18 @@
         </div>
       </div>
     </div>
-  </n-space>
+  </NSpace>
 </template>
 
 <script setup>
   import { menu, websiteIdentity } from '~/utils/staticData/menu.js'
+  import { NCollapse, NCollapseItem, NTooltip, NSpace, NDivider } from 'naive-ui'
   import { Icon } from '@iconify/vue'
 
   const router = useRouter()
   const route = useRoute()
 
+  const subMenusCollapsed = ref([])
   const collapsed = ref(false)
   const footer = ref(websiteIdentity.footer)
   const active = ref(route.path)
@@ -104,6 +148,11 @@
     () => route.path,
     () => {
       active.value = route.path
+      const tmpPath = route.path.split('/').splice(1)
+      const menuItem = menu.find((item) => item.path === `/${tmpPath[0]}`)
+      if (menuItem?.submenu) {
+        subMenusCollapsed.value.push(menuItem.title)
+      }
     }
   )
 
@@ -111,7 +160,16 @@
     collapsed.value = !collapsed.value
   }
 
+  const expandMenu = (title) => {
+    if (subMenusCollapsed.value.includes(title)) {
+      subMenusCollapsed.value = subMenusCollapsed.value.filter((item) => item !== title)
+    } else {
+      subMenusCollapsed.value.push(title)
+    }
+  }
+
   const goto = (path) => {
+    subMenusCollapsed.value = []
     router.push(path)
   }
 
