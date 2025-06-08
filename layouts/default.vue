@@ -43,7 +43,12 @@
                       :expanded-names="subMenusCollapsed"
                     >
                       <template #arrow>
-                        <Icon icon="solar:alt-arrow-right-outline" class="text-white" height="24" />
+                        <Icon
+                          icon="solar:alt-arrow-right-outline"
+                          class="text-white"
+                          height="24"
+                          @click="expandMenu(menuItem.title)"
+                        />
                       </template>
                       <NCollapseItem :name="menuItem.title">
                         <template #header>
