@@ -32,11 +32,11 @@
     <div class="flex flex-row items-end justify-between">
       <!-- Btn -->
       <div
-        class="flex items-center justify-center font-semibold tracking-widest text-white transition-all duration-300 cursor-pointer bg-secondary hover:bg-blue-600"
+        class="flex items-center justify-center font-semibold tracking-widest text-white uppercase transition-all duration-300 cursor-pointer bg-secondary hover:bg-blue-600"
         :class="vertical ? 'rounded-b-xl w-full py-4' : 'w-48 py-2 rounded-lg hover:shadow-md '"
         @click="goToNews(post.slug)"
       >
-        LEGGI LA NEWS
+        Leggi di più
       </div>
       <div v-if="!vertical" class="w-full px-4 text-sm text-secondary text-end">Creato il {{ post.createdAt }}</div>
     </div>
@@ -58,9 +58,12 @@
     },
   })
 
-  const router = useRouter()
-
-  const goToNews = (slug) => {
-    router.push(`/news/${slug}`)
+  const goToNews = async () => {
+    await navigateTo({
+      name: `${props.post.categories[0].link}-slug`,
+      params: { slug: props.post.slug },
+      query: { id: props.post.id },
+    })
+    // await navigateTo(`${route.path}/${slug}`, { query: { id: 55 } })
   }
 </script>

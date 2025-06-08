@@ -37,6 +37,7 @@ export const getPosts = async (queryObj, categories, tags) => {
 
     const posts = json.map((post) => {
       return {
+        id: post?.id,
         title: post?.title?.rendered,
         content: post?.content?.rendered,
         excerpt: post?.excerpt?.rendered,
