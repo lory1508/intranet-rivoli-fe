@@ -18,7 +18,7 @@
               <img :src="websiteIdentity.logo.img" :alt="websiteIdentity.logo.alt" width="50" />
               <div class="flex flex-col">
                 <div v-if="!collapsed" class="text-2xl font-bold">{{ websiteIdentity.name }}</div>
-                <div class="pt-2 font-semibold">Rivoli, {{ formattedToday }}</div>
+                <div v-if="!collapsed" class="pt-2 font-semibold">Rivoli, {{ formattedToday }}</div>
               </div>
             </div>
             <NDivider />
