@@ -32,6 +32,7 @@
   import LoaderComponent from '~/components/common/LoaderComponent.vue'
   import HeaderComponent from '~/components/common/HeaderComponent.vue'
   import TagComponent from '~/components/common/TagComponent.vue'
+  import AttachmentComponent from '~/components/common/AttachmentComponent.vue'
 
   import { useCategoriesStore } from '~/stores/categories'
   import { useTagsStore } from '~/stores/tags'

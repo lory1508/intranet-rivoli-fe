@@ -16,12 +16,12 @@
       <div v-if="post?.attachment?.id" class="flex flex-col gap-2">
         <div class="text-xl font-semibold text-secondary">Allegato</div>
         <AttachmentComponent
-          :title="attachment.title"
-          :url="attachment.url"
-          :type="attachment.type"
-          :size="attachment.size"
-          :categories="attachment.categories"
-          :tags="attachment.tags"
+          :title="post?.attachment?.title"
+          :url="post?.attachment?.url"
+          :type="post?.attachment?.type"
+          :size="post?.attachment?.size"
+          :categories="post?.attachment?.categories"
+          :tags="post?.attachment?.tags"
         />
       </div>
     </div>
@@ -59,6 +59,8 @@
       loading.value = true
       const id = route.query.id || null
       if (!id) return
+
+      // generate breadcrumbs
       route.fullPath
         .split('/')
         .slice(1)

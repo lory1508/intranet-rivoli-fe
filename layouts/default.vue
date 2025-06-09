@@ -44,7 +44,7 @@
                     >
                       <template #arrow>
                         <Icon
-                          icon="solar:alt-arrow-right-outline"
+                          icon="solar:alt-arrow-right-bold"
                           class="text-white"
                           height="24"
                           @click="expandMenu(menuItem.title)"
