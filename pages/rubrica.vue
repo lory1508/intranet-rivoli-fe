@@ -66,7 +66,8 @@
   const searchEmployees = async () => {
     try {
       loading.value = true
-      employees.value = employeeStore.searchEmployees(rubricaSearch.value)?.map((employee) => {
+      employees.value = await employeeStore.searchEmployees(rubricaSearch.value)
+      employees.value = employees.value?.map((employee) => {
         return {
           id: employee?.id,
           name: employee?.title.rendered,

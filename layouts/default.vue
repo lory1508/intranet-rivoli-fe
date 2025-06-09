@@ -139,6 +139,7 @@
   import { menu, websiteIdentity } from '~/utils/staticData/menu.js'
   import { NCollapse, NCollapseItem, NTooltip, NSpace, NDivider } from 'naive-ui'
   import { Icon } from '@iconify/vue'
+  import { useHead } from '#imports'
 
   const router = useRouter()
   const route = useRoute()
@@ -148,6 +149,14 @@
   const footer = ref(websiteIdentity.footer)
   const active = ref(route.path)
   const formattedToday = ref(new Date().toLocaleDateString('it-IT'))
+  const pageTitle = computed(() =>
+    route.path
+      .split('/')
+      .at(-1)
+      .split('-')
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ')
+  )
 
   watch(
     () => route.path,
@@ -160,6 +169,10 @@
       }
     }
   )
+
+  useHead({
+    title: pageTitle,
+  })
 
   const collapseSidebar = () => {
     collapsed.value = !collapsed.value

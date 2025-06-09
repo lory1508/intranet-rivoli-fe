@@ -35,6 +35,24 @@ export const useEmployeeStore = defineStore('employees', {
         throw err
       }
     },
+    async searchEmployees(query) {
+      if (!this.fetched || this.employees.length == 0) {
+        await this.getEmployees()
+      }
+      return this.employees.filter((employee) => {
+        const departmentIds = employee?.acf?.department.map((dept) => dept.ID)
+        const officeIds = employee?.acf?.office.map((office) => office.ID)
+        const serviceIds = employee?.acf?.service.map((service) => service.ID)
+
+        return (
+          employee?.title?.rendered.toLowerCase().includes(query?.query?.toLowerCase()) ||
+          employee?.acf?.phone.toLowerCase().includes(query?.query?.toLowerCase()) ||
+          departmentIds.includes(Number(query?.department)) ||
+          officeIds.includes(Number(query?.office)) ||
+          serviceIds.includes(Number(query?.service))
+        )
+      })
+    },
     setEmployees(employeeArray) {
       this.employees = employeeArray
     },
@@ -47,22 +65,6 @@ export const useEmployeeStore = defineStore('employees', {
   },
   getters: {
     employeeCount: (state) => state.employees.length,
-    searchEmployees: (state) => {
-      return (query) =>
-        state.employees.filter((employee) => {
-          const departmentIds = employee?.acf?.department.map((dept) => dept.ID)
-          const officeIds = employee?.acf?.office.map((office) => office.ID)
-          const serviceIds = employee?.acf?.service.map((service) => service.ID)
-
-          return (
-            employee?.title?.rendered.toLowerCase().includes(query?.query?.toLowerCase()) ||
-            employee?.acf?.phone.toLowerCase().includes(query?.query?.toLowerCase()) ||
-            departmentIds.includes(Number(query?.department)) ||
-            officeIds.includes(Number(query?.office)) ||
-            serviceIds.includes(Number(query?.service))
-          )
-        })
-    },
     getEmployeeById: (state) => (id) => state.employees.find((employee) => employee.id === id),
     getEmployeeBySlug: (state) => (slug) => state.employees.find((employee) => employee.slug === slug),
   },
