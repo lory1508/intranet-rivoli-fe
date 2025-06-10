@@ -4,7 +4,7 @@
   >
     <div class="flex flex-col-reverse items-start gap-8 pr-6 lg:flex-row">
       <div class="flex flex-col gap-1 w-fit">
-        <div class="text-2xl">{{ title }}</div>
+        <div class="text-2xl capitalize">{{ title }}</div>
 
         <!-- Breadcrumbs -->
         <div class="flex flex-row gap-1 text-sm font-normal">
@@ -104,15 +104,17 @@
   }
 
   const goTo = (path) => {
-    const itemIndex = props.breadcrumb.findIndex((item) => item.slug === path)
+    const pathReplaced = path.replace(/\s/g, '-')
+    const itemIndex = props.breadcrumb.findIndex((item) => item.slug === pathReplaced)
     if (itemIndex > 1) {
       const completePath = props.breadcrumb
         .slice(1, props.breadcrumb.length - 1)
         .map((item) => item.slug.slice(1))
         .join('/')
+      console.log('>>>>>>>>>>>>>', completePath)
       navigateTo(`/${completePath}`)
     } else {
-      navigateTo(path)
+      navigateTo(pathReplaced)
     }
   }
 

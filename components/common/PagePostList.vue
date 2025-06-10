@@ -1,12 +1,15 @@
 <template>
   <LoaderComponent v-if="loading" />
   <div v-else class="flex flex-col gap-4">
-    <HeaderComponent title="News" :breadcrumb="breadcrumb" />
+    <HeaderComponent :title="title" :breadcrumb="breadcrumb" />
 
     <div class="flex flex-col-reverse gap-8 xl:flex-row">
+      <div v-if="posts.length === 0" class="w-full">
+        <NEmpty description="Nessun risultato trovato" class="p-4 bg-white border w-fit h-fit rounded-xl" />
+      </div>
       <div class="flex flex-col w-full gap-4 xl:w-2/3">
         <div class="flex flex-col gap-6">
-          <NewsCard v-for="post in avvocatura" :key="post.slug" :post="post" :vertical="false" />
+          <NewsCard v-for="post in posts" :key="post.slug" :post="post" :vertical="false" />
         </div>
         <NPagination
           v-model:page="pagination.page"
@@ -64,6 +67,21 @@
   const categories = ref([])
   const tags = ref([])
 
+  const props = defineProps({
+    title: {
+      type: String,
+      default: '',
+    },
+    category: {
+      type: String,
+      default: '',
+    },
+    breadcrumb: {
+      type: Array,
+      default: () => [],
+    },
+  })
+
   const filters = ref({
     search: null,
     tags: [],
@@ -71,17 +89,7 @@
   })
   const optionsTags = computed(() => tags.value.map((tag) => ({ label: tag?.name, value: tag?.id })))
   const loading = ref(false)
-  const avvocatura = ref([])
-  const breadcrumb = ref([
-    {
-      title: 'Home',
-      slug: '/',
-    },
-    {
-      title: 'Avvocatura',
-      slug: '/avvocatura',
-    },
-  ])
+  const posts = ref([])
 
   const pagination = ref({
     page: 1,
@@ -90,7 +98,7 @@
   const updatePage = async (page) => {
     try {
       loading.value = true
-      const filtersToRun = { categories: ['avvocatura'], limit: 4, page: page, ...filters.value }
+      const filtersToRun = { categories: [props.category], limit: 4, page: page, ...filters.value }
       if (filtersToRun.tags.length === 0) delete filtersToRun.tags
       if (!filtersToRun.range) delete filtersToRun.range
 
@@ -98,7 +106,7 @@
       tags.value = await tagsStore.getTags()
 
       const res = await getPosts(filtersToRun, categories.value, tags.value)
-      avvocatura.value = res.posts
+      posts.value = res.posts
       pagination.value = res.pagination
     } catch (err) {
       console.error(err)
@@ -110,7 +118,7 @@
   const runSearch = async () => {
     try {
       loading.value = true
-      const filtersToRun = { categories: ['avvocatura'], limit: 4, page: 1, ...filters.value }
+      const filtersToRun = { categories: [props.category], limit: 4, page: 1, ...filters.value }
       if (filtersToRun.tags.length === 0) delete filtersToRun.tags
       if (!filtersToRun.range) delete filtersToRun.range
 
@@ -118,7 +126,7 @@
       tags.value = await tagsStore.getTags()
 
       const res = await getPosts(filtersToRun, categories.value, tags.value)
-      avvocatura.value = res.posts
+      posts.value = res.posts
       pagination.value = res.pagination
     } catch (err) {
       console.error(err)
@@ -129,6 +137,5 @@
 
   onMounted(async () => {
     await updatePage(1)
-    // tags.value = tagsStore.getTags
   })
 </script>

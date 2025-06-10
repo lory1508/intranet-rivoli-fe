@@ -3,6 +3,7 @@ import { WORDPRESS_BASE_URL } from '../utils/staticData/constants'
 export const getPosts = async (queryObj, categories, tags) => {
   try {
     let queryString = ''
+    console.log('getPosts', queryObj)
     if (queryObj?.categories) {
       const categoryIds = categories
         ?.filter((category) => queryObj?.categories?.includes(category?.slug))

@@ -77,6 +77,40 @@ export const menu = [
     title: 'Sicurezza lavoratori',
     icon: 'hugeicons:knight-shield',
     path: '/sicurezza-lavoratori',
+    submenu: [
+      {
+        title: 'Tutti gli articoli',
+        path: '/sicurezza-lavoratori',
+      },
+      {
+        title: 'Schede di comportamento ',
+        path: '/sicurezza-lavoratori/schede-di-comportamento',
+      },
+      {
+        title: 'Piani di emergenza',
+        path: '/sicurezza-lavoratori/piani-di-emergenza',
+      },
+      {
+        title: 'Valutazione dei rischi',
+        path: '/sicurezza-lavoratori/valutazione-dei-rischi',
+      },
+      {
+        title: 'Referenti',
+        path: '/sicurezza-lavoratori/referenti',
+      },
+      {
+        title: 'Relazione DVR Stress',
+        path: '/sicurezza-lavoratori/relazione-dvr-stress',
+      },
+      {
+        title: 'Formazione',
+        path: '/sicurezza-lavoratori/formazione',
+      },
+      {
+        title: 'Protocollo di sicurezza emergenza COVID19',
+        path: '/sicurezza-lavoratori/protocollo-di-sicurezza-emergenza-covid19',
+      },
+    ],
   },
   {
     title: 'Bacheca RSU',

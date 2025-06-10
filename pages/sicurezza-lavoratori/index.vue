@@ -1,12 +1,15 @@
 <template>
   <LoaderComponent v-if="loading" />
   <div v-else class="flex flex-col gap-4">
-    <HeaderComponent title="News" :breadcrumb="breadcrumb" />
+    <HeaderComponent :title="title" :breadcrumb="breadcrumb" />
 
     <div class="flex flex-col-reverse gap-8 xl:flex-row">
-      <div class="flex flex-col w-full gap-4 xl:w-2/3">
+      <div v-if="sicurezzaLavoratori.length === 0" class="w-full">
+        <NEmpty description="Nessun risultato trovato" class="p-4 bg-white border w-fit h-fit rounded-xl" />
+      </div>
+      <div v-else class="flex flex-col w-full gap-4 xl:w-2/3">
         <div class="flex flex-col gap-6">
-          <NewsCard v-for="post in avvocatura" :key="post.slug" :post="post" :vertical="false" />
+          <NewsCard v-for="post in sicurezzaLavoratori" :key="post.slug" :post="post" :vertical="false" />
         </div>
         <NPagination
           v-model:page="pagination.page"
@@ -71,15 +74,17 @@
   })
   const optionsTags = computed(() => tags.value.map((tag) => ({ label: tag?.name, value: tag?.id })))
   const loading = ref(false)
-  const avvocatura = ref([])
+  const sicurezzaLavoratori = ref([])
+
+  const title = 'Bacheca RSU'
   const breadcrumb = ref([
     {
       title: 'Home',
       slug: '/',
     },
     {
-      title: 'Avvocatura',
-      slug: '/avvocatura',
+      title: title,
+      slug: '/sicurezza-lavoratori',
     },
   ])
 
@@ -90,7 +95,7 @@
   const updatePage = async (page) => {
     try {
       loading.value = true
-      const filtersToRun = { categories: ['avvocatura'], limit: 4, page: page, ...filters.value }
+      const filtersToRun = { categories: ['sicurezza-lavoratori'], limit: 4, page: page, ...filters.value }
       if (filtersToRun.tags.length === 0) delete filtersToRun.tags
       if (!filtersToRun.range) delete filtersToRun.range
 
@@ -98,7 +103,7 @@
       tags.value = await tagsStore.getTags()
 
       const res = await getPosts(filtersToRun, categories.value, tags.value)
-      avvocatura.value = res.posts
+      sicurezzaLavoratori.value = res.posts
       pagination.value = res.pagination
     } catch (err) {
       console.error(err)
@@ -110,7 +115,7 @@
   const runSearch = async () => {
     try {
       loading.value = true
-      const filtersToRun = { categories: ['avvocatura'], limit: 4, page: 1, ...filters.value }
+      const filtersToRun = { categories: ['sicurezza-lavoratori'], limit: 4, page: 1, ...filters.value }
       if (filtersToRun.tags.length === 0) delete filtersToRun.tags
       if (!filtersToRun.range) delete filtersToRun.range
 
@@ -118,7 +123,7 @@
       tags.value = await tagsStore.getTags()
 
       const res = await getPosts(filtersToRun, categories.value, tags.value)
-      avvocatura.value = res.posts
+      sicurezzaLavoratori.value = res.posts
       pagination.value = res.pagination
     } catch (err) {
       console.error(err)

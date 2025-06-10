@@ -15,7 +15,9 @@
           @update:page="updatePage"
         />
       </div>
-      <div class="flex flex-col w-full gap-1 p-4 xl:w-1/3 h-fit bg-indigo-50 rounded-xl">
+      <div
+        class="flex flex-col w-full gap-1 p-4 border border-indigo-200 xl:w-1/3 h-fit bg-indigo-50 text-darkAccent shadow-zinc-300 rounded-xl"
+      >
         <n-input
           v-model:value="filters.search"
           placeholder="Cerca..."

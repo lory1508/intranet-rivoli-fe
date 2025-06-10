@@ -15,7 +15,7 @@ export const useTagsStore = defineStore('tags', {
       }
 
       try {
-        const res = await useFetch(`${WORDPRESS_BASE_URL}/tags`)
+        const res = await useFetch(`${WORDPRESS_BASE_URL}/tags?per_page=100`)
         this.tags =
           res?.data?.value.map((tag) => {
             return {
