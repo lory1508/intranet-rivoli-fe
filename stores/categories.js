@@ -18,15 +18,15 @@ export const useCategoriesStore = defineStore('categories', {
         const res = await useFetch(`${WORDPRESS_BASE_URL}/categories?per_page=100`)
         this.categories =
           res?.data?.value.map((category) => {
+            const link = category.parent
+              ? `/${res?.data?.value.find((c) => c?.id === category?.parent)?.slug}/${category?.slug}`
+              : `/${category?.slug}`
             return {
               id: category?.id,
               parent: category?.parent || null,
               name: category?.name,
               slug: category?.slug,
-              link: category?.link
-                .replace(/.*\/category\//, '')
-                .slice(0, -1)
-                .replace(/\//g, '-'),
+              link: link,
             }
           }) || []
         this.fetched = true

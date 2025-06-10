@@ -78,7 +78,7 @@
                         </div>
                       </NCollapseItem>
                     </NCollapse>
-                    <div v-else class="flex flex-row items-center gap-2" @click="goto(menuItem.path)">
+                    <div v-else class="flex flex-row items-center w-full gap-2" @click="goto(menuItem.path)">
                       <Icon :icon="menuItem.icon" height="28" />
                       <div class="text-base transition-all duration-300 hover:font-semibold">{{ menuItem.title }}</div>
                     </div>

@@ -10,8 +10,6 @@
           class="flex flex-col transition-all duration-300 bg-white border rounded-md w-80 hover:shadow-md hover:scale-105 border-zinc-200"
         >
           <div class="h-full p-2 text-lg font-semibold text-secondary">{{ post.title }}</div>
-          <!-- <pre>{{ post }}</pre> -->
-          <!-- class="flex items-center justify-center w-full h-full py-1 transition-all duration-300 rounded-b-lg bg-secondary hover:cursor-pointer hover:bg-blue-800" -->
           <div
             class="bottom-0 px-2 py-3 font-semibold text-center text-white transition-all duration-300 rounded-b-lg cursor-pointer h-fit bg-secondary hover:cursor-pointer hover:bg-blue-800"
             @click="goToPost(post)"

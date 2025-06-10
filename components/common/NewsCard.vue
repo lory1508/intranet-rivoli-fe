@@ -10,15 +10,33 @@
       }}</span>
 
       <!-- Excerpt -->
-      <div v-html="post.excerpt" />
+      <div v-if="!hideContent" v-html="post.excerpt" />
 
-      <div class="flex flex-row items-center gap-2">
+      <div class="flex gap-2 items--start" :class="hideContent ? 'flex-col' : 'flex-row'">
         <!-- Attachment -->
-        <Icon v-if="post?.attachment?.id" icon="solar:paperclip-bold" width="20" class="text-secondary" />
+        <div v-if="post?.attachment?.id" class="flex flex-row items-center gap-1 text-secondary">
+          <Icon icon="solar:paperclip-bold" width="20" />
+          <NTooltip trigger="hover">
+            <template #trigger>
+              <div class="truncate max-w-40">{{ post?.attachment?.title }}</div>
+            </template>
+            <div>{{ post?.attachment?.title }}</div>
+          </NTooltip>
+        </div>
 
         <!-- Tags -->
-        <div v-if="post.tags.length" class="flex flex-row gap-2">
-          <TagComponent v-for="tag in post.tags" :key="tag.slug" :tag="tag" />
+        <div v-if="post?.tags.length" class="flex flex-wrap gap-1">
+          <span class="pr-1 font-semibold text-secondary">Tag:</span>
+          <div v-for="tag in post?.tags" :key="tag.id">
+            <TagComponent :tag="tag" />
+          </div>
+        </div>
+        <!-- Caegories -->
+        <div v-if="post?.categories.length" class="flex flex-wrap gap-1">
+          <span class="pr-1 font-semibold text-purple-700">Categorie:</span>
+          <div v-for="category in post?.categories" :key="category.id">
+            <TagComponent :tag="category" color="purple" />
+          </div>
         </div>
       </div>
 
@@ -55,6 +73,10 @@
     vertical: {
       type: Boolean,
       default: true,
+    },
+    hideContent: {
+      type: Boolean,
+      default: false,
     },
   })
 

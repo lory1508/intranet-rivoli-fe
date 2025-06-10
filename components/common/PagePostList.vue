@@ -7,7 +7,7 @@
       <div v-if="posts.length === 0" class="w-full">
         <NEmpty description="Nessun risultato trovato" class="p-4 bg-white border w-fit h-fit rounded-xl" />
       </div>
-      <div class="flex flex-col w-full gap-4 xl:w-2/3">
+      <div v-else class="flex flex-col w-full gap-4 xl:w-2/3">
         <div class="flex flex-col gap-6">
           <NewsCard v-for="post in posts" :key="post.slug" :post="post" :vertical="false" />
         </div>

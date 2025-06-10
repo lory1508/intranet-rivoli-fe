@@ -111,7 +111,6 @@
         .slice(1, props.breadcrumb.length - 1)
         .map((item) => item.slug.slice(1))
         .join('/')
-      console.log('>>>>>>>>>>>>>', completePath)
       navigateTo(`/${completePath}`)
     } else {
       navigateTo(pathReplaced)

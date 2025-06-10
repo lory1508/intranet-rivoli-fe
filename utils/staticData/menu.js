@@ -104,7 +104,7 @@ export const menu = [
       },
       {
         title: 'Formazione',
-        path: '/sicurezza-lavoratori/formazione',
+        path: '/sicurezza-lavoratori/formazione-sicurezza-lavoratori',
       },
       {
         title: 'Protocollo di sicurezza emergenza COVID19',

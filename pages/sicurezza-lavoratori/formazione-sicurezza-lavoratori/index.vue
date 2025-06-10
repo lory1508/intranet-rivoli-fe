@@ -6,7 +6,7 @@
   import PagePostList from '~/components/common/PagePostList.vue'
 
   const route = useRoute()
-  console.log(route)
+
   const category = ref('formazione-sicurezza-lavoratori')
   const title = ref('Formazione')
   const breadcrumb = ref([
