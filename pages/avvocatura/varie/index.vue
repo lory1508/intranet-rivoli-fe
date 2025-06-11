@@ -5,8 +5,10 @@
 <script setup>
   import PagePostList from '~/components/common/PagePostList.vue'
 
-  const category = ref('varie')
-  const title = ref('Varie')
+  const route = useRoute()
+
+  const category = ref(route.path.split('/').at(-1))
+  const title = ref(category.value.split('-').join(' '))
   const breadcrumb = ref([
     {
       title: 'Home',
@@ -18,7 +20,7 @@
     },
     {
       title: title,
-      slug: '/varie',
+      slug: category,
     },
   ])
 </script>

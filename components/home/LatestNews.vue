@@ -3,13 +3,13 @@
     <div
       class="flex flex-row items-center justify-between gap-2 p-4 rounded-lg shadow-md bg-indigo-50 text-darkAccent border-secondaryLight shadow-zinc-300"
     >
-      <div class="flex flex-row gap-2 pb-2">
+      <div class="flex flex-row gap-2">
         <Icon :icon="icon" height="32" />
         <div class="text-xl">{{ title }}</div>
       </div>
       <div
         class="flex flex-row items-center gap-2 px-4 py-2 font-semibold tracking-widest text-white uppercase transition-all duration-300 rounded-lg bg-secondary hover:cursor-pointer hover:bg-blue-500"
-        @click="goTo('/news')"
+        @click="$router.push('/news')"
       >
         tutte le news
         <Icon icon="solar:arrow-right-line-duotone" height="24" />

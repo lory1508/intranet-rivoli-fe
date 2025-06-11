@@ -12,7 +12,7 @@
       <!-- Excerpt -->
       <div v-if="!hideContent" v-html="post.excerpt" />
 
-      <div class="flex gap-2 items--start" :class="hideContent ? 'flex-col' : 'flex-row'">
+      <div class="flex flex-col items-start gap-2">
         <!-- Attachment -->
         <div v-if="post?.attachment?.id" class="flex flex-row items-center gap-1 text-secondary">
           <Icon icon="solar:paperclip-bold" width="20" />

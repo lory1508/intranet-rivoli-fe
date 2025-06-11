@@ -15,8 +15,8 @@
       slug: '/',
     },
     {
-      title: 'Avvocatura',
-      slug: '/avvocatura',
+      title: 'Modlustica',
+      slug: '/modulistica',
     },
     {
       title: title,

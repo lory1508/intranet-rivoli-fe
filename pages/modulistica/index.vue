@@ -4,12 +4,12 @@
     <HeaderComponent :title="title" :breadcrumb="breadcrumb" />
 
     <div class="flex flex-col-reverse gap-8 xl:flex-row">
-      <div v-if="manuali.length === 0" class="w-full">
+      <div v-if="modulistica.length === 0" class="w-full">
         <NEmpty description="Nessun risultato trovato" class="p-4 bg-white border w-fit h-fit rounded-xl" />
       </div>
       <div v-else class="flex flex-col w-full gap-4 xl:w-2/3">
         <div class="flex flex-col gap-6">
-          <NewsCard v-for="post in manuali" :key="post.slug" :post="post" :vertical="false" />
+          <NewsCard v-for="post in modulistica" :key="post.slug" :post="post" :vertical="false" />
         </div>
         <NPagination
           v-model:page="pagination.page"
@@ -74,7 +74,7 @@
   })
   const optionsTags = computed(() => tags.value.map((tag) => ({ label: tag?.name, value: tag?.id })))
   const loading = ref(false)
-  const manuali = ref([])
+  const modulistica = ref([])
   const title = 'Modulistica'
   const breadcrumb = ref([
     {
@@ -83,7 +83,7 @@
     },
     {
       title: title,
-      slug: '/manuali',
+      slug: '/modulistica',
     },
   ])
 
@@ -94,7 +94,7 @@
   const updatePage = async (page) => {
     try {
       loading.value = true
-      const filtersToRun = { categories: ['manuali'], limit: 4, page: page, ...filters.value }
+      const filtersToRun = { categories: ['modulistica'], limit: 4, page: page, ...filters.value }
       if (filtersToRun.tags.length === 0) delete filtersToRun.tags
       if (!filtersToRun.range) delete filtersToRun.range
 
@@ -102,7 +102,7 @@
       tags.value = await tagsStore.getTags()
 
       const res = await getPosts(filtersToRun, categories.value, tags.value)
-      manuali.value = res.posts
+      modulistica.value = res.posts
       pagination.value = res.pagination
     } catch (err) {
       console.error(err)
@@ -114,7 +114,7 @@
   const runSearch = async () => {
     try {
       loading.value = true
-      const filtersToRun = { categories: ['manuali'], limit: 4, page: 1, ...filters.value }
+      const filtersToRun = { categories: ['modulistica'], limit: 4, page: 1, ...filters.value }
       if (filtersToRun.tags.length === 0) delete filtersToRun.tags
       if (!filtersToRun.range) delete filtersToRun.range
 
@@ -122,7 +122,7 @@
       tags.value = await tagsStore.getTags()
 
       const res = await getPosts(filtersToRun, categories.value, tags.value)
-      manuali.value = res.posts
+      modulistica.value = res.posts
       pagination.value = res.pagination
     } catch (err) {
       console.error(err)

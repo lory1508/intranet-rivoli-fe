@@ -19,13 +19,8 @@
           :loading="loading"
         />
 
-        <!-- Strumenti personali -->
-        <ModulisticaTools
-          title="Modulistica"
-          icon="hugeicons:document-validation"
-          :tools="personalTools"
-          :loading="loading"
-        />
+        <!-- Modulistica -->
+        <ModulisticaTools title="Modulistica" icon="hugeicons:document-validation" :links="forms" />
       </div>
 
       <!-- Applicativi -->
@@ -74,6 +69,44 @@
   const personalTools = ref([])
   const usefulLinks = ref([])
   const usefulLinksCategories = ref([])
+  const forms = ref([
+    {
+      title: 'Personale',
+      icon: '',
+      href: '/modulistica/personale',
+      slug: '/modulistica/personale',
+    },
+    {
+      title: 'Magazzino',
+      icon: '',
+      href: '/modulistica/magazzino',
+      slug: '/modulistica/magazzino',
+    },
+    {
+      title: 'Economato',
+      icon: '',
+      href: '/modulistica/economato',
+      slug: '/modulistica/economato',
+    },
+    {
+      title: 'Disposizioni Segretario',
+      icon: '',
+      href: '/modulistica/disposizioni-segretario',
+      slug: '/modulistica/disposizioni-segretario',
+    },
+    {
+      title: 'Manuali SIA',
+      icon: '',
+      href: '/manuali',
+      slug: '/manuali',
+    },
+    {
+      title: 'Sicurezza Lavoratori',
+      icon: '',
+      href: '/sicurezza-lavoratori',
+      slug: '/sicurezza-lavoratori',
+    },
+  ])
 
   const loading = ref(false)
 
@@ -84,43 +117,28 @@
     })
   }
 
-  const getExternalLinksBySlug = async (slug) => {
-    try {
-      loading.value = true
-      return await getExternalLinksByType(slug)
-    } catch (error) {
-      console.error(error)
-    } finally {
-      loading.value = false
-    }
-  }
-
-  const getAllLinks = async () => {
-    try {
-      loading.value = true
-      return await getExternalLinks()
-    } catch (error) {
-      console.error(error)
-    } finally {
-      loading.value = false
-    }
-  }
-
   onMounted(async () => {
-    await updateDepartmentStore(departmentStore)
-    await updateOfficeStore(officeStore)
-    await updateServiceStore(serviceStore)
-    await updateEmployeeStore(employeeStore)
+    try {
+      loading.value = true
+      await updateDepartmentStore(departmentStore)
+      await updateOfficeStore(officeStore)
+      await updateServiceStore(serviceStore)
+      await updateEmployeeStore(employeeStore)
 
-    personalTools.value = await getExternalLinksBySlug('strumenti-personali')
-    const tmpLinks = await getAllLinks()
-    usefulLinks.value = tmpLinks.filter((link) => link.slugType !== 'strumenti-personali')
-    const tmpCats = [...new Set(usefulLinks.value.map((link) => link.slugType))]
-    tmpCats.forEach((cat) => {
-      usefulLinksCategories.value.push({
-        title: tmpLinks.find((link) => link.slugType === cat).type,
-        slug: cat,
+      personalTools.value = await getExternalLinksByType('strumenti-personali')
+      const tmpLinks = await getExternalLinks()
+      usefulLinks.value = tmpLinks.filter((link) => link.slugType !== 'strumenti-personali')
+      const tmpCats = [...new Set(usefulLinks.value.map((link) => link.slugType))]
+      tmpCats.forEach((cat) => {
+        usefulLinksCategories.value.push({
+          title: tmpLinks.find((link) => link.slugType === cat).type,
+          slug: cat,
+        })
       })
-    })
+    } catch (error) {
+      console.error(error)
+    } finally {
+      loading.value = false
+    }
   })
 </script>

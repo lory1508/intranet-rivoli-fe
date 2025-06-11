@@ -67,6 +67,28 @@ export const menu = [
     title: 'Modulistica',
     icon: 'hugeicons:file-01',
     path: '/modulistica',
+    submenu: [
+      {
+        title: 'Tutti gli articoli',
+        path: '/modulistica',
+      },
+      {
+        title: 'Personale',
+        path: '/modulistica/personale',
+      },
+      {
+        title: 'Magazzino ',
+        path: '/modulistica/magazzino',
+      },
+      {
+        title: 'Economato',
+        path: '/modulistica/economato',
+      },
+      {
+        title: 'Disposizioni Segretario',
+        path: '/modulistica/disposizioni-segretario',
+      },
+    ],
   },
   {
     title: 'Manuali',

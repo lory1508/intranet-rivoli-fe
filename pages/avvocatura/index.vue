@@ -4,7 +4,10 @@
     <HeaderComponent title="News" :breadcrumb="breadcrumb" />
 
     <div class="flex flex-col-reverse gap-8 xl:flex-row">
-      <div class="flex flex-col w-full gap-4 xl:w-2/3">
+      <div v-if="avvocatura.length === 0" class="w-full">
+        <NEmpty description="Nessun risultato trovato" class="p-4 bg-white border w-fit h-fit rounded-xl" />
+      </div>
+      <div v-else class="flex flex-col w-full gap-4 xl:w-2/3">
         <div class="flex flex-col gap-6">
           <NewsCard v-for="post in avvocatura" :key="post.slug" :post="post" :vertical="false" />
         </div>
