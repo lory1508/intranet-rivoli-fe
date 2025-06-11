@@ -19,6 +19,13 @@
         </div>
       </div>
 
+      <div v-if="employees.length" class="flex flex-col gap-2 pt-4">
+        <div class="text-xl font-semibold text-secondary">Dipendenti</div>
+        <div v-for="employee in employees" :key="employee.id">
+          <EmployeeCard :employee="employee" />
+        </div>
+      </div>
+
       <div v-if="media.length" class="flex flex-col gap-2 pt-4">
         <div class="text-xl font-semibold text-secondary">Media</div>
         <div v-for="m in media" :key="m.id">
@@ -40,13 +47,16 @@
   import LoaderComponent from '~/components/common/LoaderComponent.vue'
   import HeaderComponent from '~/components/common/HeaderComponent.vue'
   import AttachmentComponent from '~/components/common/AttachmentComponent.vue'
+  import EmployeeCard from '~/components/common/EmployeeCard.vue'
 
   import { CUSTOM_POST_TYPES } from '~/utils/staticData/constants'
+  import { formatArrayOfEmployees } from '~/utils'
 
   import { useCategoriesStore } from '~/stores/categories'
   import { useTagsStore } from '~/stores/tags'
 
   import { getPostById } from '~/api/posts'
+  import { getEmployeeById } from '~/api/employees'
   import { mediaGlobalSearchAPI, postsGlobalSearchAPI } from '~/api/globalSearch'
 
   const route = useRoute()
@@ -58,6 +68,7 @@
   const categories = ref([])
   const tags = ref([])
   const posts = ref([])
+  const employees = ref([])
   const media = ref([])
 
   const breadcrumb = ref([
@@ -103,7 +114,16 @@
         tags.value = await tagsStore.getTags()
         // results.value = await runGlobalSearchAPI(route.query.query, categories.value, tags.value)
         media.value = await mediaGlobalSearchAPI(route.query.query, categories.value, tags.value)
-        posts.value = await postsGlobalSearchAPI(route.query.query)
+        const allPosts = await postsGlobalSearchAPI(route.query.query)
+        posts.value = allPosts.filter((post) => !post.url.startsWith('/employee'))
+        const allEmployees = allPosts.filter((post) => post.url.startsWith('/employee'))
+        await Promise.all(
+          allEmployees.map(async (e) => {
+            const res = await getEmployeeById(e.id)
+            employees.value.push(res.value)
+          })
+        )
+        employees.value = formatArrayOfEmployees(employees.value)
       }
     } catch (err) {
       console.error(err)

@@ -87,3 +87,21 @@ export const isDatePrefixedUrl = (url) => {
   const datePrefixPattern = /^\/\d{4}\/\d{2}\/\d{2}/
   return datePrefixPattern.test(url)
 }
+
+export const formatEmployeeObject = (employee) => {
+  return {
+    id: employee?.id,
+    name: employee?.title.rendered,
+    email: `${employee?.acf.email}@comune.rivoli.to.it`,
+    phone: employee?.acf.phone,
+    room: employee?.acf.room,
+    photo: employee?.acf.photo,
+    department: employee?.acf.department[0].post_title,
+    service: employee?.acf.service[0].post_title,
+    office: employee?.acf.office[0].post_title,
+  }
+}
+
+export const formatArrayOfEmployees = (employees) => {
+  return employees.map((employee) => formatEmployeeObject(employee))
+}

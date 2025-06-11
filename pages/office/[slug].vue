@@ -26,6 +26,8 @@
   import HeaderComponent from '~/components/common/HeaderComponent.vue'
   import EmployeeCard from '~/components/common/EmployeeCard.vue'
 
+  import { formatArrayOfEmployees } from '~/utils'
+
   import { useEmployeeStore } from '~/stores/employees'
   import { useOfficeStore } from '~/stores/offices'
 
@@ -41,19 +43,7 @@
       const slug = route.params.slug
       const office = await officeStore.getOfficeBySlug(slug)
       const resEmps = await employeeStore.runEmployeeSearch('office', office[0]?.id)
-      employees.value = resEmps?.map((employee) => {
-        return {
-          id: employee?.id,
-          name: employee?.title.rendered,
-          email: `${employee?.acf.email}@comune.rivoli.to.it`,
-          phone: employee?.acf.phone,
-          room: employee?.acf.room,
-          photo: employee?.acf.photo,
-          department: employee?.acf.department[0].post_title,
-          service: employee?.acf.service[0].post_title,
-          office: employee?.acf.office[0].post_title,
-        }
-      })
+      employees.value = formatArrayOfEmployees(resEmps)
     } catch (error) {
       console.error(error)
     } finally {

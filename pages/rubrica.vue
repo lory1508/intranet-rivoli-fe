@@ -30,6 +30,7 @@
   import { useEmployeeStore } from '~/stores/employees'
   import { NEmpty } from 'naive-ui'
   import { homeStaticData } from '~/utils/staticData/home'
+  import { formatArrayOfEmployees } from '~/utils'
 
   import RubricaCard from '~/components/home/RubricaCard.vue'
   import EmployeeCard from '~/components/common/EmployeeCard.vue'
@@ -67,19 +68,7 @@
     try {
       loading.value = true
       employees.value = await employeeStore.searchEmployees(rubricaSearch.value)
-      employees.value = employees.value?.map((employee) => {
-        return {
-          id: employee?.id,
-          name: employee?.title.rendered,
-          email: `${employee?.acf.email}@comune.rivoli.to.it`,
-          phone: employee?.acf.phone,
-          room: employee?.acf.room,
-          photo: employee?.acf.photo,
-          department: employee?.acf.department[0].post_title,
-          service: employee?.acf.service[0].post_title,
-          office: employee?.acf.office[0].post_title,
-        }
-      })
+      employees.value = formatArrayOfEmployees(employees.value)
     } catch (error) {
       console.error(error)
     } finally {
