@@ -126,7 +126,7 @@
       await updateEmployeeStore(employeeStore)
 
       personalTools.value = await getExternalLinksByType('strumenti-personali')
-      const tmpLinks = await getExternalLinks()
+      const tmpLinks = await getExternalLinks(true)
       usefulLinks.value = tmpLinks.filter((link) => link.slugType !== 'strumenti-personali')
       const tmpCats = [...new Set(usefulLinks.value.map((link) => link.slugType))]
       tmpCats.forEach((cat) => {

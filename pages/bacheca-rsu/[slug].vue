@@ -6,7 +6,7 @@
 
       <!-- Tags -->
       <div v-if="post.tags?.length" class="flex flex-row gap-2">
-        <TagComponent v-for="tag in post.tags" :key="tag.slug" :tag="tag" />
+        <TagComponent v-for="tag in post.tags" :key="tag.slug" :tag="tag" color="indigo" />
       </div>
 
       <!-- Content -->

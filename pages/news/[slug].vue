@@ -17,7 +17,7 @@
 
         <!-- Tags -->
         <div v-if="news.tags?.length" class="flex flex-row gap-2">
-          <TagComponent v-for="tag in news.tags" :key="tag.slug" :tag="tag" />
+          <TagComponent v-for="tag in news.tags" :key="tag.slug" :tag="tag" color="indigo" />
         </div>
       </div>
     </div>

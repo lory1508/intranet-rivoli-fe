@@ -26,9 +26,9 @@
 
         <!-- Tags -->
         <div v-if="post?.tags.length" class="flex flex-wrap gap-1">
-          <span class="pr-1 font-semibold text-secondary">Tag:</span>
+          <span class="pr-1 font-semibold text-indigo-700">Tag:</span>
           <div v-for="tag in post?.tags" :key="tag.id">
-            <TagComponent :tag="tag" />
+            <TagComponent :tag="tag" color="indigo" />
           </div>
         </div>
         <!-- Caegories -->
