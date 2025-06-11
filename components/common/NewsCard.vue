@@ -81,11 +81,11 @@
   })
 
   const goToNews = async () => {
+    const path = `${props.post.categories[0].link}/${props.post.slug}`
     await navigateTo({
-      name: `${props.post.categories[0].link}-slug`,
+      path: path,
       params: { slug: props.post.slug },
       query: { id: props.post.id },
     })
-    // await navigateTo(`${route.path}/${slug}`, { query: { id: 55 } })
   }
 </script>
