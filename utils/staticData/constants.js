@@ -1,5 +1,5 @@
-export const WORDPRESS_BASE_URL = 'http://10.154.5.69/intranet/wp-json/wp/v2'
-export const BASE_URL = 'http://localhost/intranet'
+export const WORDPRESS_BASE_URL = 'http://10.154.5.20/intranet-rivoli/wp-json/wp/v2'
+export const BASE_URL = 'http://10.154.5.20/intranet-rivoli'
 export const CATEGORIES_WITH_DETAILS = ['news']
 export const CUSTOM_POST_TYPES = ['service', 'office', 'department', 'employee']
 
