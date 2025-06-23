@@ -1,5 +1,12 @@
 import { WORDPRESS_BASE_URL, BASE_URL } from '../utils/staticData/constants'
 
+/**
+ * Run a global search on both posts and media.
+ * @param {string} qs The search query string
+ * @param {array} categories The categories to map returned posts categories
+ * @param {array} tags The tags to map returned posts tags
+ * @returns {Promise<Object[]>} An array of posts and media objects
+ */
 export const runGlobalSearchAPI = async (qs = '', categories = [], tags = []) => {
   try {
     let posts = []
@@ -16,6 +23,11 @@ export const runGlobalSearchAPI = async (qs = '', categories = [], tags = []) =>
   }
 }
 
+/**
+ * Runs a global search on WordPress posts.
+ * @param {string} qs The search query string
+ * @returns {Promise<Post[]>} An array of posts
+ */
 export const postsGlobalSearchAPI = async (qs = '') => {
   try {
     const res = await useFetch(`${WORDPRESS_BASE_URL}/search/?search=${qs}&per_page=100`)
@@ -26,6 +38,13 @@ export const postsGlobalSearchAPI = async (qs = '') => {
   }
 }
 
+/**
+ * Runs a global search on WordPress media.
+ * @param {string} qs The search query string
+ * @param {array} categories The categories to map returned media categories
+ * @param {array} tags The tags to map returned media tags
+ * @returns {Promise<Media[]>} An array of media objects
+ */
 export const mediaGlobalSearchAPI = async (qs = '', categories = [], tags = []) => {
   try {
     const res = await useFetch(`${WORDPRESS_BASE_URL}/media/?search=${qs}&per_page=100`)
@@ -47,6 +66,13 @@ export const mediaGlobalSearchAPI = async (qs = '', categories = [], tags = []) 
   }
 }
 
+/**
+ * Takes an array of posts and returns a new array with the same posts
+ * but with their `url` property modified to remove the base URL.
+ *
+ * @param {Post[]} posts The array of posts to clean
+ * @returns {Post[]} A new array with the same posts but with their `url` property cleaned
+ */
 const cleanPostUrl = (posts) => {
   let p = posts.map((post) => ({
     ...post,
