@@ -47,16 +47,6 @@ export const mediaGlobalSearchAPI = async (qs = '', categories = [], tags = []) 
   }
 }
 
-// const isPostNews = (post) => {
-//   if (post?.subtype !== 'post') return false
-//   if (post.url.startsWith('/20')) {
-//     return {
-//       ...post,
-//       url: post.url.replace(/\/20\d{2}\/\d{2}\/\d{2}/, '/news'),
-//     }
-//   }
-// }
-
 const cleanPostUrl = (posts) => {
   let p = posts.map((post) => ({
     ...post,

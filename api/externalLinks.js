@@ -1,4 +1,5 @@
 import { WORDPRESS_BASE_URL } from '../utils/staticData/constants'
+import { slugify } from '../utils/index.js'
 
 export const getExternalLinks = async (onlyHighlight = false) => {
   try {
@@ -33,14 +34,4 @@ export const getExternalLinksByType = async (type, onlyHighlight = false) => {
   } catch (err) {
     console.error(err)
   }
-}
-
-const slugify = (text) => {
-  return text
-    .toString()
-    .toLowerCase()
-    .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(/\-\-+/g, '-') // Replace multiple - with single -
-    .replace(/^-+/, '') // Trim - from start of text
-    .replace(/-+$/, '') // Trim - from end of text
 }

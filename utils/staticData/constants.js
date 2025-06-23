@@ -1,35 +1,6 @@
-export const WORDPRESS_BASE_URL = 'http://10.154.5.20/intranet-rivoli/wp-json/wp/v2'
-export const BASE_URL = 'http://10.154.5.20/intranet-rivoli'
-export const CATEGORIES_WITH_DETAILS = ['news']
+export const WORDPRESS_BASE_URL = 'http://admin-intranetbeta.comune.rivoli.to.it/wp-json/wp/v2'
+export const BASE_URL = 'http://admin-intranetbeta.comune.rivoli.to.it'
 export const CUSTOM_POST_TYPES = ['service', 'office', 'department', 'employee']
-
-export const customSectionColors = {
-  edilizia: {
-    bg: 'bg-green-700',
-    mainText: 'text-green-700',
-    iconBg: 'bg-green-500',
-    ring: 'ring-green-500',
-    icon: 'hugeicons:building-05',
-  },
-  demografici: {
-    bg: 'bg-pink-700',
-    mainText: 'text-pink-700',
-    iconBg: 'bg-pink-500',
-    ring: 'ring-pink-500',
-  },
-  commercio: {
-    bg: 'bg-blue-700',
-    mainText: 'text-blue-700',
-    iconBg: 'bg-blue-500',
-    ring: 'ring-blue-500',
-  },
-  default: {
-    bg: 'bg-indigo-700',
-    mainText: 'text-indigo-700',
-    iconBg: 'bg-indigo-500',
-    ring: 'ring-indigo-500',
-  },
-}
 
 export const ICON_FILE_TYPE = {
   pdf: 'hugeicons:pdf-02',

@@ -44,7 +44,6 @@
 
 <script setup>
   import { Icon } from '@iconify/vue'
-  import { customSectionColors } from '~/utils/staticData/constants'
 
   const props = defineProps({
     icon: {
@@ -68,8 +67,4 @@
       default: () => [],
     },
   })
-
-  const getCustomColors = (slugType) => {
-    return customSectionColors[slugType] || customSectionColors.default
-  }
 </script>

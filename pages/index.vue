@@ -51,20 +51,8 @@
   import ModulisticaTools from '~/components/home/ModulisticaTools.vue'
   import HeaderComponent from '~/components/common/HeaderComponent.vue'
 
-  import { useDepartmentStore } from '~/stores/departments'
-  import { useOfficeStore } from '~/stores/offices'
-  import { useServiceStore } from '~/stores/services'
-  import { useEmployeeStore } from '~/stores/employees'
-
   import { getExternalLinksByType, getExternalLinks } from '~/api/externalLinks'
   import { homeStaticData } from '~/utils/staticData/home'
-
-  import { updateDepartmentStore, updateOfficeStore, updateServiceStore, updateEmployeeStore } from '~/utils'
-
-  const departmentStore = useDepartmentStore()
-  const officeStore = useOfficeStore()
-  const serviceStore = useServiceStore()
-  const employeeStore = useEmployeeStore()
 
   const personalTools = ref([])
   const usefulLinks = ref([])
@@ -120,10 +108,6 @@
   onMounted(async () => {
     try {
       loading.value = true
-      await updateDepartmentStore(departmentStore)
-      await updateOfficeStore(officeStore)
-      await updateServiceStore(serviceStore)
-      await updateEmployeeStore(employeeStore)
 
       personalTools.value = await getExternalLinksByType('strumenti-personali')
       const tmpLinks = await getExternalLinks(true)
