@@ -3,12 +3,7 @@
     class="flex flex-col gap-4 transition-all duration-300 bg-white border hover:scale-105 hover:shadow-lg w-fit h-fit rounded-xl"
   >
     <div class="flex flex-row items-center gap-4 border-b">
-      <img
-        :src="employee?.photo"
-        :alt="employee?.name"
-        class="h-24 rounded-tl-xl hover:cursor-pointer"
-        @click="openImage(employee?.photo)"
-      />
+      <NImage :src="employee?.photo" :alt="employee?.name" class="h-24 rounded-tl-xl hover:cursor-pointer" />
       <div class="pr-4 text-2xl font-semibold text-secondary">{{ employee?.name }}</div>
     </div>
     <div class="flex flex-col gap-6 px-4">
@@ -59,6 +54,7 @@
 
 <script setup>
   import { Icon } from '@iconify/vue'
+  import { NImage } from 'naive-ui'
 
   const props = defineProps({
     employee: {
@@ -66,8 +62,4 @@
       default: () => {},
     },
   })
-
-  const openImage = async (url) => {
-    await navigateTo(url, { external: true, open: { target: '_blank' } })
-  }
 </script>
