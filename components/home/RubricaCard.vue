@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col gap-2 p-4 bg-white rounded-lg shadow-md text-darkAccent border-secondaryLight shadow-zinc-300 h-fit"
+    class="flex flex-col gap-2 p-4 bg-white rounded-lg shadow-md min-w-80 text-darkAccent border-secondaryLight shadow-zinc-300 h-fit"
   >
     <div class="flex flex-row gap-2 pb-2">
       <Icon :icon="icon" height="32" />
