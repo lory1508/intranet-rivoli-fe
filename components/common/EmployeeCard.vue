@@ -24,15 +24,15 @@
         </div>
       </div>
       <div class="flex flex-col gap-1">
-        <div class="flex flex-row items-center gap-2">
+        <div v-if="employee?.department" class="flex flex-row items-center gap-2">
           <div class="text-base font-semibold text-secondary">Direzione</div>
           <div class="text-base">{{ employee?.department }}</div>
         </div>
-        <div class="flex flex-row items-center gap-2">
+        <div v-if="employee?.office" class="flex flex-row items-center gap-2">
           <div class="text-base font-semibold text-secondary">Ufficio</div>
           <div class="text-base">{{ employee?.office }}</div>
         </div>
-        <div class="flex flex-row items-center gap-2">
+        <div v-if="employee?.service" class="flex flex-row items-center gap-2">
           <div class="text-base font-semibold text-secondary">Servizio</div>
           <div class="text-base">{{ employee?.service }}</div>
         </div>

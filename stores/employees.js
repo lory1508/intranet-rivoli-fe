@@ -40,9 +40,9 @@ export const useEmployeeStore = defineStore('employees', {
         await this.getEmployees()
       }
       return this.employees.filter((employee) => {
-        const departmentIds = employee?.acf?.department.map((dept) => dept.ID)
-        const officeIds = employee?.acf?.office.map((office) => office.ID)
-        const serviceIds = employee?.acf?.service.map((service) => service.ID)
+        const departmentIds = employee?.acf?.department ? employee?.acf?.department.map((dept) => dept.ID) : []
+        const officeIds = employee?.acf?.office ? employee?.acf?.office.map((office) => office.ID) : []
+        const serviceIds = employee?.acf?.service ? employee?.acf?.service.map((service) => service.ID) : []
 
         return (
           employee?.title?.rendered.toLowerCase().includes(query?.query?.toLowerCase()) ||
