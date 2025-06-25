@@ -20,7 +20,11 @@
         <div class="pt-2 text-lg font-semibold">{{ type.title }}</div>
         <div
           class="grid gap-2 pb-2 border-b-2 border-indigo-200"
-          :class="monoColumn ? 'grid-cols-1 w-fit' : 'grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2'"
+          :class="{
+            'grid-cols-1 w-fit': monoColumn,
+            'grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2': !monoColumn && zoom <= 100,
+            'grid-cols-1 w-fit': zoom > 100,
+          }"
         >
           <a
             v-for="link in links.filter((link) => link.slugType === type.slug)"
@@ -29,8 +33,18 @@
             target="_blank"
             class="flex flex-row items-center w-full font-semibold text-white transition-all duration-300 rounded-xl hover:ring-2 hover:shadow-md ring-sky-300"
           >
-            <div class="flex items-center w-full h-10 gap-2 pl-4 pr-4 text-xs bg-sky-700 rounded-l-xl">
-              {{ link.title }}
+            <div
+              class="flex items-center w-full h-10 gap-2 pl-4 pr-4 text-xs bg-sky-700 rounded-l-xl"
+              :class="{ 'max-w-48': zoom <= 100 }"
+            >
+              <NTooltip trigger="hover" class="w-full">
+                <template #trigger>
+                  <div class="truncate">{{ link?.title }}</div>
+                </template>
+                <div>
+                  {{ link?.title }}
+                </div>
+              </NTooltip>
             </div>
             <div class="flex items-center h-10 px-2 bg-sky-900 rounded-r-xl">
               <Icon icon="solar:arrow-right-up-line-duotone" height="24" />
@@ -44,6 +58,8 @@
 
 <script setup>
   import { Icon } from '@iconify/vue'
+  import { NTooltip } from 'naive-ui'
+  import { useZoomWatcher } from '~/composables/useZoomWatcher'
 
   const props = defineProps({
     icon: {
@@ -67,4 +83,6 @@
       default: () => [],
     },
   })
+
+  const { zoom } = useZoomWatcher()
 </script>

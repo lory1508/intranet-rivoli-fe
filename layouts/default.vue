@@ -14,7 +14,7 @@
       >
         <div class="flex flex-col justify-between h-screen p-6">
           <div>
-            <div class="flex flex-row items-center gap-4">
+            <div class="flex flex-row items-center gap-4 hover:cursor-pointer" @click="goto('/')">
               <img :src="websiteIdentity.logo.img" :alt="websiteIdentity.logo.alt" width="50" />
               <div class="flex flex-col">
                 <div v-if="!collapsed" class="text-2xl font-bold">{{ websiteIdentity.name }}</div>
