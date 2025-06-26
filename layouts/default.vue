@@ -1,111 +1,112 @@
 <template>
   <NSpace vertical size="large">
-    <div class="flex flex-row from-zinc-100 to-zinc-200 bg-gradient-to-b">
-      <div
-        collapse-mode="transform"
-        show-trigger="bar"
-        bordered
-        class="fixed text-white transition-all duration-300 shadow-lg from-red-800 to-red-600 bg-gradient-to-b shadow-zinc-800"
-        :class="{
-          'w-24': collapsed,
-          'w-72': !collapsed,
-        }"
-        @update:collapsed="updateCollapsed"
-      >
-        <div class="flex flex-col justify-between h-screen p-6">
-          <div>
-            <div class="flex flex-row items-center gap-4 hover:cursor-pointer" @click="goto('/')">
-              <img :src="websiteIdentity.logo.img" :alt="websiteIdentity.logo.alt" width="50" />
-              <div class="flex flex-col">
-                <div v-if="!collapsed" class="text-2xl font-bold">{{ websiteIdentity.name }}</div>
-                <div v-if="!collapsed" class="pt-2 font-semibold">Rivoli, {{ formattedToday }}</div>
+    <div class="flex flex-row p-2 from-zinc-100 to-zinc-200 bg-gradient-to-b">
+      <div class="fixed flex h-full pb-6">
+        <div
+          class="text-white transition-all duration-300 shadow-lg rounded-2xl from-red-800 to-red-600 bg-gradient-to-b shadow-zinc-300"
+          :class="{
+            'w-24': collapsed,
+            'w-72': !collapsed,
+          }"
+          @update:collapsed="updateCollapsed"
+        >
+          <div class="flex flex-col justify-between h-full p-6">
+            <div class="flex flex-col h-full overflow-y-scroll grow no-scrollbar">
+              <div class="flex flex-row items-center gap-4 hover:cursor-pointer" @click="goto('/')">
+                <img :src="websiteIdentity.logo.img" :alt="websiteIdentity.logo.alt" width="50" />
+                <div class="flex flex-col">
+                  <div v-if="!collapsed" class="text-2xl font-bold">{{ websiteIdentity.name }}</div>
+                  <div v-if="!collapsed" class="pt-2 font-semibold">Rivoli, {{ formattedToday }}</div>
+                </div>
               </div>
-            </div>
-            <NDivider />
-            <div class="flex flex-col gap-1">
-              <div
-                v-for="menuItem in menu"
-                :key="menuItem.path"
-                class="items-center justify-center px-2 py-1 cursor-pointer"
-                :class="{
-                  'text-primary bg-white rounded-md font-semibold': active === menuItem.path && !menuItem?.submenu,
-                  'w-fit': collapsed,
-                }"
-              >
-                <div class="flex flex-row items-center gap-2">
-                  <!-- Full Menu -->
-                  <div v-if="!collapsed" class="flex flex-row items-center w-full gap-2">
-                    <NCollapse
-                      v-if="menuItem.submenu"
-                      arrow-placement="right"
-                      class="w-full"
-                      :accordion="true"
-                      :expanded-names="subMenusCollapsed"
-                    >
-                      <template #arrow>
-                        <Icon
-                          icon="solar:alt-arrow-right-bold"
-                          class="text-white"
-                          height="24"
-                          @click="expandMenu(menuItem.title)"
-                        />
-                      </template>
-                      <NCollapseItem :name="menuItem.title">
-                        <template #header>
-                          <div
-                            class="flex flex-row items-center w-full gap-2 text-white"
+              <NDivider />
+              <div class="flex flex-col gap-1">
+                <div
+                  v-for="menuItem in menu"
+                  :key="menuItem.path"
+                  class="items-center justify-center px-2 py-1 cursor-pointer"
+                  :class="{
+                    'text-primary bg-white rounded-md font-semibold': active === menuItem.path && !menuItem?.submenu,
+                    'w-fit': collapsed,
+                  }"
+                >
+                  <div class="flex flex-row items-center gap-2">
+                    <!-- Full Menu -->
+                    <div v-if="!collapsed" class="flex flex-row items-center w-full gap-2">
+                      <NCollapse
+                        v-if="menuItem.submenu"
+                        arrow-placement="right"
+                        class="w-full"
+                        :accordion="true"
+                        :expanded-names="subMenusCollapsed"
+                      >
+                        <template #arrow>
+                          <Icon
+                            icon="solar:alt-arrow-right-bold"
+                            class="text-white"
+                            height="24"
                             @click="expandMenu(menuItem.title)"
-                          >
-                            <Icon :icon="menuItem.icon" height="28" />
-                            <div class="text-base transition-all duration-300 hover:font-semibold">
-                              {{ menuItem.title }}
-                            </div>
-                          </div>
+                          />
                         </template>
-                        <div class="flex flex-col gap-1 hover:cursor-default">
-                          <div v-for="subMenuItem in menuItem.submenu" :key="subMenuItem.path" class="w-full">
+                        <NCollapseItem :name="menuItem.title">
+                          <template #header>
                             <div
-                              class="pl-2 transition-all duration-300 hover:cursor-pointer hover:font-semibold"
-                              :class="{
-                                'text-primary bg-white rounded-md font-semibold': active === subMenuItem.path,
-                                'text-white': active !== subMenuItem.path,
-                              }"
-                              @click="goto(subMenuItem.path)"
+                              class="flex flex-row items-center w-full gap-2 text-white"
+                              @click="expandMenu(menuItem.title)"
                             >
-                              {{ subMenuItem.title }}
+                              <Icon :icon="menuItem.icon" height="28" />
+                              <div class="text-base transition-all duration-300 hover:font-semibold">
+                                {{ menuItem.title }}
+                              </div>
+                            </div>
+                          </template>
+                          <div class="flex flex-col gap-1 hover:cursor-default">
+                            <div v-for="subMenuItem in menuItem.submenu" :key="subMenuItem.path" class="w-full">
+                              <div
+                                class="pl-2 transition-all duration-300 hover:cursor-pointer hover:font-semibold"
+                                :class="{
+                                  'text-primary bg-white rounded-md font-semibold': active === subMenuItem.path,
+                                  'text-white': active !== subMenuItem.path,
+                                }"
+                                @click="goto(subMenuItem.path)"
+                              >
+                                {{ subMenuItem.title }}
+                              </div>
                             </div>
                           </div>
+                        </NCollapseItem>
+                      </NCollapse>
+                      <div v-else class="flex flex-row items-center w-full gap-2" @click="goto(menuItem.path)">
+                        <Icon :icon="menuItem.icon" height="28" />
+                        <div class="text-base transition-all duration-300 hover:font-semibold">
+                          {{ menuItem.title }}
                         </div>
-                      </NCollapseItem>
-                    </NCollapse>
-                    <div v-else class="flex flex-row items-center w-full gap-2" @click="goto(menuItem.path)">
-                      <Icon :icon="menuItem.icon" height="28" />
-                      <div class="text-base transition-all duration-300 hover:font-semibold">{{ menuItem.title }}</div>
+                      </div>
                     </div>
-                  </div>
 
-                  <!-- Collapsed Menu -->
-                  <NTooltip v-else placement="right" trigger="hover">
-                    <template #trigger>
-                      <Icon :icon="menuItem.icon" height="28" @click="goto(menuItem.path)" />
-                    </template>
-                    <div>
-                      {{ menuItem.title }}
-                    </div>
-                  </NTooltip>
+                    <!-- Collapsed Menu -->
+                    <NTooltip v-else placement="right" trigger="hover">
+                      <template #trigger>
+                        <Icon :icon="menuItem.icon" height="28" @click="goto(menuItem.path)" />
+                      </template>
+                      <div>
+                        {{ menuItem.title }}
+                      </div>
+                    </NTooltip>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div v-if="!collapsed" class="flex flex-col text-xs">
-            <div class="flex flex-wrap">
-              {{ footer.title }}
-              {{ footer.address }}
+            <div v-if="!collapsed" class="flex flex-col text-xs h-fit">
+              <div class="flex flex-wrap">
+                {{ footer.title }}
+                {{ footer.address }}
+              </div>
+              <div>{{ footer.phone.label }} {{ footer.phone.number }}</div>
+              <div>{{ footer.fax.label }} {{ footer.fax.number }}</div>
+              <div>{{ footer.cf.label }} {{ footer.cf.number }}</div>
+              <div class="flex flex-row gap-1">{{ footer.title }} - {{ footer.author }}</div>
             </div>
-            <div>{{ footer.phone.label }} {{ footer.phone.number }}</div>
-            <div>{{ footer.fax.label }} {{ footer.fax.number }}</div>
-            <div>{{ footer.cf.label }} {{ footer.cf.number }}</div>
-            <div class="flex flex-row gap-1">{{ footer.title }} - {{ footer.author }}</div>
           </div>
         </div>
       </div>
