@@ -14,9 +14,9 @@
             <div class="flex flex-col h-full overflow-y-scroll grow no-scrollbar">
               <div class="flex flex-row items-center gap-4 hover:cursor-pointer" @click="goto('/')">
                 <img :src="websiteIdentity.logo.img" :alt="websiteIdentity.logo.alt" width="50" />
-                <div class="flex flex-col">
-                  <div v-if="!collapsed" class="text-2xl font-bold">{{ websiteIdentity.name }}</div>
-                  <div v-if="!collapsed" class="pt-2 font-semibold">Rivoli, {{ formattedToday }}</div>
+                <div v-if="showLabels" class="flex flex-col">
+                  <div class="text-2xl font-bold">{{ websiteIdentity.name }}</div>
+                  <div class="pt-2 font-semibold">Rivoli, {{ formattedToday }}</div>
                 </div>
               </div>
               <NDivider />
@@ -97,7 +97,7 @@
                 </div>
               </div>
             </div>
-            <div v-if="!collapsed" class="flex flex-col text-xs h-fit">
+            <div v-if="showLabels" class="flex flex-col text-xs h-fit">
               <div class="flex flex-wrap">
                 {{ footer.title }}
                 {{ footer.address }}
@@ -141,12 +141,14 @@
   import { NCollapse, NCollapseItem, NTooltip, NSpace, NDivider } from 'naive-ui'
   import { Icon } from '@iconify/vue'
   import { useHead } from '#imports'
+  import { delay } from '~/utils/index.js'
 
   const router = useRouter()
   const route = useRoute()
 
   const subMenusCollapsed = ref([])
   const collapsed = ref(false)
+  const showLabels = ref(true)
   const footer = ref(websiteIdentity.footer)
   const active = ref(route.path)
   const formattedToday = ref(new Date().toLocaleDateString('it-IT'))
@@ -175,8 +177,12 @@
     title: pageTitle,
   })
 
-  const collapseSidebar = () => {
+  const collapseSidebar = async () => {
     collapsed.value = !collapsed.value
+    if (!collapsed.value) {
+      await delay(300)
+    }
+    showLabels.value = !showLabels.value
   }
 
   const expandMenu = (title) => {
