@@ -32,7 +32,7 @@
                 >
                   <div class="flex flex-row items-center gap-2">
                     <!-- Full Menu -->
-                    <div v-if="!collapsed" class="flex flex-row items-center w-full gap-2">
+                    <div v-if="showLabels" class="flex flex-row items-center w-full gap-2">
                       <NCollapse
                         v-if="menuItem.submenu"
                         arrow-placement="right"
@@ -180,7 +180,7 @@
   const collapseSidebar = async () => {
     collapsed.value = !collapsed.value
     if (!collapsed.value) {
-      await delay(300)
+      await delay(200)
     }
     showLabels.value = !showLabels.value
   }
