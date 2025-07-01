@@ -21,6 +21,7 @@
               </div>
               <NDivider />
               <div class="flex flex-col gap-1">
+                <!-- MENU -->
                 <div
                   v-for="menuItem in menu"
                   :key="menuItem.path"
@@ -98,6 +99,30 @@
               </div>
             </div>
             <div v-if="showLabels" class="flex flex-col text-xs h-fit">
+              <NButton
+                v-if="!userLoggedIn"
+                strong
+                ghost
+                color="#FFF"
+                round
+                type="info"
+                @click="showLoginModal = true"
+                class="mb-4"
+              >
+                <template #icon>
+                  <Icon icon="solar:login-bold" height="24" />
+                </template>
+                Connettiti
+              </NButton>
+              <NButton v-else color="#FFF" ghost round @click="showLoginModal = true" class="mb-4">
+                <template #icon>
+                  <Icon icon="solar:logout-bold" height="24" />
+                </template>
+                Disconnettiti
+              </NButton>
+              <NModal v-model:show="showLoginModal" preset="dialog" title="Login" class="w-96">
+                <LoginModal />
+              </NModal>
               <div class="flex flex-wrap">
                 {{ footer.title }}
                 {{ footer.address }}
@@ -137,8 +162,11 @@
 </template>
 
 <script setup>
+  // components
+  import LoginModal from '~/components/common/LoginModal.vue'
+
   import { menu, websiteIdentity } from '~/utils/staticData/menu.js'
-  import { NCollapse, NCollapseItem, NTooltip, NSpace, NDivider } from 'naive-ui'
+  import { NCollapse, NCollapseItem, NTooltip, NSpace, NDivider, NButton } from 'naive-ui'
   import { Icon } from '@iconify/vue'
   import { useHead } from '#imports'
   import { delay } from '~/utils/index.js'
@@ -146,6 +174,8 @@
   const router = useRouter()
   const route = useRoute()
 
+  const showLoginModal = ref(false)
+  const userLoggedIn = ref(false)
   const subMenusCollapsed = ref([])
   const collapsed = ref(false)
   const showLabels = ref(true)
