@@ -110,6 +110,12 @@
     try {
       loading.value = true
       if (route.query) {
+        employees.value = []
+        posts.value = []
+        media.value = []
+        categories.value = []
+        tags.value = []
+
         categories.value = await categoriesStore.getCategories()
         tags.value = await tagsStore.getTags()
         // results.value = await runGlobalSearchAPI(route.query.query, categories.value, tags.value)

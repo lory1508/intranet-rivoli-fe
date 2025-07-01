@@ -3,7 +3,15 @@
     class="flex flex-col gap-4 max-w-[400px] transition-all duration-300 bg-white border hover:scale-105 hover:shadow-lg w-fit h-fit rounded-xl"
   >
     <div class="flex flex-row items-center gap-4 border-b">
-      <NImage :src="employee?.photo" :alt="employee?.name" class="h-24 rounded-tl-xl hover:cursor-pointer" />
+      <NImage
+        v-if="employee?.photo"
+        :src="employee?.photo"
+        :alt="employee?.name"
+        class="h-24 rounded-tl-xl hover:cursor-pointer"
+      />
+      <div v-else class="flex items-center justify-center w-24 h-24 rounded-tl-xl bg-secondary">
+        <Icon icon="fluent:person-32-filled" height="50" class="text-white" />
+      </div>
       <div class="pr-4 text-2xl font-semibold text-secondary">{{ employee?.name }}</div>
     </div>
     <div class="flex flex-col gap-3 px-4">
