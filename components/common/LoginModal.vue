@@ -15,6 +15,7 @@
   import { NForm, NFormItem, NInput, NButton, useMessage } from 'naive-ui'
   import { useAuthStore } from '~/stores/auth'
 
+  const emits = defineEmits(['close'])
   const message = useMessage()
   const auth = useAuthStore()
   const error = ref(null)
@@ -28,6 +29,7 @@
     const success = await auth.login(form.value.username, form.value.password)
     if (success) {
       message.success('Login effettuato correttamente')
+      emits('close')
     } else {
       message.error('Login fallito')
       error.value = auth.error || 'Login failed'

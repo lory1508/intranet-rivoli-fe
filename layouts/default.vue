@@ -98,31 +98,85 @@
                 </div>
               </div>
             </div>
-            <div v-if="showLabels" class="flex flex-col text-xs h-fit">
-              <NButton
-                v-if="!userLoggedIn"
-                strong
-                ghost
-                color="#FFF"
-                round
-                type="info"
-                @click="showLoginModal = true"
-                class="mb-4"
-              >
-                <template #icon>
-                  <Icon icon="solar:login-bold" height="24" />
-                </template>
-                Connettiti
-              </NButton>
-              <NButton v-else color="#FFF" ghost round @click="showLoginModal = true" class="mb-4">
-                <template #icon>
-                  <Icon icon="solar:logout-bold" height="24" />
-                </template>
-                Disconnettiti
-              </NButton>
+            <div class="w-full mb-4">
+              <div v-if="!userLoggedIn">
+                <NButton
+                  v-if="showLabels"
+                  strong
+                  ghost
+                  round
+                  class="w-full"
+                  color="#FFF"
+                  type="info"
+                  size="large"
+                  @click="showLoginModal = true"
+                >
+                  <template #icon>
+                    <Icon icon="solar:login-2-bold-duotone" height="60" />
+                  </template>
+                  Connettiti
+                </NButton>
+                <NTooltip v-else placement="top" trigger="hover">
+                  <template #trigger>
+                    <NButton
+                      strong
+                      ghost
+                      round
+                      class="w-full"
+                      color="#FFF"
+                      type="info"
+                      size="large"
+                      @click="showLoginModal = true"
+                    >
+                      <template #icon>
+                        <Icon icon="solar:login-2-bold-duotone" height="24" />
+                      </template>
+                    </NButton>
+                  </template>
+                  <div>Connettiti</div>
+                </NTooltip>
+              </div>
+              <div v-else>
+                <div class="mb-2 text-base italic text-center">Ciao Lorenzo</div>
+                <NButton
+                  v-if="showLabels"
+                  ghost
+                  round
+                  color="#FFF"
+                  size="large"
+                  class="w-full"
+                  @click="showLogoutModal = true"
+                >
+                  <template #icon>
+                    <Icon icon="solar:logout-2-bold-duotone" height="24" />
+                  </template>
+                  <span> Disconnettiti </span>
+                </NButton>
+                <NTooltip v-else placement="top" trigger="hover">
+                  <template #trigger>
+                    <NButton color="#FFF" ghost round size="large" class="w-full" @click="showLogoutModal = true">
+                      <template #icon>
+                        <Icon icon="solar:logout-2-bold-duotone" height="24" />
+                      </template>
+                    </NButton>
+                  </template>
+                  <div>Disconnettiti</div>
+                </NTooltip>
+              </div>
               <NModal v-model:show="showLoginModal" preset="dialog" title="Login" class="w-96">
-                <LoginModal />
+                <LoginModal @close="showLoginModal = false" />
               </NModal>
+              <NModal v-model:show="showLogoutModal" preset="card" title="Logout" class="w-96">
+                <div class="flex flex-col w-full gap-2">
+                  <div class="w-full">Sei sicuro di volerti disconnettere?</div>
+                  <div class="flex flex-row justify-end w-full gap-2">
+                    <NButton secondary round strong type="info" @click="showLogoutModal = false">No</NButton>
+                    <NButton secondary round strong type="error" @click="logout">Si</NButton>
+                  </div>
+                </div>
+              </NModal>
+            </div>
+            <div v-if="showLabels" class="flex flex-col text-xs h-fit">
               <div class="flex flex-wrap">
                 {{ footer.title }}
                 {{ footer.address }}
@@ -166,15 +220,20 @@
   import LoginModal from '~/components/common/LoginModal.vue'
 
   import { menu, websiteIdentity } from '~/utils/staticData/menu.js'
-  import { NCollapse, NCollapseItem, NTooltip, NSpace, NDivider, NButton } from 'naive-ui'
+  import { NCollapse, NCollapseItem, NTooltip, NSpace, NDivider, NButton, NModal, useMessage } from 'naive-ui'
   import { Icon } from '@iconify/vue'
   import { useHead } from '#imports'
   import { delay } from '~/utils/index.js'
+  import { useAuthStore } from '~/stores/auth'
+
+  const auth = useAuthStore()
 
   const router = useRouter()
   const route = useRoute()
+  const message = useMessage()
 
   const showLoginModal = ref(false)
+  const showLogoutModal = ref(false)
   const userLoggedIn = ref(false)
   const subMenusCollapsed = ref([])
   const collapsed = ref(false)
@@ -190,7 +249,15 @@
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join(' ')
   )
+  auth.loadToken()
 
+  watch(
+    () => auth.token,
+    (t) => {
+      userLoggedIn.value = !!t
+    },
+    { immediate: true, deep: true }
+  )
   watch(
     () => route.path,
     () => {
@@ -206,6 +273,12 @@
   useHead({
     title: pageTitle,
   })
+
+  const logout = () => {
+    auth.logout()
+    message.success('Logout effettuato correttamente')
+    showLogoutModal.value = false
+  }
 
   const collapseSidebar = async () => {
     collapsed.value = !collapsed.value

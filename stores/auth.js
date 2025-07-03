@@ -36,7 +36,6 @@ export const useAuthStore = defineStore('auth', {
       this.user = null
       this.error = null
       localStorage.removeItem('jwt')
-      navigateTo('/login')
     },
 
     loadToken() {
