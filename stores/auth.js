@@ -1,6 +1,7 @@
 // stores/auth.ts
 import { defineStore } from 'pinia'
 import { login, getUser } from '~/api/login'
+import { WORDPRESS_BASE_URL } from '~/utils/staticData/constants'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -8,16 +9,18 @@ export const useAuthStore = defineStore('auth', {
     user: null,
     error: null,
   }),
+  getters: {
+    isAuthenticated() {
+      return !!this.token
+    },
+  },
   actions: {
     async login(username, password) {
       try {
         const data = await login(username, password)
 
-        console.log(data)
         this.token = data.token
-        console.log('token: ', this.token)
         this.user = await getUser(this.token)
-        console.log('user: ', this.user)
 
         localStorage.setItem('jwt', data.token)
         this.error = null
@@ -36,6 +39,21 @@ export const useAuthStore = defineStore('auth', {
       this.user = null
       this.error = null
       localStorage.removeItem('jwt')
+    },
+
+    async getUser() {
+      if (this.user) {
+        return this.user
+      }
+
+      try {
+        const res = await getUser(this.token)
+        this.user = res
+        return this.user
+      } catch (err) {
+        console.error('Failed to fetch user', err)
+        throw err
+      }
     },
 
     loadToken() {

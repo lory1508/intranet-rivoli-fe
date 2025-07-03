@@ -51,29 +51,39 @@
       </div>
     </div>
 
-    <div class="flex flex-row items-center gap-2 bg-white border rounded-full shadow-lg shadow-sky-200">
-      <NInput
-        v-model:value="search.query"
-        placeholder="Cerca..."
-        class="rounded-full"
-        :bordered="false"
-        @keyup.enter="runGlobalSearch"
+    <div class="flex flex-row items-center gap-4">
+      <NAvatar
+        v-if="user?.custom_avatar_url"
+        round
+        :size="48"
+        :src="user?.custom_avatar_url"
+        class="transition-all duration-300 hover:shadow hover:scale-105 hover:cursor-pointer"
+        @click="goTo('/admin')"
       />
-      <div class="flex items-center justify-center p-1 rounded-full">
-        <n-button strong primary circle type="info" @click="runGlobalSearch">
-          <template #icon>
-            <Icon icon="solar:magnifer-bold-duotone" height="32" />
-          </template>
-        </n-button>
+      <div class="flex flex-row items-center gap-2 bg-white border rounded-full shadow-lg shadow-sky-200">
+        <NInput
+          v-model:value="search.query"
+          placeholder="Cerca..."
+          class="rounded-full"
+          :bordered="false"
+          @keyup.enter="runGlobalSearch"
+        />
+        <div class="flex items-center justify-center p-1 rounded-full">
+          <n-button strong primary circle type="info" @click="runGlobalSearch">
+            <template #icon>
+              <Icon icon="solar:magnifer-bold-duotone" height="32" />
+            </template>
+          </n-button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-  import { NMarquee, NInput } from 'naive-ui'
+  import { NMarquee, NInput, NAvatar } from 'naive-ui'
   import { Icon } from '@iconify/vue'
-
+  import { useAuthStore } from '~/stores/auth'
   import { setIntervalMethod } from '~/utils'
   import { getAlert } from '~/api/alert'
 
@@ -88,12 +98,22 @@
     },
   })
 
+  const auth = useAuthStore()
+
+  const user = ref(null)
   const loading = ref(false)
   const search = ref({
     query: null,
   })
   const showAlert = ref(false)
   const latestAlert = ref()
+
+  watch(
+    () => auth.user,
+    () => {
+      user.value = auth.user
+    }
+  )
 
   const getLatestAlert = async () => {
     const res = await getAlert()
@@ -133,5 +153,6 @@
 
   onMounted(async () => {
     setIntervalMethod(getLatestAlert, 30 * 60 * 1000) // 30 min
+    user.value = auth.user
   })
 </script>

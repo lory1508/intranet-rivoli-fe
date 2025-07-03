@@ -96,6 +96,35 @@
                     </NTooltip>
                   </div>
                 </div>
+
+                <!-- PROFILE -->
+
+                <div
+                  v-if="userLoggedIn"
+                  class="items-center justify-center px-2 py-1 cursor-pointer"
+                  :class="{
+                    'text-primary bg-white rounded-md font-semibold': active === '/admin',
+                    'w-fit': collapsed,
+                  }"
+                >
+                  <div class="flex flex-row items-center gap-2">
+                    <!-- Full Menu -->
+                    <div v-if="showLabels" class="flex flex-row items-center w-full gap-2">
+                      <div class="flex flex-row items-center w-full gap-2" @click="goto('/admin')">
+                        <Icon icon="solar:user-circle-bold-duotone" height="28" />
+                        <div class="text-base transition-all duration-300 hover:font-semibold">Profilo</div>
+                      </div>
+                    </div>
+
+                    <!-- Collapsed Menu -->
+                    <NTooltip v-else placement="right" trigger="hover">
+                      <template #trigger>
+                        <Icon icon="solar:user-circle-bold-duotone" height="28" @click="goto('/admin')" />
+                      </template>
+                      <div>Profilo</div>
+                    </NTooltip>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="w-full mb-4">
@@ -137,7 +166,7 @@
                 </NTooltip>
               </div>
               <div v-else>
-                <div class="mb-2 text-base italic text-center">Ciao Lorenzo</div>
+                <div class="mb-2 text-base italic text-center">Ciao {{ user?.name }}</div>
                 <NButton
                   v-if="showLabels"
                   ghost
@@ -235,6 +264,7 @@
   const showLoginModal = ref(false)
   const showLogoutModal = ref(false)
   const userLoggedIn = ref(false)
+  const user = ref(null)
   const subMenusCollapsed = ref([])
   const collapsed = ref(false)
   const showLabels = ref(true)
@@ -253,8 +283,9 @@
 
   watch(
     () => auth.token,
-    (t) => {
+    async (t) => {
       userLoggedIn.value = !!t
+      user.value = await auth.getUser()
     },
     { immediate: true, deep: true }
   )

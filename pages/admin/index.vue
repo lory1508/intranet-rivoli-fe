@@ -1,22 +1,29 @@
 <template>
-  <div class="flex items-center justify-center w-full h-full">
-    <NForm class="p-4 bg-white border w-96 rounded-xl">
-      <NFormItem label="Username">
-        <NInput v-model:value="form.username" />
-      </NFormItem>
-      <NFormItem label="Password">
-        <NInput v-model:value="form.password" />
-      </NFormItem>
-      <NButton secondary round strong type="success"> Login </NButton>
-    </NForm>
+  <div>
+    <LoaderComponent v-if="loading" />
+    <div v-else class="flex flex-col gap-4">
+      <HeaderComponent title="Rubrica" :breadcrumb="breadcrumb" />
+      <div>
+        <ProfilePictureUploader />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-  import { NForm, NFormItem, NInput, NButton } from 'naive-ui'
+  import LoaderComponent from '~/components/common/LoaderComponent.vue'
+  import HeaderComponent from '~/components/common/HeaderComponent.vue'
+  import ProfilePictureUploader from '~/components/admin/ProfilePictureUploader.vue'
 
-  const form = ref({
-    username: '',
-    password: '',
-  })
+  const loading = ref(false)
+  const breadcrumb = ref([
+    {
+      title: 'Home',
+      slug: '/',
+    },
+    {
+      title: 'Admin',
+      slug: '/admin',
+    },
+  ])
 </script>
