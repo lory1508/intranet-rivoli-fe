@@ -1,6 +1,6 @@
 // stores/employee.js
 import { defineStore } from 'pinia'
-import { WORDPRESS_BASE_URL } from '~/utils/staticData/constants'
+import { BASE_URL } from '~/utils/staticData/constants'
 
 export const useEmployeeStore = defineStore('employees', {
   state: () => ({
@@ -14,7 +14,7 @@ export const useEmployeeStore = defineStore('employees', {
       }
 
       try {
-        const res = await useFetch(`${WORDPRESS_BASE_URL}/employee`)
+        const res = await useFetch(`${BASE_URL}/wp-json/custom/v1/ldap-users?per_page=100`)
         this.employees = res?.data || []
         this.fetched = true
         return this.employees
@@ -26,7 +26,7 @@ export const useEmployeeStore = defineStore('employees', {
     async runEmployeeSearch(section, id) {
       try {
         if (!section || !id) return
-        const res = await useFetch(`${WORDPRESS_BASE_URL}/employee?meta_key=${section}&meta_value=${id}`)
+        const res = await useFetch(`${BASE_URL}/wp-json/custom/v1/ldap-users?meta_key=${section}&meta_value=${id}`)
         this.employees = res?.data || []
         this.fetched = true
         return this.employees
@@ -45,7 +45,8 @@ export const useEmployeeStore = defineStore('employees', {
         const serviceIds = employee?.acf?.service ? employee?.acf?.service.map((service) => service.ID) : []
 
         return (
-          employee?.title?.rendered.toLowerCase().includes(query?.query?.toLowerCase()) ||
+          employee?.first_name?.toLowerCase().includes(query?.query?.toLowerCase()) ||
+          employee?.last_name?.toLowerCase().includes(query?.query?.toLowerCase()) ||
           employee?.acf?.phone.toLowerCase().includes(query?.query?.toLowerCase()) ||
           departmentIds.includes(Number(query?.department)) ||
           officeIds.includes(Number(query?.office)) ||

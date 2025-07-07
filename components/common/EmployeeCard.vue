@@ -36,10 +36,10 @@
           <div class="text-base font-semibold text-secondary">Direzione</div>
           <NTooltip trigger="hover">
             <template #trigger>
-              <div class="truncate max-w-64">{{ employee?.department }}</div>
+              <div class="truncate max-w-64">{{ employee?.department?.title }}</div>
             </template>
             <div>
-              {{ employee?.department }}
+              {{ employee?.department?.title }}
             </div>
           </NTooltip>
         </div>
@@ -47,10 +47,10 @@
           <div class="text-base font-semibold text-secondary">Ufficio</div>
           <NTooltip trigger="hover">
             <template #trigger>
-              <div class="truncate max-w-64">{{ employee?.office }}</div>
+              <div class="truncate max-w-64">{{ employee?.office?.title }}</div>
             </template>
             <div>
-              {{ employee?.office }}
+              {{ employee?.office?.title }}
             </div>
           </NTooltip>
         </div>
@@ -58,10 +58,10 @@
           <div class="text-base font-semibold text-secondary">Servizio</div>
           <NTooltip trigger="hover">
             <template #trigger>
-              <div class="truncate max-w-64">{{ employee?.service }}</div>
+              <div class="truncate max-w-64">{{ employee?.service?.title }}</div>
             </template>
             <div>
-              {{ employee?.service }}
+              {{ employee?.service?.title }}
             </div>
           </NTooltip>
         </div>
@@ -88,4 +88,6 @@
       default: () => {},
     },
   })
+
+  console.log(props.employee)
 </script>
