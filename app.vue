@@ -13,10 +13,6 @@
 <script setup>
   // import { NThemeEditor } from 'naive-ui'
   import { NConfigProvider, NMessageProvider } from 'naive-ui'
-  import { useAuthStore } from '~/stores/auth'
-
-  const auth = useAuthStore()
-  auth.loadToken()
 
   const themeOverrides = {
     Input: {
