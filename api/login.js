@@ -10,6 +10,7 @@ export const login = async (username, password) => {
       body: JSON.stringify({ username, password }),
     })
 
+    console.log(res)
     const data = await res.json()
     if (!res.ok) throw new Error(data.message)
     return data // contains token, user_email, user_nicename, etc.
