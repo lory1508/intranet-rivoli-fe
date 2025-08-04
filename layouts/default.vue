@@ -131,6 +131,7 @@
         </div>
         <div class="w-full h-full px-2 pb-4 ml-10">
           <NuxtPage />
+          <NBackTop />
         </div>
       </div>
     </div>
@@ -141,7 +142,7 @@
   // components
 
   import { menu, websiteIdentity } from '~/utils/staticData/menu.js'
-  import { NCollapse, NCollapseItem, NTooltip, NSpace, NDivider, NButton } from 'naive-ui'
+  import { NCollapse, NCollapseItem, NTooltip, NSpace, NDivider, NBackTop } from 'naive-ui'
   import { Icon } from '@iconify/vue'
   import { useHead } from '#imports'
   import { delay } from '~/utils/index.js'
