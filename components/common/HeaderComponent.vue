@@ -33,8 +33,8 @@
 
       <div v-if="showAlert" class="flex flex-row items-center gap-2 max-w-[400px]">
         <span class="relative flex w-3 h-3">
-          <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-amber-400"></span>
-          <span class="relative inline-flex w-3 h-3 rounded-full bg-amber-500"></span>
+          <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-amber-400" />
+          <span class="relative inline-flex w-3 h-3 rounded-full bg-amber-500" />
         </span>
         <NMarquee class="border-b-2 text-amber-600 border-amber-400">
           <div class="flex flex-row gap-2 px-4">
@@ -45,16 +45,16 @@
           </div>
         </NMarquee>
         <span class="relative flex w-3 h-3">
-          <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-amber-400"></span>
-          <span class="relative inline-flex w-3 h-3 rounded-full bg-amber-500"></span>
+          <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-amber-400" />
+          <span class="relative inline-flex w-3 h-3 rounded-full bg-amber-500" />
         </span>
       </div>
       <div class="flex flex-row items-center gap-2">
         <div class="flex flex-row items-center justify-end w-96">
           <div class="-mr-8 transition-all duration-500" :class="showSearch ? 'w-full' : 'w-0'">
             <NInput
-              class="z-10 flex items-center w-full h-12 rounded-l-full"
               v-model:value="search.query"
+              class="z-10 flex items-center w-full h-12 rounded-l-full"
               placeholder="Cerca..."
               @keyup.enter="runGlobalSearch"
             />

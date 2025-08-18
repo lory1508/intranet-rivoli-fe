@@ -31,13 +31,13 @@
             :key="link.slug"
             :href="link.href"
             target="_blank"
-            class="flex flex-row items-center w-full font-semibold text-white transition-all duration-300 rounded-xl hover:ring-2 hover:shadow-md ring-sky-300"
+            class="flex flex-row items-center font-semibold text-white rounded-xl"
           >
             <div
-              class="flex items-center w-full h-10 gap-2 pl-4 pr-4 text-xs bg-sky-700 rounded-l-xl"
+              class="flex items-center w-full h-10 px-4 text-xs transition-all duration-300 bg-sky-700 rounded-l-xl hover:bg-sky-600"
               :class="{ 'max-w-48': zoom <= 100 }"
             >
-              <NTooltip trigger="hover" class="w-full">
+              <NTooltip trigger="hover" class="w-fit">
                 <template #trigger>
                   <div class="truncate">{{ link?.title }}</div>
                 </template>

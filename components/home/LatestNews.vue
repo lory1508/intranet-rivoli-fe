@@ -15,7 +15,7 @@
         <Icon icon="solar:arrow-right-line-duotone" height="24" />
       </div>
     </div>
-    <div class="flex flex-wrap gap-4">
+    <div class="flex flex-wrap w-full gap-4">
       <NewsCard v-for="post in news" :key="post.slug" :post="post" />
     </div>
   </div>

@@ -15,10 +15,12 @@
           v-for="link in links"
           :key="link.slug"
           target="_blank"
-          class="flex flex-row items-center w-full font-semibold text-white transition-all duration-300 hover:cursor-pointer rounded-xl hover:ring-2 hover:shadow-md ring-sky-300"
+          class="flex flex-row items-center w-full font-semibold text-white hover:cursor-pointer rounded-xl"
           @click="goto(link.href)"
         >
-          <div class="flex items-center w-full h-10 gap-2 pl-4 pr-4 text-xs bg-cyan-700 rounded-l-xl">
+          <div
+            class="flex items-center w-full h-10 gap-2 pl-4 pr-4 text-xs transition-all duration-300 bg-cyan-700 rounded-l-xl hover:bg-cyan-600"
+          >
             {{ link.title }}
           </div>
           <div class="flex items-center h-10 px-2 bg-cyan-900 rounded-r-xl">
