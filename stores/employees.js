@@ -14,7 +14,7 @@ export const useEmployeeStore = defineStore('employees', {
       }
 
       try {
-        const res = await useFetch(`${WORDPRESS_BASE_URL}/employee`)
+        const res = await useFetch(`${WORDPRESS_BASE_URL}/employee?per_page=100`)
         this.employees = res?.data || []
         this.fetched = true
         return this.employees
@@ -36,9 +36,11 @@ export const useEmployeeStore = defineStore('employees', {
       }
     },
     async searchEmployees(query) {
+      console.log(query)
       if (!this.fetched || this.employees.length == 0) {
         await this.getEmployees()
       }
+      console.log(this.employees)
       return this.employees.filter((employee) => {
         const departmentIds = employee?.acf?.department ? employee?.acf?.department.map((dept) => dept.ID) : []
         const officeIds = employee?.acf?.office ? employee?.acf?.office.map((office) => office.ID) : []

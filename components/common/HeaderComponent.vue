@@ -1,8 +1,8 @@
 <template>
   <div
-    class="sticky top-0 z-50 flex flex-col-reverse items-start justify-between gap-8 pt-4 pb-2 pr-6 font-bold lg:flex-row backdrop-blur-sm text-primary"
+    class="sticky top-0 z-50 flex flex-col-reverse items-center justify-between gap-8 pr-6 font-bold lg:flex-row backdrop-blur-sm text-primary"
   >
-    <div class="flex flex-col-reverse items-start w-full gap-8 pr-6 lg:flex-row lg:justify-between">
+    <div class="flex flex-col-reverse items-center w-full gap-8 pr-6 lg:flex-row lg:justify-between">
       <div class="flex flex-col gap-1 w-fit">
         <div class="text-2xl capitalize">{{ title }}</div>
 
@@ -60,7 +60,7 @@
             />
           </div>
           <div
-            class="z-20 flex items-center justify-center transition-all duration-300 rounded-full h-14 w-14 hover:ring-4 hover:ring-sky-300 hover:scale-105 bg-secondary hover:cursor-pointer hover:rotate-180"
+            class="z-20 flex items-center justify-center my-2 transition-all duration-300 rounded-full h-14 w-14 hover:ring-4 hover:ring-sky-300 hover:scale-105 bg-secondary hover:cursor-pointer hover:rotate-180"
             @click="showSearch = !showSearch"
           >
             <Icon icon="solar:magnifer-bold-duotone" class="text-2xl text-white" />

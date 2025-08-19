@@ -14,6 +14,7 @@ export const ICON_FILE_TYPE = {
   'application/pdf': 'hugeicons:pdf-02',
   'application/doc': 'hugeicons:doc-02',
   'application/docx': 'hugeicons:doc-02',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'hugeicons:doc-02',
   'application/xlsx': 'hugeicons:xls-02',
   'application/zip': 'hugeicons:zip-02',
   'application/jpg': 'hugeicons:image-01',

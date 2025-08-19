@@ -94,12 +94,14 @@
       if (CUSTOM_POST_TYPES.includes(post.subtype)) await navigateTo(`${post.url}`, { id: post.id })
       else {
         const resPost = await getPostById(post.id, categories.value, tags.value)
-        if (resPost?.categories[0]?.link)
+        if (resPost?.categories[0]?.slug) {
+          const catSlug = resPost.categories[0].link.split('/').join('-').replace(/^-/, '')
           await navigateTo({
-            name: `${resPost.categories[0].link}-slug`,
+            name: `${catSlug}-slug`,
             params: { slug: resPost.slug },
             query: { id: post.id },
           })
+        }
       }
     } catch (error) {
       console.error(error)
