@@ -56,12 +56,13 @@
               v-model:value="search.query"
               class="z-10 flex items-center w-full h-12 rounded-l-full"
               placeholder="Cerca..."
+              ref="inputSearch"
               @keyup.enter="runGlobalSearch"
             />
           </div>
           <div
             class="z-20 flex items-center justify-center my-2 transition-all duration-300 rounded-full h-14 w-14 hover:ring-4 hover:ring-sky-300 hover:scale-105 bg-secondary hover:cursor-pointer hover:rotate-180"
-            @click="showSearch = !showSearch"
+            @click="toggleShowSearch"
           >
             <Icon icon="solar:magnifer-bold-duotone" class="text-2xl text-white" />
           </div>
@@ -96,6 +97,14 @@
   const showAlert = ref(false)
   const latestAlert = ref()
   const showSearch = ref(false)
+  const inputSearch = ref(null)
+
+  const toggleShowSearch = () => {
+    showSearch.value = !showSearch.value
+    if (showSearch.value) {
+      inputSearch.value.focus()
+    }
+  }
 
   const getLatestAlert = async () => {
     const res = await getAlert()
