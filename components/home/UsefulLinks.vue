@@ -31,11 +31,11 @@
             :key="link.slug"
             :href="link.href"
             target="_blank"
-            class="flex flex-row items-center font-semibold text-white rounded-xl"
+            class="flex flex-row items-center font-semibold text-white bg-pink-300 w-fit rounded-xl"
           >
             <div
-              class="flex items-center w-full h-10 px-4 text-xs transition-all duration-300 bg-sky-700 rounded-l-xl hover:bg-sky-600"
-              :class="{ 'max-w-48': zoom <= 100 }"
+              class="flex items-center h-10 px-4 text-xs transition-all duration-300 bg-sky-700 rounded-l-xl hover:bg-sky-600"
+              :class="zoom <= 100 && !monoColumn ? 'w-full max-w-48' : 'w-fit'"
             >
               <NTooltip trigger="hover" class="w-fit">
                 <template #trigger>
