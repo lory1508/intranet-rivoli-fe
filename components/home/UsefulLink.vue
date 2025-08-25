@@ -15,7 +15,6 @@
 
 <script setup>
   import { Icon } from '@iconify/vue'
-  import { useZoomWatcher } from '~/composables/useZoomWatcher'
 
   const props = defineProps({
     link: {
@@ -31,6 +30,4 @@
       default: false,
     },
   })
-
-  const { zoom } = useZoomWatcher()
 </script>

@@ -4,9 +4,38 @@
     <div v-else>
       <HeaderComponent title="Applicativi" :breadcrumb="breadcrumb" />
 
-      <!-- Link utili generali -->
-      <!-- <UsefulLinks :links="usefulLinks" :categories="usefulLinksCategories" class="w-full" mono-column /> -->
+      <!-- Ricerca -->
+      <div class="flex flex-col gap-4 py-4">
+        <div class="flex flex-col gap-1">
+          <NInputGroup class="w-64">
+            <NInput
+              v-model:value="search"
+              placeholder="Applicativo..."
+              round
+              clearable
+              @clear="resetSearch"
+              @keypress.enter="searchLinks"
+            />
+            <NButton type="info" secondary round @click="searchLinks">Cerca</NButton>
+          </NInputGroup>
+          <div class="ml-4 text-sm text-zinc-600">Ricerca l'applicativo che ti serve</div>
+        </div>
+        <div v-if="searched">
+          <div v-if="results.length" class="flex flex-col gap-2 mb-2">
+            <UsefulLink
+              v-for="res in results"
+              :key="res.slug"
+              :link="res"
+              :categories="usefulLinksCategories"
+              vertical
+            />
+          </div>
+          <NEmpty v-else description="Nessun risultato trovato" class="w-fit" />
+          <div class="h-[2px] bg-zinc-300 rounded-full" />
+        </div>
+      </div>
 
+      <!-- Lista Completa Applicativi -->
       <NCollapse class="pt-2" accordion>
         <NCollapseItem v-for="type in usefulLinksCategories" :key="type.slug" class="pb-2 border-b-2 border-zinc-300">
           <template #header>
@@ -33,14 +62,16 @@
   import HeaderComponent from '~/components/common/HeaderComponent.vue'
   import LoaderComponent from '~/components/common/LoaderComponent.vue'
 
-  import UsefulLinks from '~/components/home/UsefulLinks.vue'
   import UsefulLink from '~/components/home/UsefulLink.vue'
   import { getExternalLinks } from '~/api/externalLinks'
-  import { NCollapse } from 'naive-ui'
+  import { NCollapse, NDivider, NInputGroup } from 'naive-ui'
 
   const loading = ref(false)
   const usefulLinks = ref([])
   const usefulLinksCategories = ref([])
+  const search = ref(null)
+  const searched = ref(false)
+  const results = ref([])
 
   const breadcrumb = ref([
     {
@@ -52,6 +83,19 @@
       slug: '/applicativi',
     },
   ])
+
+  const searchLinks = () => {
+    if (search.value) {
+      searched.value = true
+      results.value = usefulLinks.value.filter((link) => link.title.toLowerCase().includes(search.value.toLowerCase()))
+    }
+  }
+
+  const resetSearch = () => {
+    search.value = null
+    searched.value = false
+    results.value = []
+  }
 
   onMounted(async () => {
     try {
