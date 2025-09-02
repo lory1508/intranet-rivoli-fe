@@ -3,30 +3,32 @@
     class="sticky top-0 z-50 flex flex-col-reverse items-center justify-between gap-8 pr-6 font-bold lg:flex-row backdrop-blur-sm text-primary"
   >
     <div class="flex flex-col-reverse items-center w-full gap-8 pr-6 lg:flex-row lg:justify-between">
-      <div class="flex flex-col gap-1 w-fit">
-        <div class="text-2xl capitalize">{{ title }}</div>
+      <div class="flex flex-row items-center gap-4">
+        <div class="flex flex-col gap-1 w-fit">
+          <div class="text-2xl capitalize">{{ title }}</div>
 
-        <!-- Breadcrumbs -->
-        <div class="flex flex-row gap-1 text-sm font-normal">
-          <div
-            v-for="item in breadcrumb"
-            class="flex"
-            :key="item.slug"
-            :class="{
-              'text-secondary': item.slug !== breadcrumb[breadcrumb.length - 1].slug,
-            }"
-          >
+          <!-- Breadcrumbs -->
+          <div class="flex flex-row gap-1 text-sm font-normal">
             <div
-              v-if="item.slug !== breadcrumb[breadcrumb.length - 1].slug"
-              @click="goTo(item.slug)"
-              class="hover:cursor-pointer"
+              v-for="item in breadcrumb"
+              class="flex"
+              :key="item.slug"
+              :class="{
+                'text-secondary': item.slug !== breadcrumb[breadcrumb.length - 1].slug,
+              }"
             >
-              {{ item.title }}
+              <div
+                v-if="item.slug !== breadcrumb[breadcrumb.length - 1].slug"
+                @click="goTo(item.slug)"
+                class="hover:cursor-pointer"
+              >
+                {{ item.title }}
+              </div>
+              <div v-else class="text-zinc-500">
+                <div class="truncate max-w-80">{{ item.title }}</div>
+              </div>
+              <span v-if="item.slug !== breadcrumb[breadcrumb.length - 1].slug" class="px-2 text-zinc-500">/</span>
             </div>
-            <div v-else class="text-zinc-500">
-              <div class="truncate max-w-80">{{ item.title }}</div>
-            </div>
-            <span v-if="item.slug !== breadcrumb[breadcrumb.length - 1].slug" class="px-2 text-zinc-500">/</span>
           </div>
         </div>
       </div>

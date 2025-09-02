@@ -8,14 +8,31 @@ export const useEmployeeStore = defineStore('employees', {
     fetched: false,
   }),
   actions: {
-    async getEmployees() {
-      if (this.fetched && this.employees.length > 0) {
+    async getEmployees(query, pagination) {
+      if (this.employees.length > 0) {
         return this.employees
       }
 
       try {
-        const res = await useFetch(`${WORDPRESS_BASE_URL}/employee?per_page=100`)
-        this.employees = res?.data || []
+        let params = ''
+        if (pagination) params += `per_page=${pagination.perPage}&page=${pagination.page}`
+        else params += `per_page=100&page=1`
+
+        if (query?.department) params += `&department=${query?.department}`
+        if (query?.office) params += `&office=${query?.office}`
+        if (query?.service) params += `&service=${query?.service}`
+
+        const res = await $fetch.raw(`${WORDPRESS_BASE_URL}/employee?${params}`)
+
+        this.employees = {
+          data: res._data || [],
+          pagination: {
+            total: res.headers.get('x-wp-total'),
+            totalPages: res.headers.get('x-wp-totalpages'),
+            page: pagination?.page || 1,
+          },
+        }
+
         this.fetched = true
         return this.employees
       } catch (err) {
@@ -35,25 +52,9 @@ export const useEmployeeStore = defineStore('employees', {
         throw err
       }
     },
-    async searchEmployees(query) {
-      console.log(query)
-      if (!this.fetched || this.employees.length == 0) {
-        await this.getEmployees()
-      }
-      console.log(this.employees)
-      return this.employees.filter((employee) => {
-        const departmentIds = employee?.acf?.department ? employee?.acf?.department.map((dept) => dept.ID) : []
-        const officeIds = employee?.acf?.office ? employee?.acf?.office.map((office) => office.ID) : []
-        const serviceIds = employee?.acf?.service ? employee?.acf?.service.map((service) => service.ID) : []
-
-        return (
-          employee?.title?.rendered.toLowerCase().includes(query?.query?.toLowerCase()) ||
-          employee?.acf?.phone.toLowerCase().includes(query?.query?.toLowerCase()) ||
-          departmentIds.includes(Number(query?.department)) ||
-          officeIds.includes(Number(query?.office)) ||
-          serviceIds.includes(Number(query?.service))
-        )
-      })
+    async searchEmployees(query, pagination) {
+      await this.getEmployees(query, pagination)
+      return this.employees
     },
     setEmployees(employeeArray) {
       this.employees = employeeArray

@@ -3,7 +3,7 @@
     <div class="flex flex-row p-2 from-zinc-100 to-zinc-200 bg-gradient-to-b">
       <div class="fixed flex h-full pb-6">
         <div
-          class="text-white transition-all duration-300 shadow-lg rounded-2xl from-red-800 to-red-600 bg-gradient-to-b shadow-zinc-300"
+          class="z-40 text-white transition-all duration-300 shadow-lg rounded-2xl from-red-800 to-red-600 bg-gradient-to-b shadow-zinc-300"
           :class="{
             'w-24': collapsed,
             'w-72': !collapsed,

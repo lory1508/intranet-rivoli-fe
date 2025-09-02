@@ -44,3 +44,18 @@ export const slugify = (text) => {
     .replace(/^-+/, '') // Trim - from start of text
     .replace(/-+$/, '') // Trim - from end of text
 }
+
+export const capitalizeFirstLetter = (val) => {
+  if (val) return String(val).charAt(0).toUpperCase() + String(val).slice(1)
+  else return ''
+}
+
+export const capitalizeSentence = (val) => {
+  if (val) {
+    const splitStr = val.toLowerCase().split(' ')
+    for (let i = 0; i < splitStr.length; i++) {
+      splitStr[i] = capitalizeFirstLetter(splitStr[i])
+    }
+    return splitStr.join(' ')
+  } else return ''
+}
