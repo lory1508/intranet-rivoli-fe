@@ -13,7 +13,7 @@ export const useOfficeStore = defineStore('offices', {
       }
 
       try {
-        const res = await useFetch(`${WORDPRESS_BASE_URL}/office`)
+        const res = await useFetch(`${WORDPRESS_BASE_URL}/office?per_page=100`)
         this.offices = res?.data || []
         this.fetched = true
         return this.offices

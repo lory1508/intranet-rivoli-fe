@@ -14,7 +14,7 @@ export const useServiceStore = defineStore('services', {
       }
 
       try {
-        const res = await useFetch(`${WORDPRESS_BASE_URL}/service`)
+        const res = await useFetch(`${WORDPRESS_BASE_URL}/service?per_page=100`)
         this.services = res?.data || []
         this.fetched = true
         return this.services

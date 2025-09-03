@@ -21,6 +21,7 @@ export const useEmployeeStore = defineStore('employees', {
         if (query?.department) params += `&department=${query?.department}`
         if (query?.office) params += `&office=${query?.office}`
         if (query?.service) params += `&service=${query?.service}`
+        if (query?.query) params += `&search=${query?.query}`
 
         const res = await $fetch.raw(`${WORDPRESS_BASE_URL}/employee?${params}`)
 
