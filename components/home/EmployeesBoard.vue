@@ -51,7 +51,7 @@
   onMounted(async () => {
     const categories = await categoriesStore.getCategories()
     const tags = await tagsStore.getTags()
-    const res = await getPosts({ categories: ['news'], limit: 3 }, categories, tags)
+    const res = await getPosts({ categories: ['bacheca-dipendenti'], limit: 3 }, categories, tags)
     news.value = res.posts
     pagination.value = res.pagination
   })

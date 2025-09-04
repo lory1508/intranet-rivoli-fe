@@ -5,9 +5,9 @@
       <HeaderComponent title="Applicativi" :breadcrumb="breadcrumb" />
 
       <!-- Ricerca -->
-      <div class="flex flex-col gap-4 py-4">
+      <div class="flex flex-col py-4">
         <div class="flex flex-col gap-1">
-          <NInputGroup class="w-64">
+          <NInputGroup ref="inputGroupRef" class="w-64">
             <NInput
               v-model:value="search"
               placeholder="Applicativo..."
@@ -18,7 +18,12 @@
             />
             <NButton type="info" secondary round @click="searchLinks">Cerca</NButton>
           </NInputGroup>
-          <div class="ml-4 text-sm text-zinc-600">Ricerca l'applicativo che ti serve</div>
+          <div
+            class="mt-1 ml-4 text-xs font-semibold transition-all duration-300 text-sky-500"
+            :class="isHovered ? 'opacity-100' : 'opacity-0'"
+          >
+            Ricerca l'applicativo che ti serve
+          </div>
         </div>
         <div v-if="searched">
           <div v-if="results.length" class="flex flex-col gap-2 mb-2">
@@ -64,7 +69,8 @@
 
   import UsefulLink from '~/components/home/UsefulLink.vue'
   import { getExternalLinks } from '~/api/externalLinks'
-  import { NCollapse, NDivider, NInputGroup } from 'naive-ui'
+  import { NCollapse, NInputGroup } from 'naive-ui'
+  import { useElementHover } from '@vueuse/core'
 
   const loading = ref(false)
   const usefulLinks = ref([])
@@ -72,6 +78,8 @@
   const search = ref(null)
   const searched = ref(false)
   const results = ref([])
+  const inputGroupRef = ref(null)
+  const isHovered = useElementHover(inputGroupRef)
 
   const breadcrumb = ref([
     {
