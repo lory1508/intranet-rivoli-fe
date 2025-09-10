@@ -5,8 +5,8 @@
       <HeaderComponent :title="post.title" :breadcrumb="breadcrumb" />
 
       <!-- Tags -->
-      <div v-if="post.tags?.length" class="flex flex-row gap-2">
-        <TagComponent v-for="tag in post.tags" :key="tag.slug" :tag="tag" color="indigo" />
+      <div v-if="post.tags?.length" class="flex flex-row gap-2 mt-2">
+        <TagComponent v-for="tag in post.tags" :key="tag.slug" :tag="tag" color="rose" />
       </div>
 
       <!-- Content -->
@@ -14,7 +14,7 @@
 
       <!-- Attachments -->
       <div v-if="post?.attachment?.id" class="flex flex-col gap-2">
-        <div class="text-xl font-semibold text-secondary">Allegato</div>
+        <div class="text-xl font-semibold text-primary">Allegato</div>
         <AttachmentComponent
           :title="post?.attachment?.title"
           :url="post?.attachment?.url"

@@ -1,11 +1,9 @@
 <template>
-  <div
-    class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-indigo-50 text-darkAccent border-secondaryLight shadow-zinc-300"
-  >
+  <div class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-zinc-100 text-primary shadow-zinc-300">
     <div class="flex flex-row items-center justify-between pb-2">
       <div class="flex flex-row gap-2">
         <Icon :icon="icon" height="32" />
-        <div class="text-xl">{{ title }}</div>
+        <div class="text-xl font-semibold">{{ title }}</div>
       </div>
     </div>
     <div class="flex flex-wrap items-stretch gap-1">
@@ -14,7 +12,7 @@
         v-for="tool in tools"
         v-else
         :key="tool.slug"
-        class="flex flex-col items-center justify-start gap-1 p-2 text-white transition-all duration-300 bg-opacity-75 border h-fit border-secondary rounded-2xl bg-secondary hover:ring-2 hover:ring-secondary hover:shadow-md hover:cursor-pointer"
+        class="flex flex-col items-center justify-start gap-1 p-2 text-white transition-all duration-300 bg-opacity-75 border h-fit border-primary rounded-2xl bg-primary hover:ring-2 hover:ring-primary hover:shadow-md hover:cursor-pointer"
       >
         <a :href="tool.href" target="_blank">
           <Icon :icon="tool.icon" height="36" />

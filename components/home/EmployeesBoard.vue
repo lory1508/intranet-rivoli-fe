@@ -1,15 +1,13 @@
 <template>
   <div class="flex flex-col gap-2">
-    <div
-      class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-indigo-50 text-darkAccent border-secondaryLight shadow-zinc-300"
-    >
+    <div class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-zinc-100 text-primary shadow-zinc-300">
       <div v-if="icon || title" class="flex flex-row items-center justify-between pb-2">
         <div class="flex flex-row gap-2">
           <Icon v-if="icon" :icon="icon" height="32" />
-          <div v-if="title" class="text-xl">{{ title }}</div>
+          <div v-if="title" class="text-xl font-semibold">{{ title }}</div>
         </div>
         <div
-          class="flex flex-row items-center gap-2 px-2 py-1 text-sm font-semibold tracking-widest text-white uppercase transition-all duration-300 rounded-lg bg-secondary hover:cursor-pointer hover:bg-blue-500"
+          class="flex flex-row items-center gap-2 px-2 py-1 text-sm font-semibold tracking-widest text-white uppercase transition-all duration-300 rounded-lg bg-primary hover:cursor-pointer hover:bg-opacity-90"
           @click="$router.push('/bacheca-dipendenti')"
         >
           tutti gli avvisi

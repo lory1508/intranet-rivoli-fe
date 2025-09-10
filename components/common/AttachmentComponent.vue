@@ -1,9 +1,9 @@
 <template>
   <div
-    class="flex flex-col items-center gap-4 transition-all duration-300 bg-white border rounded-lg h-fit w-fit max-w-72 border-secondaryLight hover:shadow-lg"
+    class="flex flex-col items-center gap-4 transition-all duration-300 bg-white border rounded-lg h-fit w-fit max-w-72 border-zinc-200 hover:shadow-lg"
   >
     <div class="flex flex-row items-center w-full gap-4 px-2 pt-2">
-      <Icon :icon="ICON_FILE_TYPE[props.type]" height="36" class="w-24 text-secondary" />
+      <Icon :icon="ICON_FILE_TYPE[props.type]" height="36" class="w-24 text-primary" />
       <div class="flex flex-col gap-1 overflow-hidden text-ellipsis">
         <NTooltip trigger="hover">
           <template #trigger>
@@ -33,7 +33,7 @@
     </div>
 
     <div
-      class="flex items-center justify-center w-full h-full py-1 transition-all duration-300 rounded-b-lg bg-secondary hover:cursor-pointer hover:bg-blue-800"
+      class="flex items-center justify-center w-full h-full py-1 transition-all duration-300 rounded-b-lg bg-primary bg-opacity-90 hover:cursor-pointer hover:bg-opacity-95"
       @click="goToAttachment"
     >
       <Icon icon="material-symbols:download-rounded" height="36" class="h-full text-white" />

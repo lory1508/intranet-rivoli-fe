@@ -14,7 +14,7 @@
               class="flex"
               :key="item.slug"
               :class="{
-                'text-secondary': item.slug !== breadcrumb[breadcrumb.length - 1].slug,
+                'text-primary': item.slug !== breadcrumb[breadcrumb.length - 1].slug,
               }"
             >
               <div
@@ -38,7 +38,7 @@
           <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-amber-400" />
           <span class="relative inline-flex w-3 h-3 rounded-full bg-amber-500" />
         </span>
-        <NMarquee class="border-b-2 text-amber-600 border-amber-400">
+        <NMarquee class="border-b-2 text-zinc-800 border-amber-400">
           <div class="flex flex-row gap-2 px-4">
             <Icon icon="hugeicons:alert-02" height="24" />
             <span class="whitespace-nowrap">
@@ -63,7 +63,7 @@
             />
           </div>
           <div
-            class="z-20 flex items-center justify-center my-2 transition-all duration-300 rounded-full h-14 w-14 hover:ring-4 hover:ring-sky-300 hover:scale-105 bg-secondary hover:cursor-pointer hover:rotate-180"
+            class="z-20 flex items-center justify-center my-2 transition-all duration-300 rounded-full h-14 w-14 hover:ring-4 hover:ring-red-300 hover:scale-105 bg-primary hover:cursor-pointer hover:rotate-180"
             @click="toggleShowSearch"
           >
             <Icon icon="solar:magnifer-bold-duotone" class="text-2xl text-white" />

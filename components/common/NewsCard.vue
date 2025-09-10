@@ -5,16 +5,14 @@
   >
     <div class="flex flex-col h-full gap-2" :class="vertical ? 'p-4' : ''">
       <!-- Title -->
-      <span class="font-semibold text-secondary hover:cursor-pointer" @click="goToNews(post.slug)">{{
-        post.title
-      }}</span>
+      <span class="font-semibold text-primary hover:cursor-pointer" @click="goToNews(post.slug)">{{ post.title }}</span>
 
       <!-- Excerpt -->
       <div v-if="!hideContent" v-html="post.excerpt" />
 
       <div class="flex flex-col items-start gap-2">
         <!-- Attachment -->
-        <div v-if="post?.attachment?.id" class="flex flex-row items-center gap-1 text-secondary">
+        <div v-if="post?.attachment?.id" class="flex flex-row items-center gap-1 text-primary">
           <Icon icon="solar:paperclip-bold" width="20" />
           <NTooltip trigger="hover">
             <template #trigger>
@@ -46,17 +44,17 @@
       </div>
     </div>
 
-    <div v-if="vertical" class="w-full px-4 text-sm text-secondary text-end">Creato il {{ post.createdAt }}</div>
+    <div v-if="vertical" class="w-full px-4 text-sm text-primary text-end">Creato il {{ post.createdAt }}</div>
     <div class="flex flex-row items-end justify-between">
       <!-- Btn -->
       <div
-        class="flex items-center justify-center font-semibold tracking-widest text-white uppercase transition-all duration-300 cursor-pointer bg-secondary hover:bg-blue-600"
+        class="flex items-center justify-center font-semibold tracking-widest text-white uppercase transition-all duration-300 cursor-pointer bg-primary bg-opacity-90 hover:bg-opacity-95"
         :class="vertical ? 'rounded-b-xl w-full py-4' : 'w-48 py-2 rounded-lg hover:shadow-md '"
         @click="goToNews(post.slug)"
       >
         Leggi di più
       </div>
-      <div v-if="!vertical" class="w-full px-4 text-sm text-secondary text-end">Creato il {{ post.createdAt }}</div>
+      <div v-if="!vertical" class="w-full px-4 text-sm text-primary text-end">Creato il {{ post.createdAt }}</div>
     </div>
   </div>
 </template>

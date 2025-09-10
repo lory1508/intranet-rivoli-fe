@@ -1,10 +1,8 @@
 <template>
-  <div
-    class="flex flex-col gap-2 p-4 bg-white rounded-lg shadow-md min-w-80 text-darkAccent border-secondaryLight shadow-zinc-300 h-fit"
-  >
+  <div class="flex flex-col gap-2 p-4 bg-white rounded-lg shadow-md min-w-80 text-primary shadow-zinc-300 h-fit">
     <div class="flex flex-row gap-2 pb-2">
       <Icon :icon="icon" height="32" />
-      <div class="text-xl">{{ title }}</div>
+      <div class="text-xl font-semibold">{{ title }}</div>
     </div>
 
     <div class="flex flex-col gap-2">
@@ -40,7 +38,7 @@
         />
       </div>
     </div>
-    <n-button strong secondary type="info" @click="runSearch">
+    <n-button strong secondary type="error" @click="runSearch">
       Cerca
       <template #icon>
         <n-icon>

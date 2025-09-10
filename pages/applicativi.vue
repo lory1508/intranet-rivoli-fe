@@ -16,10 +16,10 @@
               @clear="resetSearch"
               @keypress.enter="searchLinks"
             />
-            <NButton type="info" secondary round @click="searchLinks">Cerca</NButton>
+            <NButton type="error" secondary round @click="searchLinks">Cerca</NButton>
           </NInputGroup>
           <div
-            class="mt-1 ml-4 text-xs font-semibold transition-all duration-300 text-sky-500"
+            class="mt-1 ml-4 text-xs font-semibold transition-all duration-300 text-primary"
             :class="isHovered ? 'opacity-100' : 'opacity-0'"
           >
             Ricerca l'applicativo che ti serve
@@ -42,9 +42,13 @@
 
       <!-- Lista Completa Applicativi -->
       <NCollapse class="pt-2" accordion>
-        <NCollapseItem v-for="type in usefulLinksCategories" :key="type.slug" class="pb-2 border-b-2 border-zinc-300">
+        <NCollapseItem
+          v-for="type in usefulLinksCategories"
+          :key="type.slug"
+          class="pb-2 border-b-2 border-zinc-300 !border-t-0"
+        >
           <template #header>
-            <div class="text-lg font-semibold text-secondary">{{ type.title }}</div>
+            <div class="text-lg font-semibold text-primary">{{ type.title }}</div>
           </template>
           <div class="grid gap-2">
             <div class="flex flex-col gap-2">

@@ -9,9 +9,9 @@
           :key="post.id"
           class="flex flex-col transition-all duration-300 bg-white border rounded-md w-80 hover:shadow-md hover:scale-105 border-zinc-200"
         >
-          <div class="h-full p-2 text-lg font-semibold text-secondary">{{ post.title }}</div>
+          <div class="h-full p-2 text-lg font-semibold text-primary">{{ post.title }}</div>
           <div
-            class="bottom-0 px-2 py-3 font-semibold text-center text-white transition-all duration-300 rounded-b-lg cursor-pointer h-fit bg-secondary hover:cursor-pointer hover:bg-blue-800"
+            class="bottom-0 px-2 py-3 font-semibold text-center text-white transition-all duration-300 rounded-b-lg cursor-pointer h-fit bg-primary hover:cursor-pointer hover:bg-opacity-95 bg-opacity-90"
             @click="goToPost(post)"
           >
             Apri dettaglio
@@ -20,23 +20,27 @@
       </div>
 
       <div v-if="employees.length" class="flex flex-col gap-2 pt-4">
-        <div class="text-xl font-semibold text-secondary">Dipendenti</div>
-        <div v-for="employee in employees" :key="employee.id">
-          <EmployeeCard :employee="employee" />
+        <div class="text-xl font-semibold text-primary">Dipendenti</div>
+        <div class="flex flex-wrap gap-2">
+          <div v-for="employee in employees" :key="employee.id">
+            <EmployeeCard :employee="employee" />
+          </div>
         </div>
       </div>
 
       <div v-if="media.length" class="flex flex-col gap-2 pt-4">
-        <div class="text-xl font-semibold text-secondary">Media</div>
-        <div v-for="m in media" :key="m.id">
-          <AttachmentComponent
-            :title="m.title"
-            :url="m.url"
-            :type="m.type"
-            :size="m.size"
-            :categories="m.categories"
-            :tags="m.tags"
-          />
+        <div class="text-xl font-semibold text-primary">Media</div>
+        <div class="flex flex-wrap gap-2">
+          <div v-for="m in media" :key="m.id">
+            <AttachmentComponent
+              :title="m.title"
+              :url="m.url"
+              :type="m.type"
+              :size="m.size"
+              :categories="m.categories"
+              :tags="m.tags"
+            />
+          </div>
         </div>
       </div>
     </div>

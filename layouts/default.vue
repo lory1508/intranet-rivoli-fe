@@ -1,9 +1,9 @@
 <template>
   <NSpace vertical size="large">
-    <div class="flex flex-row p-2 from-zinc-100 to-zinc-200 bg-gradient-to-b">
+    <div class="flex flex-row p-2 from-zinc-200 to-zinc-300 bg-gradient-to-b">
       <div class="fixed flex h-full pb-6">
         <div
-          class="z-40 text-white transition-all duration-300 shadow-lg rounded-2xl from-red-800 to-red-600 bg-gradient-to-b shadow-zinc-300"
+          class="z-40 text-white transition-all duration-300 shadow-lg rounded-2xl from-zinc-600 to-zinc-500 bg-gradient-to-b shadow-zinc-300"
           :class="{
             'w-24': collapsed,
             'w-72': !collapsed,
@@ -122,7 +122,7 @@
           <Icon
             icon="solar:alt-arrow-right-linear"
             height="36"
-            class="fixed z-50 transition-all duration-500 ease-in-out border-2 rounded-full cursor-pointer bg-neutralLight border-primary"
+            class="fixed z-50 text-white transition-all duration-500 ease-in-out border-2 border-opacity-75 rounded-full cursor-pointer bg-primary border-primary"
             :class="{
               'scale-x-[-1]': !collapsed,
             }"
@@ -150,7 +150,6 @@
   const router = useRouter()
   const route = useRoute()
 
-  const userLoggedIn = ref(false)
   const subMenusCollapsed = ref([])
   const collapsed = ref(false)
   const showLabels = ref(true)

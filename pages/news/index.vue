@@ -19,7 +19,7 @@
         />
       </div>
       <div
-        class="flex flex-col w-full gap-1 p-4 border border-indigo-200 xl:w-1/3 h-fit bg-indigo-50 text-darkAccent shadow-zinc-300 rounded-xl"
+        class="flex flex-col w-full gap-1 p-4 border bg-zinc-100 border-zinc-200 xl:w-1/3 h-fit text-primary shadow-zinc-300 rounded-xl"
       >
         <n-input
           v-model:value="filters.search"
@@ -37,7 +37,7 @@
           clearable
         />
         <n-select v-model:value="filters.tags" :options="optionsTags" placeholder="Tag" filterable multiple clearable />
-        <n-button strong secondary type="info" @click="runSearch">
+        <n-button strong secondary type="error" @click="runSearch">
           Cerca
           <template #icon>
             <n-icon>
