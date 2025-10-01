@@ -9,6 +9,15 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   css: ['~/assets/css/main.css'],
 
+  app: {
+    head: {
+      title: 'Intranet Città di Rivoli',
+      htmlAttrs: {
+        lang: 'it',
+      },
+    },
+  },
+
   postcss: {
     plugins: {
       tailwindcss: {},
