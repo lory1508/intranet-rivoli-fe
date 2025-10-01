@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-2 p-4 bg-white rounded-lg shadow-md min-w-80 text-primary shadow-zinc-300 h-fit">
-    <div class="flex flex-row gap-2 pb-2">
+    <div class="flex flex-row items-center justify-center gap-2 pb-2">
       <Icon :icon="icon" height="32" />
       <div class="text-xl font-semibold">{{ title }}</div>
     </div>
@@ -38,14 +38,7 @@
         />
       </div>
     </div>
-    <n-button strong secondary type="error" @click="runSearch">
-      Cerca
-      <template #icon>
-        <n-icon>
-          <Icon icon="solar:magnifer-line-duotone" height="24" />
-        </n-icon>
-      </template>
-    </n-button>
+    <Button title="Cerca" icon="solar:magnifer-line-duotone" @clicked="runSearch" />
   </div>
 </template>
 
@@ -59,6 +52,7 @@
   import { useDepartmentStore } from '~/stores/departments'
   import { useOfficeStore } from '~/stores/offices'
   import { useServiceStore } from '~/stores/services'
+  import Button from '~/components/common/Button.vue'
 
   const emits = defineEmits(['search'])
   const props = defineProps({

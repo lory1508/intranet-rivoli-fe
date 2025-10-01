@@ -5,7 +5,14 @@
   >
     <div class="flex flex-col h-full gap-2" :class="vertical ? 'p-4' : ''">
       <!-- Title -->
-      <span class="font-semibold text-primary hover:cursor-pointer" @click="goToNews(post.slug)">{{ post.title }}</span>
+      <span class="text-lg font-semibold text-primary hover:cursor-pointer" @click="goToNews(post.slug)">
+        {{ post.title }}
+      </span>
+
+      <!-- Dates -->
+      <div v-if="post.start && post.end" class="flex flex-row items-center gap-1 font-semibold">
+        {{ post.start }} <Icon icon="solar:arrow-right-linear" width="20" /> {{ post.end }}
+      </div>
 
       <!-- Excerpt -->
       <div v-if="!hideContent" v-html="post.excerpt" />
@@ -37,14 +44,9 @@
           </div>
         </div>
       </div>
-
-      <!-- Dates -->
-      <div v-if="post.start && post.end" class="flex flex-row items-center gap-1 font-semibold">
-        {{ post.start }} <Icon icon="solar:arrow-right-linear" width="20" /> {{ post.end }}
-      </div>
     </div>
 
-    <div v-if="vertical" class="w-full px-4 text-sm text-primary text-end">Creato il {{ post.createdAt }}</div>
+    <!-- <div v-if="vertical" class="w-full px-4 text-sm text-primary text-end">Creato il {{ post.createdAt }}</div> -->
     <div class="flex flex-row items-end justify-between">
       <!-- Btn -->
       <div
