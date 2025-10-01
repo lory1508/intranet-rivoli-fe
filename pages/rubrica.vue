@@ -10,7 +10,7 @@
           <NRadioButton value="table" label="Vista a tabella" />
         </NRadioGroup>
       </div>
-      <div class="flex flex-row justify-between w-10/12 gap-4">
+      <div class="flex flex-row justify-between w-full gap-4">
         <NEmpty
           v-if="employeesData.length === 0"
           description="Nessun risultato trovato"
