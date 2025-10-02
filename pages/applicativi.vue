@@ -112,7 +112,7 @@
   onMounted(async () => {
     try {
       loading.value = true
-      usefulLinks.value = await getExternalLinks()
+      usefulLinks.value = (await getExternalLinks()).sort((a, b) => (a.title > b.title ? 1 : -1))
       const tmpCats = [...new Set(usefulLinks.value.map((link) => link.slugType))]
       tmpCats.forEach((cat) => {
         usefulLinksCategories.value.push({
@@ -120,6 +120,7 @@
           slug: cat,
         })
       })
+      usefulLinksCategories.value.sort((a, b) => (a.title > b.title ? 1 : -1))
     } catch (error) {
       console.error(error)
     } finally {
