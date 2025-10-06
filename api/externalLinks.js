@@ -56,7 +56,7 @@ export const getExternalLinks = async (onlyHighlight = false) => {
 export const getExternalLinksByType = async (type, onlyHighlight = false) => {
   try {
     const externalLinks = await getExternalLinks(onlyHighlight)
-    return externalLinks.filter((externalLink) => externalLink.slugType === type)
+    return externalLinks.filter((externalLink) => externalLink.slugType.includes(type))
   } catch (err) {
     console.error(err)
   }
