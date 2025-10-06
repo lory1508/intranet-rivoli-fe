@@ -1,6 +1,9 @@
 <template>
   <div v-if="icon || title" class="flex flex-row items-center justify-between text-neutralDark">
-    <div class="flex flex-row gap-2">
+    <div
+      class="flex flex-row gap-2"
+      :class="{ 'w-full text-center justify-center': !(buttonTitle && buttonDestination) }"
+    >
       <Icon v-if="icon" :icon="icon" height="32" />
       <div v-if="title" class="text-xl font-semibold">{{ title }}</div>
     </div>
