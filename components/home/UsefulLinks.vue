@@ -12,7 +12,7 @@
             'grid-cols-1 w-fit': zoom > 100,
           }"
         >
-          <div v-for="link in links.filter((link) => link.slugType === type.slug)" :key="link.slug">
+          <div v-for="link in links.filter((link) => link.slugType.includes(type.slug))" :key="link.slug">
             <Button
               :title="link.title"
               color="gray"

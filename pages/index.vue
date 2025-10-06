@@ -110,15 +110,25 @@
       loading.value = true
 
       personalTools.value = await getExternalLinksByType('strumenti-personali')
-      const tmpLinks = await getExternalLinks(true)
-      usefulLinks.value = tmpLinks.filter((link) => link.slugType !== 'strumenti-personali')
-      const tmpCats = [...new Set(usefulLinks.value.map((link) => link.slugType))]
-      tmpCats.forEach((cat) => {
-        usefulLinksCategories.value.push({
-          title: tmpLinks.find((link) => link.slugType === cat).type,
-          slug: cat,
-        })
-      })
+
+      usefulLinks.value = (await getExternalLinks(true))
+        .filter((link) => link.slugType !== 'strumenti-personali')
+        .sort((a, b) => (a.title > b.title ? 1 : -1))
+      usefulLinksCategories.value = Array.from(
+        new Map(
+          usefulLinks.value
+            // flatten type/slugType pairs
+            .flatMap((item) =>
+              item.type.map((t, i) => ({
+                title: t,
+                slug: item.slugType[i],
+              }))
+            )
+            // remove duplicates by slug
+            .map((obj) => [obj.slug, obj])
+        ).values()
+      )
+      usefulLinksCategories.value.sort((a, b) => a.title.localeCompare(b.title))
     } catch (error) {
       console.error(error)
     } finally {

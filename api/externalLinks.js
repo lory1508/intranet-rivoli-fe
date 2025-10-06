@@ -17,12 +17,17 @@ export const getExternalLinks = async (onlyHighlight = false) => {
     const res = await useFetch(`${WORDPRESS_BASE_URL}/external-link?per_page=100`)
     const externalLinks = res?.data?.value
       .map((el) => {
+        const slugTypes = []
+        const types = el?.acf?.type || []
+        types.forEach((type) => {
+          slugTypes.push(slugify(type))
+        })
         return {
           title: el.title.rendered,
           icon: el?.acf?.icon || '',
           href: el?.acf?.url,
-          type: el?.acf?.type || '',
-          slugType: slugify(el?.acf?.type),
+          type: types,
+          slugType: slugTypes,
           slug: el?.slug,
           highlight: el?.acf?.highlight,
         }

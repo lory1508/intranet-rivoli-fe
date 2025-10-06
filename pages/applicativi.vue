@@ -53,7 +53,7 @@
           <div class="grid gap-2">
             <div class="flex flex-col gap-2">
               <UsefulLink
-                v-for="link in usefulLinks.filter((link) => link.slugType === type.slug)"
+                v-for="link in usefulLinks.filter((link) => link.slugType.includes(type.slug))"
                 :key="link.slug"
                 :link="link"
                 :categories="usefulLinksCategories"
@@ -113,14 +113,21 @@
     try {
       loading.value = true
       usefulLinks.value = (await getExternalLinks()).sort((a, b) => (a.title > b.title ? 1 : -1))
-      const tmpCats = [...new Set(usefulLinks.value.map((link) => link.slugType))]
-      tmpCats.forEach((cat) => {
-        usefulLinksCategories.value.push({
-          title: usefulLinks.value.find((link) => link.slugType === cat).type,
-          slug: cat,
-        })
-      })
-      usefulLinksCategories.value.sort((a, b) => (a.title > b.title ? 1 : -1))
+      usefulLinksCategories.value = Array.from(
+        new Map(
+          usefulLinks.value
+            // flatten type/slugType pairs
+            .flatMap((item) =>
+              item.type.map((t, i) => ({
+                title: t,
+                slug: item.slugType[i],
+              }))
+            )
+            // remove duplicates by slug
+            .map((obj) => [obj.slug, obj])
+        ).values()
+      )
+      usefulLinksCategories.value.sort((a, b) => a.title.localeCompare(b.title))
     } catch (error) {
       console.error(error)
     } finally {
