@@ -1,9 +1,7 @@
 <template>
   <div class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-zinc-100 text-primary shadow-zinc-300">
-    <div v-if="icon || title" class="flex flex-row items-center justify-center gap-2 pb-2">
-      <Icon v-if="icon" :icon="icon" height="32" />
-      <div v-if="title" class="text-xl font-semibold">{{ title }}</div>
-    </div>
+    <CardTitle :icon="icon" :title="title" />
+
     <div>
       <div
         class="grid gap-2 pb-2 border-b-2 border-zinc-200"
@@ -30,7 +28,7 @@
 </template>
 
 <script setup>
-  import { Icon } from '@iconify/vue'
+  import CardTitle from '~/components/common/CardTitle.vue'
   import Button from '~/components/common/Button.vue'
 
   const props = defineProps({

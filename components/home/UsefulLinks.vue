@@ -1,18 +1,6 @@
 <template>
-  <div class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-zinc-100 text-primary shadow-zinc-300">
-    <div v-if="icon || title" class="flex flex-row items-center justify-between pb-2">
-      <div class="flex flex-row gap-2">
-        <Icon v-if="icon" :icon="icon" height="32" />
-        <div v-if="title" class="text-xl font-semibold">{{ title }}</div>
-      </div>
-      <Button
-        icon="solar:arrow-right-linear"
-        title="Tutti gli applicativi"
-        width="w-fit"
-        icon-placement="right"
-        @clicked="$router.push('/applicativi')"
-      />
-    </div>
+  <div class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-zinc-100 text-neutralDark shadow-zinc-300">
+    <CardTitle :icon="icon" :title="title" button-destination="/applicativi" button-title="Tutti gli applicativi" />
     <div>
       <div v-for="type in categories" :key="type.slug">
         <div class="pt-2 text-lg font-semibold text-center">{{ type.title }}</div>
@@ -41,8 +29,8 @@
 </template>
 
 <script setup>
-  import { Icon } from '@iconify/vue'
   import { useZoomWatcher } from '~/composables/useZoomWatcher'
+  import CardTitle from '~/components/common/CardTitle.vue'
   import Button from '~/components/common/Button.vue'
 
   const props = defineProps({

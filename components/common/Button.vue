@@ -8,6 +8,7 @@
       'w-fit px-4': width === 'w-fit',
       'text-white hover:bg-accent bg-primary': color === 'default',
       'bg-sections hover:ring-2 hover:ring-primary text-neutralDark': color === 'gray',
+      'bg-neutralDark hover:bg-opacity-80 text-white': color === 'darkGray',
     }"
     @click="emits('clicked')"
   >

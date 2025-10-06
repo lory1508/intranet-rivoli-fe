@@ -1,9 +1,6 @@
 <template>
-  <div class="flex flex-col gap-2 p-4 bg-white rounded-lg shadow-md min-w-80 text-primary shadow-zinc-300 h-fit">
-    <div class="flex flex-row items-center justify-center gap-2 pb-2">
-      <Icon :icon="icon" height="32" />
-      <div class="text-xl font-semibold">{{ title }}</div>
-    </div>
+  <div class="flex flex-col gap-2 p-4 bg-white rounded-lg shadow-md min-w-80 text-neutralDark shadow-zinc-300 h-fit">
+    <CardTitle :icon="icon" :title="title" />
 
     <div class="flex flex-col gap-2">
       <div class="flex gap-2" :class="compact ? 'flex-col' : 'flex-row'">
@@ -48,7 +45,7 @@
    * 1. search by department and/or office and/or service not working
    * 2. filter select by previous selection
    *  */
-  import { Icon } from '@iconify/vue'
+  import CardTitle from '~/components/common/CardTitle.vue'
   import { useDepartmentStore } from '~/stores/departments'
   import { useOfficeStore } from '~/stores/offices'
   import { useServiceStore } from '~/stores/services'

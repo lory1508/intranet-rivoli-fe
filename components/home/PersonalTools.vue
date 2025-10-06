@@ -1,11 +1,6 @@
 <template>
   <div class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-zinc-100 text-primary shadow-zinc-300">
-    <div class="flex flex-row items-center justify-between pb-2">
-      <div class="flex flex-row items-center justify-center w-full gap-2">
-        <Icon :icon="icon" height="32" />
-        <div class="text-xl font-semibold">{{ title }}</div>
-      </div>
-    </div>
+    <CardTitle :icon="icon" :title="title" />
     <div class="flex flex-wrap items-stretch justify-center gap-1">
       <LoaderComponent v-if="loading" />
       <div
@@ -26,6 +21,7 @@
 <script setup>
   import { Icon } from '@iconify/vue'
   import LoaderComponent from '~/components/common/LoaderComponent.vue'
+  import CardTitle from '~/components/common/CardTitle.vue'
 
   const props = defineProps({
     icon: {

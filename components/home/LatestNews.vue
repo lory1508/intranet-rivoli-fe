@@ -1,19 +1,7 @@
 <template>
   <div class="flex flex-col gap-8">
-    <div
-      class="flex flex-row items-center justify-between gap-2 p-4 rounded-lg shadow-md bg-zinc-100 text-primary border-secondaryLight shadow-zinc-300"
-    >
-      <div class="flex flex-row items-center justify-center gap-2">
-        <Icon :icon="icon" height="32" />
-        <div class="text-xl font-semibold">{{ title }}</div>
-      </div>
-      <Button
-        icon="solar:arrow-right-linear"
-        title="Tutte le news"
-        width="w-fit"
-        icon-placement="right"
-        @clicked="$router.push('/news')"
-      />
+    <div class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-zinc-100 text-primary shadow-zinc-300">
+      <CardTitle :icon="icon" :title="title" button-destination="/news" button-title="Tutte le news" />
     </div>
     <div class="flex flex-wrap w-full gap-4">
       <NewsCard v-for="post in news" :key="post.slug" :post="post" />
@@ -22,9 +10,8 @@
 </template>
 
 <script setup>
-  import Button from '~/components/common/Button.vue'
   import NewsCard from '~/components/common/NewsCard.vue'
-  import { Icon } from '@iconify/vue'
+  import CardTitle from '~/components/common/CardTitle.vue'
   import { getPosts } from '~/api/posts'
 
   // stores
