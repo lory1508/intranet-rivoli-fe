@@ -2,54 +2,55 @@
   <div
     class="sticky top-0 z-50 flex flex-col-reverse items-center justify-between gap-8 pr-6 font-bold lg:flex-row backdrop-blur-sm text-primary"
   >
-    <div class="flex flex-col-reverse items-center w-full gap-8 lg:flex-row lg:justify-between">
-      <div class="flex flex-row items-center gap-4 lg:w-2/12">
-        <div class="flex flex-col w-full gap-1">
-          <div class="w-full text-2xl capitalize">{{ title }}</div>
+    <div class="flex flex-col-reverse items-start w-full gap-8 lg:flex-row lg:justify-between">
+      <div class="flex flex-col gap-1">
+        <div v-if="showAlert" class="flex flex-row items-start gap-2">
+          <span class="relative flex w-3 h-3">
+            <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-amber-400" />
+            <span class="relative inline-flex w-3 h-3 rounded-full bg-amber-500" />
+          </span>
+          <NMarquee class="border-b-2 text-zinc-800 border-amber-400">
+            <div class="flex flex-row gap-2 px-4">
+              <Icon icon="hugeicons:alert-02" height="24" />
+              <span class="whitespace-nowrap">
+                {{ latestAlert }}
+              </span>
+            </div>
+          </NMarquee>
+          <span class="relative flex w-3 h-3">
+            <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-amber-400" />
+            <span class="relative inline-flex w-3 h-3 rounded-full bg-amber-500" />
+          </span>
+        </div>
+        <div class="flex flex-row items-center gap-4 w-fit">
+          <div class="flex flex-col w-full gap-1">
+            <div class="w-full text-2xl capitalize">{{ title }}</div>
 
-          <!-- Breadcrumbs -->
-          <div class="flex flex-row gap-1 text-sm font-normal">
-            <div
-              v-for="item in breadcrumb"
-              class="flex"
-              :key="item.slug"
-              :class="{
-                'text-primary': item.slug !== breadcrumb[breadcrumb.length - 1].slug,
-              }"
-            >
+            <!-- Breadcrumbs -->
+            <div class="flex flex-row gap-1 text-sm font-normal">
               <div
-                v-if="item.slug !== breadcrumb[breadcrumb.length - 1].slug"
-                @click="goTo(item.slug)"
-                class="hover:cursor-pointer"
+                v-for="item in breadcrumb"
+                class="flex"
+                :key="item.slug"
+                :class="{
+                  'text-primary': item.slug !== breadcrumb[breadcrumb.length - 1].slug,
+                }"
               >
-                {{ item.title }}
+                <div
+                  v-if="item.slug !== breadcrumb[breadcrumb.length - 1].slug"
+                  @click="goTo(item.slug)"
+                  class="hover:cursor-pointer"
+                >
+                  {{ item.title }}
+                </div>
+                <div v-else class="text-zinc-500">
+                  <div class="truncate max-w-80">{{ item.title }}</div>
+                </div>
+                <span v-if="item.slug !== breadcrumb[breadcrumb.length - 1].slug" class="px-2 text-zinc-500">/</span>
               </div>
-              <div v-else class="text-zinc-500">
-                <div class="truncate max-w-80">{{ item.title }}</div>
-              </div>
-              <span v-if="item.slug !== breadcrumb[breadcrumb.length - 1].slug" class="px-2 text-zinc-500">/</span>
             </div>
           </div>
         </div>
-      </div>
-
-      <div v-if="showAlert" class="flex flex-row lg:w-8/12 items-centergap-2">
-        <span class="relative flex w-3 h-3">
-          <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-amber-400" />
-          <span class="relative inline-flex w-3 h-3 rounded-full bg-amber-500" />
-        </span>
-        <NMarquee class="border-b-2 text-zinc-800 border-amber-400">
-          <div class="flex flex-row gap-2 px-4">
-            <Icon icon="hugeicons:alert-02" height="24" />
-            <span class="whitespace-nowrap">
-              {{ latestAlert }}
-            </span>
-          </div>
-        </NMarquee>
-        <span class="relative flex w-3 h-3">
-          <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-amber-400" />
-          <span class="relative inline-flex w-3 h-3 rounded-full bg-amber-500" />
-        </span>
       </div>
 
       <div class="flex flex-row items-center gap-2 lg:justify-end lg:w-2/12">
