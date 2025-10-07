@@ -1,7 +1,7 @@
 <template>
   <NSpace vertical size="large">
     <div class="flex flex-row p-2 from-light to-zinc-300 bg-gradient-to-b">
-      <div class="fixed flex h-full pb-6">
+      <div class="fixed flex w-2/12 h-full pb-6">
         <div
           class="z-40 text-white transition-all duration-300 shadow-lg rounded-2xl bg-primary shadow-zinc-300"
           :class="{
@@ -112,7 +112,7 @@
         </div>
       </div>
       <div
-        class="flex flex-row w-full"
+        class="flex flex-row w-10/12"
         :class="{
           'ml-24': collapsed,
           'ml-72': !collapsed,
