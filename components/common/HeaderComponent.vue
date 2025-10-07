@@ -2,10 +2,10 @@
   <div
     class="sticky top-0 z-50 flex flex-col-reverse items-center justify-between gap-8 pr-6 font-bold lg:flex-row backdrop-blur-sm text-primary"
   >
-    <div class="flex flex-col-reverse items-center w-full gap-8 pr-6 lg:flex-row lg:justify-between">
-      <div class="flex flex-row items-center gap-4">
-        <div class="flex flex-col gap-1 w-fit">
-          <div class="text-2xl capitalize">{{ title }}</div>
+    <div class="flex flex-col-reverse items-center w-full gap-8 lg:flex-row lg:justify-between">
+      <div class="flex flex-row items-center gap-4 lg:w-2/12">
+        <div class="flex flex-col w-full gap-1">
+          <div class="w-full text-2xl capitalize">{{ title }}</div>
 
           <!-- Breadcrumbs -->
           <div class="flex flex-row gap-1 text-sm font-normal">
@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <div v-if="showAlert" class="flex flex-row items-center gap-2 max-w-[400px]">
+      <div v-if="showAlert" class="flex flex-row lg:w-8/12 items-centergap-2">
         <span class="relative flex w-3 h-3">
           <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-amber-400" />
           <span class="relative inline-flex w-3 h-3 rounded-full bg-amber-500" />
@@ -51,7 +51,8 @@
           <span class="relative inline-flex w-3 h-3 rounded-full bg-amber-500" />
         </span>
       </div>
-      <div class="flex flex-row items-center gap-2">
+
+      <div class="flex flex-row items-center gap-2 lg:justify-end lg:w-2/12">
         <div class="flex flex-row items-center justify-end w-96">
           <div class="-mr-8 transition-all duration-500" :class="showSearch ? 'w-full' : 'w-0'">
             <NInput
