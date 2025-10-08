@@ -48,7 +48,12 @@
           class="pb-2 border-b-2 border-zinc-300 !border-t-0"
         >
           <template #header>
-            <div class="text-lg font-semibold text-primary">{{ type.title }}</div>
+            <div
+              class="font-semibold transition-all duration-300 text-primary"
+              :class="{ 'text-2xl': isLargeFont, 'text-lg': !isLargeFont, 'bg-black text-white': isHighContrast }"
+            >
+              {{ type.title }}
+            </div>
           </template>
           <div class="grid gap-2">
             <div class="flex flex-col gap-2">
@@ -75,6 +80,11 @@
   import { getExternalLinks } from '~/api/externalLinks'
   import { NCollapse, NInputGroup } from 'naive-ui'
   import { useElementHover } from '@vueuse/core'
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
+
+  const accessibilityStore = useAccessibilityStore()
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
 
   const loading = ref(false)
   const usefulLinks = ref([])

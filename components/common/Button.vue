@@ -18,13 +18,18 @@
 
     <NTooltip v-if="showTooltip" trigger="hover" class="w-fit">
       <template #trigger>
-        <div class="truncate">{{ title }}</div>
+        <div
+          class="truncate"
+          :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont, 'bg-black text-white': isHighContrast }"
+        >
+          {{ title }}
+        </div>
       </template>
-      <div>
+      <div :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont, 'bg-black text-white': isHighContrast }">
         {{ title }}
       </div>
     </NTooltip>
-    <div v-else>
+    <div v-else :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont, 'bg-black text-white': isHighContrast }">
       {{ title }}
     </div>
     <div v-if="icon && iconPlacement === 'right'">
@@ -35,6 +40,11 @@
 
 <script setup>
   import { Icon } from '@iconify/vue'
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
+
+  const accessibilityStore = useAccessibilityStore()
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
 
   const props = defineProps({
     color: {

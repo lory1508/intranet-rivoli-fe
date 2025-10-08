@@ -1,9 +1,16 @@
 <template>
-  <NSpace vertical size="large">
-    <div class="flex flex-row p-2 from-light to-zinc-300 bg-gradient-to-b">
+  <NSpace
+    vertical
+    size="large"
+    class="transition-all duration-300 bg-gradient-to-br from-neutral-200 to-neutral-300"
+    :class="{ 'text-xl': isLargeFont, 'bg-black text-white': isHighContrast }"
+  >
+    <!-- <div class="flex flex-row p-2 from-light to-zinc-300 bg-gradient-to-b"> -->
+    <div class="flex flex-row p-2">
       <div class="fixed flex w-2/12 h-full pb-6">
+        <!-- <div class="fixed flex h-full pb-6 z-top"> -->
         <div
-          class="z-40 text-white transition-all duration-300 shadow-lg rounded-2xl bg-primary shadow-zinc-300"
+          class="text-white transition-all duration-300 shadow-lg rounded-2xl bg-primary shadow-zinc-300"
           :class="{
             'w-24': collapsed,
             'w-72': !collapsed,
@@ -15,7 +22,9 @@
               <div class="flex flex-row items-center gap-4 hover:cursor-pointer" @click="goto('/')">
                 <img :src="websiteIdentity.logo.img" :alt="websiteIdentity.logo.alt" width="50" />
                 <div v-if="showLabels" class="flex flex-col">
-                  <div class="text-2xl font-bold">{{ websiteIdentity.name }}</div>
+                  <div class="text-2xl font-bold">
+                    {{ websiteIdentity.name }}
+                  </div>
                   <div class="pt-2 font-semibold">Rivoli, {{ formattedToday }}</div>
                 </div>
               </div>
@@ -56,7 +65,10 @@
                               @click="expandMenu(menuItem.title)"
                             >
                               <Icon :icon="menuItem.icon" height="28" />
-                              <div class="text-base transition-all duration-300 hover:font-semibold">
+                              <div
+                                class="text-base transition-all duration-300 hover:font-semibold"
+                                :class="{ 'text-xl': isLargeFont, 'bg-black text-white': isHighContrast }"
+                              >
                                 {{ menuItem.title }}
                               </div>
                             </div>
@@ -68,6 +80,8 @@
                                 :class="{
                                   'text-primary bg-white rounded-md font-semibold': active === subMenuItem.path,
                                   'text-white': active !== subMenuItem.path,
+                                  'text-xl': isLargeFont,
+                                  'bg-black text-white': isHighContrast,
                                 }"
                                 @click="goto(subMenuItem.path)"
                               >
@@ -79,7 +93,10 @@
                       </NCollapse>
                       <div v-else class="flex flex-row items-center w-full gap-2" @click="goto(menuItem.path)">
                         <Icon :icon="menuItem.icon" height="28" />
-                        <div class="text-base transition-all duration-300 hover:font-semibold">
+                        <div
+                          class="text-base transition-all duration-300 hover:font-semibold"
+                          :class="{ 'text-xl': isLargeFont, 'bg-black text-white': isHighContrast }"
+                        >
                           {{ menuItem.title }}
                         </div>
                       </div>
@@ -98,6 +115,12 @@
                 </div>
               </div>
             </div>
+            <NButton type="primary" color="#FFF" round class="w-full mb-8" @click="toggleAccessibility">
+              <div class="flex flex-row items-center gap-2">
+                <Icon icon="fluent:text-font-20-filled" height="28" class="text-black" />
+                <div v-if="showLabels" class="text-lg text-black">Accessibilità</div>
+              </div>
+            </NButton>
             <div v-if="showLabels" class="flex flex-col text-xs h-fit">
               <div class="flex flex-wrap">
                 {{ footer.title }}
@@ -144,11 +167,17 @@
   import { menu, websiteIdentity } from '~/utils/staticData/menu.js'
   import { NCollapse, NCollapseItem, NTooltip, NSpace, NDivider, NBackTop } from 'naive-ui'
   import { Icon } from '@iconify/vue'
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
   import { useHead } from '#imports'
   import { delay } from '~/utils/index.js'
 
   const router = useRouter()
   const route = useRoute()
+
+  // A11y
+  const accessibilityStore = useAccessibilityStore()
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
+  const isHighContrast = ref(accessibilityStore.isHighContrast)
 
   const subMenusCollapsed = ref([])
   const collapsed = ref(false)
@@ -205,4 +234,14 @@
   const updateCollapsed = (value) => {
     collapsed.value = value
   }
+
+  // Toggle accessibility features
+  const toggleAccessibility = () => {
+    accessibilityStore.toggleFontSize()
+    // accessibilityStore.toggleContrast()
+  }
+
+  onMounted(() => {
+    accessibilityStore.initializePreferences()
+  })
 </script>

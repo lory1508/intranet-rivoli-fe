@@ -3,7 +3,7 @@
     class="sticky top-0 z-50 flex flex-col-reverse items-center justify-between gap-8 pr-6 font-bold lg:flex-row backdrop-blur-sm text-primary"
   >
     <div class="flex flex-col-reverse items-start w-full gap-8 lg:flex-row lg:justify-between">
-      <div class="flex flex-col gap-1">
+      <div class="flex flex-col w-10/12 gap-1">
         <div v-if="showAlert" class="flex flex-row items-start gap-2">
           <span class="relative flex w-3 h-3">
             <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-amber-400" />
@@ -24,7 +24,12 @@
         </div>
         <div class="flex flex-row items-center gap-4 w-fit">
           <div class="flex flex-col w-full gap-1">
-            <div class="w-full text-2xl capitalize">{{ title }}</div>
+            <div
+              class="w-full text-2xl capitalize transition-all duration-300"
+              :class="{ 'text-3xl': isLargeFont, 'bg-black text-white': isHighContrast }"
+            >
+              {{ title }}
+            </div>
 
             <!-- Breadcrumbs -->
             <div class="flex flex-row gap-1 text-sm font-normal">
@@ -79,6 +84,7 @@
 <script setup>
   import { NMarquee, NInput } from 'naive-ui'
   import { Icon } from '@iconify/vue'
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
 
   import { setIntervalMethod } from '~/utils'
   import { getAlert } from '~/api/alert'
@@ -93,6 +99,11 @@
       default: () => [],
     },
   })
+
+  // A11y
+  const accessibilityStore = useAccessibilityStore()
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
+  const isHighContrast = ref(accessibilityStore.isHighContrast)
 
   const loading = ref(false)
   const search = ref({

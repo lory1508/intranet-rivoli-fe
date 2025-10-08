@@ -10,3 +10,18 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* global.css (or in your Tailwind config file) */
+/* :root {
+  --font-size: 1rem; 
+} */
+
+body {
+  font-size: var(--font-size);
+  transition: all 0.3s ease-in-out;
+}
+
+.high-contrast {
+  background-color: #000;
+  color: #fff;
+}

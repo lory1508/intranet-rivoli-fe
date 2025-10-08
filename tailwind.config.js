@@ -23,6 +23,9 @@ export default {
         secondaryLight: '#E1ECF6',
         darkAccent: '#1A3A5E',
       },
+      zIndex: {
+        top: '9999',
+      },
     },
   },
   safelist: [{ pattern: /bg-./ }, { pattern: /ring-/ }, { pattern: /text-/ }],

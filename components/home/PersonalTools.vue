@@ -12,7 +12,11 @@
         <a :href="tool.href" target="_blank">
           <Icon :icon="tool.icon" height="36" />
         </a>
-        <span class="text-xs font-semibold tracking-tighter text-center">{{ tool.title }}</span>
+        <span
+          class="font-semibold tracking-tighter text-center"
+          :class="{ 'text-lg': isLargeFont, 'text-xs': !isLargeFont, 'bg-black text-white': isHighContrast }"
+          >{{ tool.title }}</span
+        >
       </div>
     </div>
   </div>
@@ -20,8 +24,13 @@
 
 <script setup>
   import { Icon } from '@iconify/vue'
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
   import LoaderComponent from '~/components/common/LoaderComponent.vue'
   import CardTitle from '~/components/common/CardTitle.vue'
+
+  const accessibilityStore = useAccessibilityStore()
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
 
   const props = defineProps({
     icon: {

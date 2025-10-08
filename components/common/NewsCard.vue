@@ -5,7 +5,11 @@
   >
     <div class="flex flex-col h-full gap-2" :class="vertical ? 'p-4' : ''">
       <!-- Title -->
-      <span class="text-lg font-semibold text-primary hover:cursor-pointer" @click="goToNews(post.slug)">
+      <span
+        class="font-semibold text-primary hover:cursor-pointer"
+        :class="{ 'text-2xl': isLargeFont, 'text-lg': !isLargeFont, 'bg-black text-white': isHighContrast }"
+        @click="goToNews(post.slug)"
+      >
         {{ post.title }}
       </span>
 
@@ -30,7 +34,7 @@
         </div>
 
         <!-- Tags -->
-        <div v-if="post?.tags.length" class="flex flex-wrap gap-1">
+        <div v-if="post?.tags.length" class="flex flex-wrap items-center gap-1">
           <span class="pr-1 font-semibold text-indigo-700">Tag:</span>
           <div v-for="tag in post?.tags" :key="tag.id">
             <TagComponent :tag="tag" color="indigo" />
@@ -49,21 +53,28 @@
     <!-- <div v-if="vertical" class="w-full px-4 text-sm text-primary text-end">Creato il {{ post.createdAt }}</div> -->
     <div class="flex flex-row items-end justify-between">
       <!-- Btn -->
+      <Button v-if="!vertical" title="Leggi di più" width="w-fit" @clicked="goToNews(post.slug)" />
       <div
-        class="flex items-center justify-center font-semibold tracking-widest text-white uppercase transition-all duration-300 cursor-pointer bg-primary bg-opacity-90 hover:bg-opacity-95"
-        :class="vertical ? 'rounded-b-xl w-full py-4' : 'w-48 py-2 rounded-lg hover:shadow-md '"
+        v-else
+        class="flex items-center justify-center w-full py-4 font-semibold tracking-widest text-white uppercase transition-all duration-300 cursor-pointer rounded-b-xl bg-primary bg-opacity-90 hover:bg-opacity-95"
         @click="goToNews(post.slug)"
       >
         Leggi di più
       </div>
-      <div v-if="!vertical" class="w-full px-4 text-sm text-primary text-end">Creato il {{ post.createdAt }}</div>
+      <div v-if="!vertical" class="px-4 text-sm w-fit text-primary text-end">Creato il {{ post.createdAt }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
   import TagComponent from '~/components/common/TagComponent.vue'
+  import Button from '~/components/common/Button.vue'
   import { Icon } from '@iconify/vue'
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
+
+  const accessibilityStore = useAccessibilityStore()
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
 
   const props = defineProps({
     post: {

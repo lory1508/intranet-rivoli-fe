@@ -10,6 +10,9 @@
       'border border-zinc-200 bg-zinc-100 text-indigo-600': color === 'indigo',
       'border border-purple-200 bg-purple-50 text-purple-600': color === 'purple',
       'hover:cursor-pointer hover:shadow': tag.link,
+      'text-xl': isLargeFont,
+      'text-base': !isLargeFont,
+      'bg-black text-white': isHighContrast,
     }"
     @click="goTo"
   >
@@ -18,6 +21,12 @@
 </template>
 
 <script setup>
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
+
+  const accessibilityStore = useAccessibilityStore()
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
+
   const props = defineProps({
     tag: {
       type: Object,
