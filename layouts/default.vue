@@ -18,19 +18,19 @@
         role="dialog"
         aria-modal="true"
       >
-        <div class="flex flex-col gap-4 text-lg">
-          <div class="flex flex-row items-center gap-2">
-            <!-- <Icon icon="fluent:text-font-20-filled" height="28" class="text-black" /> -->
-            <NSwitch v-model:value="highContrast" size="large" />
-            <span v-if="!highContrast"> Abilita modalità alto contrasto </span>
-            <span v-else> Disabilita modalità bassa contrasto </span>
-          </div>
-          <div class="flex flex-row items-center gap-2">
-            <!-- <Icon icon="fluent-mdl2:contrast" height="28" class="text-black" /> -->
-            <NSwitch v-model:value="largeFont" size="large" />
-            <span v-if="!largeFont"> Abilita font grande </span>
-            <span v-else> Disabilita font grande </span>
-          </div>
+        <div class="flex flex-row justify-between w-full gap-4 text-lg">
+          <NButton strong secondary size="large" color="#FFF" round class="" @click="toggleLargeFont">
+            <div class="flex flex-row items-center gap-2">
+              <Icon icon="fluent:text-font-20-filled" height="28" class="text-black" />
+              <div v-if="showLabels" class="text-lg text-black">Dimensione testo</div>
+            </div>
+          </NButton>
+          <NButton strong secondary size="large" color="#FFF" round class="" @click="toggleHighContrast">
+            <div class="flex flex-row items-center gap-2">
+              <Icon icon="fluent-mdl2:contrast" height="28" class="text-black" />
+              <div v-if="showLabels" class="text-lg text-black">Alto contrasto</div>
+            </div>
+          </NButton>
         </div>
         <template #footer> <Button title="Chiudi" color="darkGray" @clicked="showA11yModal = false" /> </template>
       </NCard>
@@ -261,6 +261,13 @@
       accessibilityStore.toggleContrast()
     }
   )
+
+  const toggleLargeFont = () => {
+    accessibilityStore.toggleFontSize()
+  }
+  const toggleHighContrast = async () => {
+    accessibilityStore.toggleContrast()
+  }
 
   useHead({
     title: pageTitle,
