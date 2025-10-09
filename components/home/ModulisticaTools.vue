@@ -1,5 +1,11 @@
 <template>
-  <div class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-zinc-100 text-primary shadow-zinc-300">
+  <div
+    class="flex flex-col gap-2 p-4 rounded-lg"
+    :class="{
+      'bg-white border-2 border-zinc-800 ': isHighContrast,
+      ' bg-zinc-100 shadow-zinc-300 shadow-md text-primary': !isHighContrast,
+    }"
+  >
     <CardTitle :icon="icon" :title="title" />
 
     <div>
@@ -30,6 +36,10 @@
 <script setup>
   import CardTitle from '~/components/common/CardTitle.vue'
   import Button from '~/components/common/Button.vue'
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
+
+  const accessibilityStore = useAccessibilityStore()
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
 
   const props = defineProps({
     icon: {

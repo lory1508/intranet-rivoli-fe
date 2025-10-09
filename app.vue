@@ -1,18 +1,20 @@
 <template>
   <!-- <NThemeEditor> -->
   <NConfigProvider :theme-overrides="themeOverrides">
-    <NMessageProvider>
-      <NuxtLayout>
-        <NuxtRouteAnnouncer />
-      </NuxtLayout>
-    </NMessageProvider>
+    <NModalProvider>
+      <NMessageProvider>
+        <NuxtLayout>
+          <NuxtRouteAnnouncer />
+        </NuxtLayout>
+      </NMessageProvider>
+    </NModalProvider>
   </NConfigProvider>
   <!-- </NThemeEditor> -->
 </template>
 
 <script setup>
   // import { NThemeEditor } from 'naive-ui'
-  import { NConfigProvider, NMessageProvider } from 'naive-ui'
+  import { NConfigProvider, NMessageProvider, NModalProvider } from 'naive-ui'
 
   const themeOverrides = {
     Input: {

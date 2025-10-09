@@ -49,8 +49,13 @@
         >
           <template #header>
             <div
-              class="font-semibold transition-all duration-300 text-primary"
-              :class="{ 'text-2xl': isLargeFont, 'text-lg': !isLargeFont, 'bg-black text-white': isHighContrast }"
+              class="font-semibold transition-all duration-300"
+              :class="{
+                'text-2xl': isLargeFont,
+                'text-lg': !isLargeFont,
+                'text-black': isHighContrast,
+                'text-primary ': !isHighContrast,
+              }"
             >
               {{ type.title }}
             </div>

@@ -1,5 +1,11 @@
 <template>
-  <div class="flex flex-col gap-2 p-4 bg-white rounded-lg shadow-md min-w-80 text-neutralDark shadow-zinc-300 h-fit">
+  <div
+    class="flex flex-col gap-2 p-4 rounded-lg min-w-80 h-fit"
+    :class="{
+      'border-2 border-zinc-800 bg-white ': isHighContrast,
+      ' bg-zinc-100 shadow-zinc-300 shadow-md text-neutralDark': !isHighContrast,
+    }"
+  >
     <CardTitle :icon="icon" :title="title" />
 
     <div class="flex flex-col gap-2">
@@ -46,10 +52,14 @@
    * 2. filter select by previous selection
    *  */
   import CardTitle from '~/components/common/CardTitle.vue'
+  import Button from '~/components/common/Button.vue'
   import { useDepartmentStore } from '~/stores/departments'
   import { useOfficeStore } from '~/stores/offices'
   import { useServiceStore } from '~/stores/services'
-  import Button from '~/components/common/Button.vue'
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
+
+  const accessibilityStore = useAccessibilityStore()
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
 
   const emits = defineEmits(['search'])
   const props = defineProps({

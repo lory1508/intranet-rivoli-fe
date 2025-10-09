@@ -2,18 +2,50 @@
   <NSpace
     vertical
     size="large"
-    class="transition-all duration-300 bg-gradient-to-br from-neutral-200 to-neutral-300"
-    :class="{ 'text-xl': isLargeFont, 'bg-black text-white': isHighContrast }"
+    class="transition-all duration-300"
+    :class="{
+      'text-xl': isLargeFont,
+      'bg-white text-black': isHighContrast,
+      'bg-gradient-to-br from-neutral-200 to-neutral-300': !isHighContrast,
+    }"
   >
-    <!-- <div class="flex flex-row p-2 from-light to-zinc-300 bg-gradient-to-b"> -->
+    <NModal v-model:show="showA11yModal">
+      <NCard
+        style="width: 600px"
+        title="Impostazioni accessibilità"
+        :bordered="true"
+        size="huge"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div class="flex flex-col gap-4 text-lg">
+          <div class="flex flex-row items-center gap-2">
+            <!-- <Icon icon="fluent:text-font-20-filled" height="28" class="text-black" /> -->
+            <NSwitch v-model:value="highContrast" size="large" />
+            <span v-if="!highContrast"> Abilita modalità alto contrasto </span>
+            <span v-else> Disabilita modalità bassa contrasto </span>
+          </div>
+          <div class="flex flex-row items-center gap-2">
+            <!-- <Icon icon="fluent-mdl2:contrast" height="28" class="text-black" /> -->
+            <NSwitch v-model:value="largeFont" size="large" />
+            <span v-if="!largeFont"> Abilita font grande </span>
+            <span v-else> Disabilita font grande </span>
+          </div>
+        </div>
+        <template #footer> <Button title="Chiudi" color="darkGray" @clicked="showA11yModal = false" /> </template>
+      </NCard>
+    </NModal>
+
     <div class="flex flex-row p-2">
       <div class="fixed flex w-2/12 h-full pb-6">
         <!-- <div class="fixed flex h-full pb-6 z-top"> -->
         <div
-          class="text-white transition-all duration-300 shadow-lg rounded-2xl bg-primary shadow-zinc-300"
+          class="text-white transition-all duration-300 rounded-2xl"
           :class="{
             'w-24': collapsed,
             'w-72': !collapsed,
+            'bg-black text-white': isHighContrast,
+            'bg-primary shadow-zinc-300 shadow-lg': !isHighContrast,
           }"
           @update:collapsed="updateCollapsed"
         >
@@ -36,7 +68,10 @@
                   :key="menuItem.path"
                   class="items-center justify-center px-2 py-1 cursor-pointer"
                   :class="{
-                    'text-primary bg-white rounded-md font-semibold': active === menuItem.path && !menuItem?.submenu,
+                    'text-primary bg-white rounded-md font-semibold':
+                      active === menuItem.path && !menuItem?.submenu && !isHighContrast,
+                    'text-black bg-white rounded-md font-semibold':
+                      active === menuItem.path && !menuItem?.submenu && isHighContrast,
                     'w-fit': collapsed,
                   }"
                 >
@@ -95,7 +130,7 @@
                         <Icon :icon="menuItem.icon" height="28" />
                         <div
                           class="text-base transition-all duration-300 hover:font-semibold"
-                          :class="{ 'text-xl': isLargeFont, 'bg-black text-white': isHighContrast }"
+                          :class="{ 'text-xl': isLargeFont }"
                         >
                           {{ menuItem.title }}
                         </div>
@@ -115,9 +150,9 @@
                 </div>
               </div>
             </div>
-            <NButton type="primary" color="#FFF" round class="w-full mb-8" @click="toggleAccessibility">
+            <NButton type="primary" color="#FFF" round class="w-full mb-8" @click="showA11yModal = true">
               <div class="flex flex-row items-center gap-2">
-                <Icon icon="fluent:text-font-20-filled" height="28" class="text-black" />
+                <Icon icon="solar:accessibility-linear" height="28" class="text-black" />
                 <div v-if="showLabels" class="text-lg text-black">Accessibilità</div>
               </div>
             </NButton>
@@ -145,9 +180,11 @@
           <Icon
             icon="solar:alt-arrow-right-linear"
             height="36"
-            class="fixed z-50 transition-all duration-500 ease-in-out bg-white border-2 rounded-full cursor-pointer text-primary border-primary"
+            class="fixed z-50 transition-all duration-500 ease-in-out bg-white border-2 rounded-full cursor-pointer"
             :class="{
               'scale-x-[-1]': !collapsed,
+              'text-primary border-primary': !isHighContrast,
+              'text-black border-black': isHighContrast,
             }"
             @click="collapseSidebar"
           />
@@ -165,11 +202,12 @@
   // components
 
   import { menu, websiteIdentity } from '~/utils/staticData/menu.js'
-  import { NCollapse, NCollapseItem, NTooltip, NSpace, NDivider, NBackTop } from 'naive-ui'
+  import { NCollapse, NCollapseItem, NTooltip, NSpace, NDivider, NBackTop, NSwitch, NButton } from 'naive-ui'
   import { Icon } from '@iconify/vue'
   import { useAccessibilityStore } from '@/stores/accessibilityStore'
   import { useHead } from '#imports'
   import { delay } from '~/utils/index.js'
+  import Button from '~/components/common/Button.vue'
 
   const router = useRouter()
   const route = useRoute()
@@ -177,7 +215,11 @@
   // A11y
   const accessibilityStore = useAccessibilityStore()
   const isLargeFont = computed(() => accessibilityStore.isLargeFont)
-  const isHighContrast = ref(accessibilityStore.isHighContrast)
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
+  const largeFont = ref(isLargeFont.value)
+  const highContrast = ref(isHighContrast.value)
+
+  const showA11yModal = ref(false)
 
   const subMenusCollapsed = ref([])
   const collapsed = ref(false)
@@ -203,6 +245,20 @@
       if (menuItem?.submenu) {
         subMenusCollapsed.value.push(menuItem.title)
       }
+    }
+  )
+
+  watch(
+    () => largeFont.value,
+    () => {
+      accessibilityStore.toggleFontSize()
+    }
+  )
+
+  watch(
+    () => highContrast.value,
+    () => {
+      accessibilityStore.toggleContrast()
     }
   )
 
@@ -236,10 +292,6 @@
   }
 
   // Toggle accessibility features
-  const toggleAccessibility = () => {
-    accessibilityStore.toggleFontSize()
-    accessibilityStore.toggleContrast()
-  }
 
   onMounted(() => {
     accessibilityStore.initializePreferences()

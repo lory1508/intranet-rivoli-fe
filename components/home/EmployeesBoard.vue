@@ -1,6 +1,12 @@
 <template>
   <div class="flex flex-col gap-2">
-    <div class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-zinc-100 text-primary shadow-zinc-300">
+    <div
+      class="flex flex-col gap-2 p-4 rounded-lg"
+      :class="{
+        'bg-white border-2 border-zinc-800 ': isHighContrast,
+        ' bg-zinc-100 shadow-zinc-300 shadow-md text-primary': !isHighContrast,
+      }"
+    >
       <CardTitle :icon="icon" :title="title" button-destination="/bacheca-dipendenti" button-title="Tutti gli avvisi" />
     </div>
     <div class="flex flex-wrap gap-4">
@@ -16,6 +22,11 @@
   // stores
   import { useCategoriesStore } from '~/stores/categories'
   import { useTagsStore } from '~/stores/tags'
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
+
+  const accessibilityStore = useAccessibilityStore()
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
 
   const props = defineProps({
     icon: {

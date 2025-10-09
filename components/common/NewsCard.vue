@@ -1,13 +1,23 @@
 <template>
   <div
-    class="flex flex-col gap-2 transition-all duration-500 bg-white rounded-xl hover:shadow-xl"
-    :class="vertical ? 'w-96 hover:scale-105' : 'w-full p-4'"
+    class="flex flex-col gap-2 transition-all duration-500 bg-white rounded-xl"
+    :class="{
+      'w-96 hover:scale-105': vertical,
+      'w-full p-4': !vertical,
+      ' border-2 border-black hover:ring-zinc-800': isHighContrast,
+      ' hover:shadow-xl': !isHighContrast,
+    }"
   >
     <div class="flex flex-col h-full gap-2" :class="vertical ? 'p-4' : ''">
       <!-- Title -->
       <span
-        class="font-semibold transition-all duration-300 text-primary hover:cursor-pointer"
-        :class="{ 'text-2xl': isLargeFont, 'text-lg': !isLargeFont, 'bg-black text-white': isHighContrast }"
+        class="font-semibold transition-all duration-300 hover:cursor-pointer"
+        :class="{
+          'text-2xl': isLargeFont,
+          'text-lg': !isLargeFont,
+          'text-black': isHighContrast,
+          'text-primary ': !isHighContrast,
+        }"
         @click="goToNews(post.slug)"
       >
         {{ post.title }}
@@ -23,7 +33,14 @@
 
       <div class="flex flex-col items-start gap-2">
         <!-- Attachment -->
-        <div v-if="post?.attachment?.id" class="flex flex-row items-center gap-1 text-primary">
+        <div
+          v-if="post?.attachment?.id"
+          class="flex flex-row items-center gap-1"
+          :class="{
+            'text-black font-semibold': isHighContrast,
+            'text-primary': !isHighContrast,
+          }"
+        >
           <Icon icon="solar:paperclip-bold" width="20" />
           <NTooltip trigger="hover">
             <template #trigger>
@@ -35,14 +52,29 @@
 
         <!-- Tags -->
         <div v-if="post?.tags.length" class="flex flex-wrap items-center gap-1">
-          <span class="pr-1 font-semibold text-indigo-700">Tag:</span>
+          <span
+            class="pr-1 font-semibold"
+            :class="{
+              'text-black': isHighContrast,
+              'text-indigo-700': !isHighContrast,
+            }"
+            >Tag:</span
+          >
           <div v-for="tag in post?.tags" :key="tag.id">
             <TagComponent :tag="tag" color="indigo" />
           </div>
         </div>
         <!-- Caegories -->
-        <div v-if="post?.categories.length" class="flex flex-wrap gap-1">
-          <span class="pr-1 font-semibold text-purple-700">Categorie:</span>
+        <div v-if="post?.categories.length" class="flex flex-wrap items-center gap-1">
+          <span
+            class="pr-1 font-semibold"
+            :class="{
+              'text-black': isHighContrast,
+              'text-purple-700': !isHighContrast,
+            }"
+          >
+            Categorie:
+          </span>
           <div v-for="category in post?.categories" :key="category.id">
             <TagComponent :tag="category" color="purple" />
           </div>
@@ -56,12 +88,22 @@
       <Button v-if="!vertical" title="Leggi di più" width="w-fit" @clicked="goToNews(post.slug)" />
       <div
         v-else
-        class="flex items-center justify-center w-full py-4 font-semibold tracking-widest text-white uppercase transition-all duration-300 cursor-pointer rounded-b-xl bg-primary bg-opacity-90 hover:bg-opacity-95"
+        class="flex items-center justify-center w-full py-4 font-semibold tracking-widest text-white uppercase transition-all duration-300 rounded-b-lg cursor-pointer bg-opacity-90 hover:bg-opacity-95"
+        :class="{
+          'bg-black ': isHighContrast,
+          'bg-primary': !isHighContrast,
+        }"
         @click="goToNews(post.slug)"
       >
         Leggi di più
       </div>
-      <div v-if="!vertical" class="px-4 text-sm w-fit text-primary text-end">Creato il {{ post.createdAt }}</div>
+      <div
+        v-if="!vertical"
+        class="px-4 text-sm w-fit text-end"
+        :class="{ 'text-black': isHighContrast, 'text-primary': !isHighContrast }"
+      >
+        Creato il {{ post.createdAt }}
+      </div>
     </div>
   </div>
 </template>

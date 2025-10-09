@@ -1,11 +1,17 @@
 <template>
-  <div class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-zinc-100 text-neutralDark shadow-zinc-300">
+  <div
+    class="flex flex-col gap-2 p-4 rounded-lg"
+    :class="{
+      'bg-white border-2 border-zinc-800 ': isHighContrast,
+      ' bg-zinc-100 shadow-zinc-300 shadow-md text-neutralDark': !isHighContrast,
+    }"
+  >
     <CardTitle :icon="icon" :title="title" button-destination="/applicativi" button-title="Tutti gli applicativi" />
     <div>
       <div v-for="type in categories" :key="type.slug">
         <div
-          class="pt-2 font-semibold text-center transition-all duration-300"
-          :class="{ 'text-xl': isLargeFont, 'text-lg': !isLargeFont, 'bg-black text-white': isHighContrast }"
+          class="pt-2 pb-2 font-semibold text-center transition-all duration-300"
+          :class="{ 'text-xl': isLargeFont, 'text-lg': !isLargeFont, ' text-black': isHighContrast }"
         >
           {{ type.title }}
         </div>
