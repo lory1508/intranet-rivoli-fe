@@ -18,6 +18,7 @@
           'bg-black hover:ring-zinc-800 ': isHighContrast,
           ' bg-primary hover:ring-primary': !isHighContrast,
         }"
+        @click="goToTool(tool)"
       >
         <a :href="tool.href" target="_blank">
           <Icon :icon="tool.icon" height="36" />
@@ -60,4 +61,8 @@
       default: false,
     },
   })
+
+  const goToTool = async (tool) => {
+    await navigateTo(tool, { external: true, open: { target: '_blank' } })
+  }
 </script>
