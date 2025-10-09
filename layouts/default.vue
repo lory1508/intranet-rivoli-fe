@@ -30,7 +30,7 @@
             >
               <div class="flex flex-row items-center gap-2">
                 <Icon icon="fluent:text-font-20-filled" height="28" class="text-black" />
-                <div v-if="showLabels" class="text-lg text-black">Dimensione testo</div>
+                <div class="text-lg text-black">Dimensione testo</div>
               </div>
             </NButton>
             <span>Aumenta la dimensione del testo</span>
@@ -46,7 +46,7 @@
             >
               <div class="flex flex-row items-center gap-2">
                 <Icon icon="fluent-mdl2:contrast" height="28" class="text-black" />
-                <div v-if="showLabels" class="text-lg text-black">Alto contrasto</div>
+                <div class="text-lg text-black">Alto contrasto</div>
               </div>
             </NButton>
             <span> Attiva l'alto contrasto per una migliore leggibilità </span>
