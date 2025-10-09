@@ -18,19 +18,39 @@
         role="dialog"
         aria-modal="true"
       >
-        <div class="flex flex-row justify-between w-full gap-4 text-lg">
-          <NButton strong secondary size="large" color="#FFF" round class="" @click="toggleLargeFont">
-            <div class="flex flex-row items-center gap-2">
-              <Icon icon="fluent:text-font-20-filled" height="28" class="text-black" />
-              <div v-if="showLabels" class="text-lg text-black">Dimensione testo</div>
-            </div>
-          </NButton>
-          <NButton strong secondary size="large" color="#FFF" round class="" @click="toggleHighContrast">
-            <div class="flex flex-row items-center gap-2">
-              <Icon icon="fluent-mdl2:contrast" height="28" class="text-black" />
-              <div v-if="showLabels" class="text-lg text-black">Alto contrasto</div>
-            </div>
-          </NButton>
+        <div class="flex flex-row justify-between w-full gap-12 text-lg text-black">
+          <div class="flex flex-col gap-1">
+            <NButton
+              strong
+              secondary
+              size="large"
+              round
+              class="transition-all duration-300 hover:ring-2 ring-black"
+              @click="toggleLargeFont"
+            >
+              <div class="flex flex-row items-center gap-2">
+                <Icon icon="fluent:text-font-20-filled" height="28" class="text-black" />
+                <div v-if="showLabels" class="text-lg text-black">Dimensione testo</div>
+              </div>
+            </NButton>
+            <span>Aumenta la dimensione del testo</span>
+          </div>
+          <div class="flex flex-col gap-1">
+            <NButton
+              strong
+              secondary
+              size="large"
+              round
+              class="transition-all duration-300 hover:ring-2 ring-black"
+              @click="toggleHighContrast"
+            >
+              <div class="flex flex-row items-center gap-2">
+                <Icon icon="fluent-mdl2:contrast" height="28" class="text-black" />
+                <div v-if="showLabels" class="text-lg text-black">Alto contrasto</div>
+              </div>
+            </NButton>
+            <span> Attiva l'alto contrasto per una migliore leggibilità </span>
+          </div>
         </div>
         <template #footer> <Button title="Chiudi" color="darkGray" @clicked="showA11yModal = false" /> </template>
       </NCard>
