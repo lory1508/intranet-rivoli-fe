@@ -3,7 +3,12 @@
     <CardTitle :icon="icon" :title="title" button-destination="/applicativi" button-title="Tutti gli applicativi" />
     <div>
       <div v-for="type in categories" :key="type.slug">
-        <div class="pt-2 text-lg font-semibold text-center">{{ type.title }}</div>
+        <div
+          class="pt-2 font-semibold text-center transition-all duration-300"
+          :class="{ 'text-xl': isLargeFont, 'text-lg': !isLargeFont, 'bg-black text-white': isHighContrast }"
+        >
+          {{ type.title }}
+        </div>
         <div
           class="grid gap-2 pb-2 border-b-2 border-zinc-200"
           :class="{
@@ -30,8 +35,13 @@
 
 <script setup>
   import { useZoomWatcher } from '~/composables/useZoomWatcher'
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
   import CardTitle from '~/components/common/CardTitle.vue'
   import Button from '~/components/common/Button.vue'
+
+  const accessibilityStore = useAccessibilityStore()
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
 
   const props = defineProps({
     icon: {

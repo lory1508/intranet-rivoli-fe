@@ -238,7 +238,7 @@
   // Toggle accessibility features
   const toggleAccessibility = () => {
     accessibilityStore.toggleFontSize()
-    // accessibilityStore.toggleContrast()
+    accessibilityStore.toggleContrast()
   }
 
   onMounted(() => {

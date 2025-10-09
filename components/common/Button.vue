@@ -19,21 +19,29 @@
     <NTooltip v-if="showTooltip" trigger="hover" class="w-fit">
       <template #trigger>
         <div
-          class="truncate"
+          class="truncate transition-all duration-300"
           :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont, 'bg-black text-white': isHighContrast }"
         >
           {{ title }}
         </div>
       </template>
-      <div :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont, 'bg-black text-white': isHighContrast }">
+      <div
+        class="transition-all duration-300"
+        :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont, 'bg-black text-white': isHighContrast }"
+      >
         {{ title }}
       </div>
     </NTooltip>
-    <div v-else :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont, 'bg-black text-white': isHighContrast }">
-      {{ title }}
-    </div>
-    <div v-if="icon && iconPlacement === 'right'">
-      <Icon :icon="icon" height="24" />
+    <div class="flex flex-row items-center gap-2" v-else>
+      <div
+        class="transition-all duration-300"
+        :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont, 'bg-black text-white': isHighContrast }"
+      >
+        {{ title }}
+      </div>
+      <div v-if="icon && iconPlacement === 'right'">
+        <Icon :icon="icon" height="24" />
+      </div>
     </div>
   </div>
 </template>

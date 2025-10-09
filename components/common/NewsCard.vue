@@ -6,7 +6,7 @@
     <div class="flex flex-col h-full gap-2" :class="vertical ? 'p-4' : ''">
       <!-- Title -->
       <span
-        class="font-semibold text-primary hover:cursor-pointer"
+        class="font-semibold transition-all duration-300 text-primary hover:cursor-pointer"
         :class="{ 'text-2xl': isLargeFont, 'text-lg': !isLargeFont, 'bg-black text-white': isHighContrast }"
         @click="goToNews(post.slug)"
       >
