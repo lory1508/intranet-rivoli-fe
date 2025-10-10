@@ -220,6 +220,8 @@
       employeesData.value = formatArrayOfEmployees(employees.value.data)
       if (employeesData.value.length >= 10) {
         chosenLayout.value = 'table'
+      } else {
+        chosenLayout.value = 'cards'
       }
       pagination.value.total = employees.value.pagination.total
       pagination.value.page = employees.value.pagination.page || 1
