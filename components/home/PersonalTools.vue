@@ -18,7 +18,7 @@
           'bg-black hover:ring-zinc-800 ': isHighContrast,
           ' bg-primary hover:ring-primary': !isHighContrast,
         }"
-        @click="goToTool(tool)"
+        @click="goToTool(tool.href)"
       >
         <a :href="tool.href" target="_blank">
           <Icon :icon="tool.icon" height="36" />
@@ -26,8 +26,9 @@
         <span
           class="font-semibold tracking-tighter text-center"
           :class="{ 'text-lg': isLargeFont, 'text-xs': !isLargeFont }"
-          >{{ tool.title }}</span
         >
+          {{ tool.title }}
+        </span>
       </div>
     </div>
   </div>
