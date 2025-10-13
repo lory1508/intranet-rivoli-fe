@@ -97,7 +97,7 @@ export const menu = [
   },
   {
     title: 'Sicurezza lavoratori',
-    icon: 'hugeicons:knight-shield',
+    icon: 'ix:helmet-safety',
     path: '/sicurezza-lavoratori',
     submenu: [
       {
