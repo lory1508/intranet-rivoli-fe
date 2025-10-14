@@ -10,7 +10,7 @@
       <NImage
         v-if="employee?.photo"
         :src="employee?.photo"
-        :alt="employee?.name"
+        :alt="title"
         class="h-24 rounded-tl-xl hover:cursor-pointer"
       />
       <div
@@ -29,7 +29,7 @@
           'text-primary': !isHighContrast,
         }"
       >
-        {{ employee?.name }}
+        {{ title }}
       </div>
     </div>
     <div class="flex flex-col gap-3 px-4">
@@ -173,10 +173,7 @@
   import { Icon } from '@iconify/vue'
   import { NImage, NTooltip } from 'naive-ui'
   import { useAccessibilityStore } from '@/stores/accessibilityStore'
-
-  const accessibilityStore = useAccessibilityStore()
-  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
-  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
+  import { decodeHtmlEntities } from '~/utils'
 
   const props = defineProps({
     employee: {
@@ -184,4 +181,9 @@
       default: () => {},
     },
   })
+
+  const accessibilityStore = useAccessibilityStore()
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
+  const title = decodeHtmlEntities(props.employee?.name)
 </script>

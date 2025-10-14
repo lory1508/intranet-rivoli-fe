@@ -17,6 +17,13 @@ export const ByteToMega = (bytes) => {
   return `${MB}MB`
 }
 
+export const decodeHtmlEntities = (str) => {
+  console.log(str)
+  let doc = new DOMParser().parseFromString(str, 'text/html')
+  console.log(doc)
+  return doc.documentElement.textContent || doc.body.textContent
+}
+
 export const formatEmployeeObject = (employee) => {
   return {
     id: employee?.id,

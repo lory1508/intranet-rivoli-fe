@@ -60,7 +60,7 @@
   import { useEmployeeStore } from '~/stores/employees'
   import { NEmpty, NButton } from 'naive-ui'
   import { homeStaticData } from '~/utils/staticData/home'
-  import { formatArrayOfEmployees, capitalizeSentence } from '~/utils'
+  import { formatArrayOfEmployees, capitalizeSentence, decodeHtmlEntities } from '~/utils'
 
   import RubricaCard from '~/components/home/RubricaCard.vue'
   import EmployeeCard from '~/components/common/EmployeeCard.vue'
@@ -143,7 +143,7 @@
       resizable: true,
       minWidth: 200,
       render(row) {
-        return h('div', { class: `${accessibilityClasses.value}` }, capitalizeSentence(row.name))
+        return h('div', { class: `${accessibilityClasses.value}` }, capitalizeSentence(decodeHtmlEntities(row.name)))
       },
     },
     {
