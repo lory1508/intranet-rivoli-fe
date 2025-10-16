@@ -190,7 +190,7 @@
         </div>
       </div>
       <div
-        class="flex flex-row w-10/12"
+        class="flex flex-row w-full"
         :class="{
           'ml-24': collapsed,
           'ml-72': !collapsed,

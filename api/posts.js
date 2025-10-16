@@ -26,6 +26,9 @@ export const getPosts = async (queryObj, categories, tags) => {
     if (queryObj?.limit) {
       queryString += `per_page=${queryObj?.limit}&`
     }
+    if (queryObj?.excerpt) {
+      queryString += `excerpt=${queryObj?.excerpt}&`
+    }
     if (queryObj?.offset) {
       queryString += `offset=${queryObj?.offset}&`
     }

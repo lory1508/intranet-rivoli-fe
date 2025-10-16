@@ -10,7 +10,7 @@
       <CardTitle :icon="icon" :title="title" button-destination="/bacheca-dipendenti" button-title="Tutti gli avvisi" />
     </div>
     <div class="flex flex-wrap gap-4">
-      <NewsCard v-for="post in news" :key="post.slug" :post="post" :vertical="false" hide-content />
+      <NewsCard v-for="post in news" :key="post.slug" :post="post" :vertical="false" />
     </div>
   </div>
 </template>
@@ -48,7 +48,7 @@
   onMounted(async () => {
     const categories = await categoriesStore.getCategories()
     const tags = await tagsStore.getTags()
-    const res = await getPosts({ categories: ['bacheca-dipendenti'], limit: 3 }, categories, tags)
+    const res = await getPosts({ categories: ['bacheca-dipendenti'], limit: 3, excerpt: 15 }, categories, tags)
     news.value = res.posts
     pagination.value = res.pagination
   })
