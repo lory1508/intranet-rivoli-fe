@@ -170,12 +170,15 @@
                 </div>
               </div>
             </div>
-            <NButton type="primary" color="#FFF" round class="w-full mb-8" @click="showA11yModal = true">
-              <div class="flex flex-row items-center gap-2">
-                <Icon icon="solar:accessibility-linear" height="28" class="text-black" />
-                <div v-if="showLabels" class="text-lg text-black">Accessibilità</div>
-              </div>
-            </NButton>
+            <Button
+              color="white"
+              icon="solar:accessibility-linear"
+              class="w-full mb-8"
+              title="Accessibilità"
+              :show-labels="showLabels"
+              show-tooltip
+              @click="showA11yModal = true"
+            />
             <div v-if="showLabels" class="flex flex-col text-xs h-fit">
               <div class="flex flex-wrap">
                 {{ footer.title }}

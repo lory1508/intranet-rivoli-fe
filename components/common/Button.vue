@@ -6,17 +6,22 @@
     :class="customClasses"
     @click="emits('clicked')"
   >
-    <div v-if="icon && iconPlacement === 'left'">
-      <Icon :icon="icon" height="30" />
-    </div>
-
     <NTooltip v-if="showTooltip" trigger="hover" class="w-fit">
       <template #trigger>
-        <div
-          class="truncate transition-all duration-300"
-          :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont, 'bg-black text-white': isHighContrast }"
-        >
-          {{ title }}
+        <div class="flex flex-row items-center gap-2 truncate">
+          <div v-if="icon && iconPlacement === 'left'">
+            <Icon :icon="icon" height="30" />
+          </div>
+          <div
+            v-if="showLabels"
+            class="truncate transition-all duration-300"
+            :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont, 'bg-black text-white': isHighContrast }"
+          >
+            {{ title }}
+          </div>
+          <div v-if="icon && iconPlacement === 'right'">
+            <Icon :icon="icon" height="24" />
+          </div>
         </div>
       </template>
       <div
@@ -26,7 +31,10 @@
         {{ title }}
       </div>
     </NTooltip>
-    <div class="flex flex-row items-center gap-2" v-else>
+    <div v-else class="flex flex-row items-center gap-2">
+      <div v-if="icon && iconPlacement === 'left'">
+        <Icon :icon="icon" height="30" />
+      </div>
       <div
         class="transition-all duration-300"
         :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont, 'bg-black text-white': isHighContrast }"
@@ -69,6 +77,10 @@
       type: String,
       default: 'left',
     },
+    showLabels: {
+      type: Boolean,
+      default: true,
+    },
     showTooltip: {
       type: Boolean,
       default: false,
@@ -85,6 +97,8 @@
       classes.value.push('bg-sections hover:ring-2 hover:ring-primary text-neutralDark')
     } else if (props.color === 'darkGray' && !isHighContrast.value) {
       classes.value.push('bg-neutralDark hover:bg-opacity-80 text-white')
+    } else if (props.color === 'white' && !isHighContrast.value) {
+      classes.value.push('bg-white hover:bg-opacity-90 text-neutralDark')
     } else if (isHighContrast.value) {
       classes.value.push('bg-black text-white')
     }
