@@ -20,7 +20,7 @@
         }"
         @click="goToNews(post.slug)"
       >
-        {{ post.title }}
+        {{ title }}
       </span>
 
       <!-- Dates -->
@@ -112,6 +112,7 @@
   import TagComponent from '~/components/common/TagComponent.vue'
   import Button from '~/components/common/Button.vue'
   import { Icon } from '@iconify/vue'
+  import { decodeHtmlEntities } from '~/utils'
   import { useAccessibilityStore } from '@/stores/accessibilityStore'
 
   const accessibilityStore = useAccessibilityStore()
@@ -133,6 +134,8 @@
     },
   })
 
+  const title = ref('')
+
   const goToNews = async () => {
     const path = `${props.post.categories[0].link}/${props.post.slug}`
     await navigateTo({
@@ -141,4 +144,8 @@
       query: { id: props.post.id },
     })
   }
+
+  onMounted(() => {
+    title.value = decodeHtmlEntities(props.post?.title)
+  })
 </script>

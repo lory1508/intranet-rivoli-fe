@@ -173,13 +173,12 @@
             <Button
               color="white"
               icon="solar:accessibility-linear"
-              class="w-full mb-8"
               title="Accessibilità"
               :show-labels="showLabels"
               show-tooltip
               @click="showA11yModal = true"
             />
-            <div v-if="showLabels" class="flex flex-col text-xs h-fit">
+            <div v-if="showLabels" class="flex flex-col mt-4 text-xs h-fit">
               <div class="flex flex-wrap">
                 {{ footer.title }}
                 {{ footer.address }}
