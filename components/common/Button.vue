@@ -110,7 +110,7 @@
 
     if (props.width === 'w-full') {
       classes.value.push('w-full')
-    } else if (props.width === 'w-fit ') {
+    } else if (props.width === 'w-fit') {
       classes.value.push('w-fit px-4')
     }
 
