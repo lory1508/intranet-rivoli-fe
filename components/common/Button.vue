@@ -15,7 +15,7 @@
           <div
             v-if="showLabels"
             class="truncate transition-all duration-300"
-            :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont, 'bg-black text-white': isHighContrast }"
+            :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont}"
           >
             {{ title }}
           </div>
@@ -26,7 +26,7 @@
       </template>
       <div
         class="transition-all duration-300"
-        :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont, 'bg-black text-white': isHighContrast }"
+        :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont}"
       >
         {{ title }}
       </div>
@@ -37,7 +37,7 @@
       </div>
       <div
         class="transition-all duration-300"
-        :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont, 'bg-black text-white': isHighContrast }"
+        :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont}"
       >
         {{ title }}
       </div>
@@ -99,8 +99,13 @@
       classes.value.push('bg-neutralDark hover:bg-opacity-80 text-white')
     } else if (props.color === 'white' && !isHighContrast.value) {
       classes.value.push('bg-white hover:bg-opacity-90 text-neutralDark')
-    } else if (isHighContrast.value) {
-      classes.value.push('bg-black text-white')
+    }
+    
+    if (isHighContrast.value) {
+      if(props.color === 'white')
+        classes.value.push('bg-white text-black hover:bg-opacity-80')
+      else
+        classes.value.push('bg-black text-white hover:bg-opacity-80')
     }
 
     if (props.width === 'w-full') {
