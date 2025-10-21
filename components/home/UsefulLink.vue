@@ -14,13 +14,14 @@
         'bg-primary': !isHighContrast,
       }"
     />
-    <div>{{ link.title }}</div>
+    <div>{{ title }}</div>
   </a>
 </template>
 
 <script setup>
   import { Icon } from '@iconify/vue'
   import { useAccessibilityStore } from '@/stores/accessibilityStore'
+  import { decodeHtmlEntities } from '~/utils'
 
   const accessibilityStore = useAccessibilityStore()
   const isLargeFont = computed(() => accessibilityStore.isLargeFont)
@@ -39,5 +40,9 @@
       type: Boolean,
       default: false,
     },
+  })
+
+  const title = computed(() => {
+    return decodeHtmlEntities(props.link.title)
   })
 </script>

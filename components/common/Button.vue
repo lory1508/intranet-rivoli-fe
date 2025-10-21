@@ -17,7 +17,7 @@
             class="truncate transition-all duration-300"
             :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont}"
           >
-            {{ title }}
+            {{ decodedTitle }}
           </div>
           <div v-if="icon && iconPlacement === 'right'">
             <Icon :icon="icon" height="24" />
@@ -28,7 +28,7 @@
         class="transition-all duration-300"
         :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont}"
       >
-        {{ title }}
+        {{ decodedTitle }}
       </div>
     </NTooltip>
     <div v-else class="flex flex-row items-center gap-2">
@@ -39,7 +39,7 @@
         class="transition-all duration-300"
         :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont}"
       >
-        {{ title }}
+        {{ decodedTitle }}
       </div>
       <div v-if="icon && iconPlacement === 'right'">
         <Icon :icon="icon" height="24" />
@@ -51,6 +51,7 @@
 <script setup>
   import { Icon } from '@iconify/vue'
   import { useAccessibilityStore } from '@/stores/accessibilityStore'
+  import { decodeHtmlEntities } from '~/utils'
 
   const accessibilityStore = useAccessibilityStore()
   const isLargeFont = computed(() => accessibilityStore.isLargeFont)
@@ -89,6 +90,9 @@
 
   const emits = defineEmits(['clicked'])
 
+  const decodedTitle = computed(() => {
+    return decodeHtmlEntities(props.title)
+  })
   const customClasses = computed(() => {
     const classes = ref([])
     if (props.color === 'default' && !isHighContrast.value) {
