@@ -64,7 +64,7 @@
             <TagComponent :tag="tag" color="indigo" />
           </div>
         </div>
-        <!-- Caegories -->
+        <!-- Categories -->
         <div v-if="post?.category.length" class="flex flex-wrap items-center gap-1">
           <span
             class="pr-1 font-semibold"
@@ -137,11 +137,12 @@
   const title = ref('')
 
   const goToNews = async () => {
-    const path = `${props.post.categories[0].link}/${props.post.slug}`
+    console.log("Navigating to news:", props.post);
+    const path = `${props.post.category.slug}/${props.post.slug}`
     await navigateTo({
       path: path,
       params: { slug: props.post.slug },
-      query: { id: props.post.id },
+      query: { id: props.post.documentId },
     })
   }
 

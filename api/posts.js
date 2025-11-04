@@ -29,56 +29,12 @@ export const getPosts = async (queryObj, categories, tags) => {
       query,
     });
 
-    // let queryString = "";
-    // if (queryObj?.excerpt) {
-    //   queryString += `excerpt=${queryObj?.excerpt}&`;
-    // }
-    // if (queryObj?.offset) {
-    //   queryString += `offset=${queryObj?.offset}&`;
-    // }
-    // if (queryObj?.page) {
-    //   queryString += `page=${queryObj?.page}&`;
-    // }
-    // if (queryObj?.tags) {
-    //   queryString += `tags=${queryObj?.tags.join(",")}&`;
-    // }
-    // if (queryObj?.search) {
-    //   queryString += `search=${queryObj?.search}&`;
-    // }
-    // if (queryObj.range) {
-    //   const start = new Date(queryObj.range[0]).toISOString();
-    //   const end = new Date(queryObj.range[1]).toISOString();
-    //   queryString += `after=${start}&before=${end}&`;
-    // }
-    // const res = await fetch(`${WORDPRESS_BASE_URL}/posts?${queryString}`);
-    // if (!res.ok) {
-    //   throw new Error(`Response status: ${res.status}`);
-    // }
-    // const json = await res.json();
-
-    // const posts = json.map((post) => {
-    //   return {
-    //     id: post?.id,
-    //     title: post?.title?.rendered,
-    //     content: post?.content?.rendered,
-    //     excerpt: post?.excerpt?.rendered,
-    //     categories: post?.categories?.map((category) =>
-    //       categories.find((c) => c?.id === category)
-    //     ),
-    //     tags: post?.tags?.map((tag) => tags.find((t) => t?.id === tag)),
-    //     start: post?.acf?.start,
-    //     end: post?.acf?.end,
-    //     slug: post?.slug,
-    //     createdAt: new Date(post?.date).toLocaleDateString("it-IT"),
-    //     attachment: {
-    //       id: post?.acf?.attachment?.ID,
-    //       url: post?.acf?.attachment?.url,
-    //       title: post?.acf?.attachment?.title,
-    //       type: post?.acf?.attachment?.subtype,
-    //       size: post?.acf?.attachment?.filesize,
-    //     },
-    //   };
-    // });
+    resStrapi.data.forEach((post) => {
+      post.createdAt = new Date(post.createdAt).toLocaleDateString("it-IT");
+      if(post.start) new Date(post.start).toLocaleDateString("it-IT");
+      if(post.end) new Date(post.end).toLocaleDateString("it-IT");
+    })
+    
     return {
       posts: resStrapi.data,
       pagination: {
@@ -178,38 +134,15 @@ export const getPostById = async (id, categories = [], tags = []) => {
     const config = useRuntimeConfig();
     const token = config.public.strapi.token;
 
-    const resStrapi = await $fetch(`${config.public.strapi.url}/api/articles`, {
+    const resStrapi = await $fetch(`${config.public.strapi.url}/api/articles/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
       params: {
-        sort: ["publishedAt:desc"],
         populate: ["*"],
       },
     });
-    console.log("ARTICLES getPostById", resStrapi);
-    const res = await useFetch(`${WORDPRESS_BASE_URL}/posts/${id}`);
-    const post = res?.data?.value;
-    return {
-      title: post?.title?.rendered,
-      content: post?.content?.rendered,
-      excerpt: post?.excerpt?.rendered,
-      categories: post?.categories?.map((category) =>
-        categories.find((c) => c?.id === category)
-      ),
-      tags: post?.tags?.map((tag) => tags.find((t) => t?.id === tag)),
-      start: post?.acf?.start,
-      end: post?.acf?.end,
-      slug: post?.slug,
-      createdAt: new Date(post?.date).toLocaleDateString("it-IT"),
-      attachment: {
-        id: post?.acf?.attachment?.ID,
-        url: post?.acf?.attachment?.url,
-        title: post?.acf?.attachment?.title,
-        type: post?.acf?.attachment?.subtype,
-        size: post?.acf?.attachment?.filesize,
-      },
-    };
+    return resStrapi.data
   } catch (err) {
     console.error(err);
   }
