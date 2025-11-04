@@ -18,7 +18,6 @@ export const getAlert = async () => {
       }
     );
 
-    console.log("ALERT", resStrapi.data[0]);
     return resStrapi.data[0];
   } catch (err) {
     console.error(err);

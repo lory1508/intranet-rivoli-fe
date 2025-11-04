@@ -51,7 +51,7 @@
         </div>
 
         <!-- Tags -->
-        <div v-if="post?.tags.length" class="flex flex-wrap items-center gap-1">
+        <div v-if="post?.tag?.length" class="flex flex-wrap items-center gap-1">
           <span
             class="pr-1 font-semibold"
             :class="{
@@ -60,12 +60,12 @@
             }"
             >Tag:</span
           >
-          <div v-for="tag in post?.tags" :key="tag.id">
+          <div v-for="tag in post?.tag" :key="tag.id">
             <TagComponent :tag="tag" color="indigo" />
           </div>
         </div>
         <!-- Caegories -->
-        <div v-if="post?.categories.length" class="flex flex-wrap items-center gap-1">
+        <div v-if="post?.category.length" class="flex flex-wrap items-center gap-1">
           <span
             class="pr-1 font-semibold"
             :class="{

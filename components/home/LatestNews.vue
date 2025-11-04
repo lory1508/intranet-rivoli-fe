@@ -53,7 +53,8 @@
   onMounted(async () => {
     const categories = await categoriesStore.getCategories()
     const tags = await tagsStore.getTags()
-    const res = await getPosts({ categories: ['news'], limit: 6 }, categories, tags)
+    console.log("LatestNews fetching posts");
+    const res = await getPosts({ categories: ['news'], limit: 6, excerpt: 20 }, categories, tags)
     news.value = res.posts
     pagination.value = res.pagination
   })
