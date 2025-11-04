@@ -1,47 +1,62 @@
-import { WORDPRESS_BASE_URL } from '../utils/staticData/constants'
-import { slugify } from '../utils/index.js'
+import { slugify } from "../utils/index.js";
 
-/**
- * Fetches external links from the WordPress API, processes them,
- * and returns an array of external link objects with attributes such as
- * title, icon, href, type, slugType, slug, and highlight status.
- * Optionally filters the results to include only highlighted links.
- *
- * @param {boolean} [onlyHighlight=false] - If true, filters the returned
- * links to include only those marked as highlighted.
- * @returns {Promise<Array>} A promise that resolves to an array of external
- * link objects.
- */
-export const getExternalLinks = async (onlyHighlight = false) => {
+export const getExternalLinks = async (
+  onlyHighlight = false,
+  typeTitle = null,
+  sort = []
+) => {
   try {
-    const res = await useFetch(`${WORDPRESS_BASE_URL}/external-link?per_page=100`)
-    const externalLinks = res?.data?.value
-      .map((el) => {
-        const slugTypes = []
-        const types = el?.acf?.type || []
-        types.forEach((type) => {
-          slugTypes.push(slugify(type))
-        })
-        return {
-          title: el.title.rendered,
-          icon: el?.acf?.icon || '',
-          href: el?.acf?.url,
-          type: types,
-          slugType: slugTypes,
-          slug: el?.slug,
-          highlight: el?.acf?.highlight,
-        }
-      })
-      .sort((a, b) => (a.slugType > b.slugType ? 1 : -1))
+    const config = useRuntimeConfig();
+    const token = config.public.strapi.token;
+
+
+    const query = {
+      populate: ["types"],
+      sort: sort,
+    };
+
+    if (typeTitle) {
+      query["filters[types][title][$eq]"] = typeTitle;
+    }
 
     if (onlyHighlight) {
-      return externalLinks.filter((el) => el.highlight)
+      query["filters[highlight][$eq]"] = true;
     }
-    return externalLinks
+
+    const resStrapi = await $fetch(
+      `${config.public.strapi.url}/api/external-links`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        query,
+      }
+    );
+    
+    const el = resStrapi.data
+    .map((item) => {
+      const slugTypes = [];
+      const types = item.types || [];
+        types.forEach((type) => {
+          slugTypes.push(slugify(type.title));
+        });
+        return {
+          title: item.title,
+          icon: item.icon || "",
+          href: item.url,
+          type: types.map((type) => type.title),
+          slugType: slugTypes,
+          slug: item.slug,
+          highlight: item.highlight,
+        };
+      })
+      .sort((a, b) => (a.slugType > b.slugType ? 1 : -1));
+
+    return el;
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
 /**
  * Fetches and filters external links from the WordPress API by type.
@@ -55,9 +70,16 @@ export const getExternalLinks = async (onlyHighlight = false) => {
  */
 export const getExternalLinksByType = async (type, onlyHighlight = false) => {
   try {
-    const externalLinks = await getExternalLinks(onlyHighlight)
-    return externalLinks.filter((externalLink) => externalLink.slugType.includes(type))
+    const sort = ["title:asc"];
+    const externalLinks = await getExternalLinks(
+      onlyHighlight,
+      "Strumenti personali",
+      sort
+    );
+    return externalLinks.filter((externalLink) =>
+      externalLink.slugType.includes(type)
+    );
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nuxt/eslint": "1.3.0",
+    "@nuxtjs/strapi": "2.1.1",
     "@pinia/nuxt": "0.10.1",
     "@vueuse/core": "^13.6.0",
     "eslint": "^9.0.0",

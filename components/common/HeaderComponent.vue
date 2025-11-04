@@ -123,10 +123,10 @@
 
   const getLatestAlert = async () => {
     const res = await getAlert()
-    const start = new Date(res.value[0]?.acf?.start)
-    const end = new Date(res.value[0]?.acf?.end)
+    const start = new Date(res.start)
+    const end = new Date(res.end)
     showAlert.value = start <= new Date() && end >= new Date()
-    latestAlert.value = res.value[0].acf.content
+    latestAlert.value = res.content
   }
 
   const goTo = (path) => {
