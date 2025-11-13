@@ -11,7 +11,7 @@
           </template>
           <div class="font-semibold">{{ title }}</div>
         </NTooltip>
-        <div class="font-mono">{{ MbSize }}</div>
+        <div class="font-mono">{{ size }}KB</div>
       </div>
     </div>
 
@@ -43,8 +43,7 @@
 
 <script setup>
   import { Icon } from '@iconify/vue'
-  import { ICON_FILE_TYPE } from '~/utils/staticData/constants'
-  import { ByteToMega } from '~/utils/index'
+  import { ICON_FILE_TYPE, STRAPI_API_URL } from '~/utils/staticData/constants'
 
   import TagComponent from '~/components/common/TagComponent.vue'
 
@@ -75,13 +74,9 @@
     },
   })
 
-  const MbSize = ref(0)
 
   const goToAttachment = async () => {
-    await navigateTo(props.url, { external: true, open: { target: '_blank' } })
+    await navigateTo(`${STRAPI_API_URL}${props.url}`, { external: true, open: { target: '_blank' } })
   }
 
-  onMounted(() => {
-    MbSize.value = ByteToMega(props.size)
-  })
 </script>

@@ -2,19 +2,30 @@
   <a
     :href="link.href"
     target="_blank"
-    class="flex flex-row items-center gap-2 font-semibold transition-all duration-300 hover:translate-x-2 hover:text-opacity-95 text-primary w-fit rounded-xl hover:bg-opacity-90"
+    class="flex flex-row items-center gap-2 font-semibold transition-all duration-300 hover:translate-x-2 hover:text-opacity-95 text-neutralDark w-fit rounded-xl hover:bg-opacity-90"
+    :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont, 'text-black': isHighContrast }"
   >
     <Icon
       icon="solar:arrow-right-up-linear"
       height="24"
-      class="w-8 h-8 p-1 text-white transition-all duration-300 rounded-full hover:bg-opacity-95 bg-primary"
+      class="w-8 h-8 p-1 text-white transition-all duration-300 rounded-full hover:bg-opacity-95"
+      :class="{
+        'bg-black ': isHighContrast,
+        'bg-primary': !isHighContrast,
+      }"
     />
-    <div>{{ link.title }}</div>
+    <div>{{ title }}</div>
   </a>
 </template>
 
 <script setup>
   import { Icon } from '@iconify/vue'
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
+  import { decodeHtmlEntities } from '~/utils'
+
+  const accessibilityStore = useAccessibilityStore()
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
 
   const props = defineProps({
     link: {
@@ -29,5 +40,9 @@
       type: Boolean,
       default: false,
     },
+  })
+
+  const title = computed(() => {
+    return decodeHtmlEntities(props.link.title)
   })
 </script>

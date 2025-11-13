@@ -48,12 +48,22 @@
           class="pb-2 border-b-2 border-zinc-300 !border-t-0"
         >
           <template #header>
-            <div class="text-lg font-semibold text-primary">{{ type.title }}</div>
+            <div
+              class="font-semibold transition-all duration-300"
+              :class="{
+                'text-2xl': isLargeFont,
+                'text-lg': !isLargeFont,
+                'text-black': isHighContrast,
+                'text-primary ': !isHighContrast,
+              }"
+            >
+              {{ type.title }}
+            </div>
           </template>
           <div class="grid gap-2">
             <div class="flex flex-col gap-2">
               <UsefulLink
-                v-for="link in usefulLinks.filter((link) => link.slugType === type.slug)"
+                v-for="link in usefulLinks.filter((link) => link.slugType.includes(type.slug))"
                 :key="link.slug"
                 :link="link"
                 :categories="usefulLinksCategories"
@@ -75,6 +85,11 @@
   import { getExternalLinks } from '~/api/externalLinks'
   import { NCollapse, NInputGroup } from 'naive-ui'
   import { useElementHover } from '@vueuse/core'
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
+
+  const accessibilityStore = useAccessibilityStore()
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
 
   const loading = ref(false)
   const usefulLinks = ref([])
@@ -112,14 +127,22 @@
   onMounted(async () => {
     try {
       loading.value = true
-      usefulLinks.value = await getExternalLinks()
-      const tmpCats = [...new Set(usefulLinks.value.map((link) => link.slugType))]
-      tmpCats.forEach((cat) => {
-        usefulLinksCategories.value.push({
-          title: usefulLinks.value.find((link) => link.slugType === cat).type,
-          slug: cat,
-        })
-      })
+      usefulLinks.value = (await getExternalLinks()).sort((a, b) => (a.title > b.title ? 1 : -1))
+      usefulLinksCategories.value = Array.from(
+        new Map(
+          usefulLinks.value
+            // flatten type/slugType pairs
+            .flatMap((item) =>
+              item.type.map((t, i) => ({
+                title: t,
+                slug: item.slugType[i],
+              }))
+            )
+            // remove duplicates by slug
+            .map((obj) => [obj.slug, obj])
+        ).values()
+      )
+      usefulLinksCategories.value.sort((a, b) => a.title.localeCompare(b.title))
     } catch (error) {
       console.error(error)
     } finally {

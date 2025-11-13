@@ -1,23 +1,34 @@
 <template>
-  <div class="flex flex-col gap-2 p-4 rounded-lg shadow-md bg-zinc-100 text-primary shadow-zinc-300">
-    <div class="flex flex-row items-center justify-between pb-2">
-      <div class="flex flex-row gap-2">
-        <Icon :icon="icon" height="32" />
-        <div class="text-xl font-semibold">{{ title }}</div>
-      </div>
-    </div>
-    <div class="flex flex-wrap items-stretch gap-1">
+  <div
+    class="flex flex-col gap-2 p-4 rounded-lg"
+    :class="{
+      'bg-white border-2 border-zinc-800 ': isHighContrast,
+      ' bg-zinc-100 shadow-zinc-300 shadow-md text-primary': !isHighContrast,
+    }"
+  >
+    <CardTitle :icon="icon" :title="title" />
+    <div class="flex flex-wrap items-stretch justify-center gap-1">
       <LoaderComponent v-if="loading" />
       <div
         v-for="tool in tools"
         v-else
         :key="tool.slug"
-        class="flex flex-col items-center justify-start gap-1 p-2 text-white transition-all duration-300 bg-opacity-75 border h-fit border-primary rounded-2xl bg-primary hover:ring-2 hover:ring-primary hover:shadow-md hover:cursor-pointer"
+        class="flex flex-col items-center justify-start gap-1 p-2 text-white transition-all duration-300 border bg-opacity-85 h-fit rounded-2xl hover:ring-2 hover:shadow-md hover:cursor-pointer"
+        :class="{
+          'bg-black hover:ring-zinc-800 ': isHighContrast,
+          ' bg-primary hover:ring-primary': !isHighContrast,
+        }"
+        @click="goToTool(tool.href)"
       >
         <a :href="tool.href" target="_blank">
           <Icon :icon="tool.icon" height="36" />
         </a>
-        <span class="text-xs font-semibold tracking-tighter text-center">{{ tool.title }}</span>
+        <span
+          class="font-semibold tracking-tighter text-center"
+          :class="{ 'text-lg': isLargeFont, 'text-xs': !isLargeFont }"
+        >
+          {{ tool.title }}
+        </span>
       </div>
     </div>
   </div>
@@ -25,7 +36,13 @@
 
 <script setup>
   import { Icon } from '@iconify/vue'
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
   import LoaderComponent from '~/components/common/LoaderComponent.vue'
+  import CardTitle from '~/components/common/CardTitle.vue'
+
+  const accessibilityStore = useAccessibilityStore()
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
 
   const props = defineProps({
     icon: {
@@ -45,4 +62,8 @@
       default: false,
     },
   })
+
+  const goToTool = async (tool) => {
+    await navigateTo(tool, { external: true, open: { target: '_blank' } })
+  }
 </script>

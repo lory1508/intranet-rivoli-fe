@@ -60,12 +60,16 @@
   import { useEmployeeStore } from '~/stores/employees'
   import { NEmpty, NButton } from 'naive-ui'
   import { homeStaticData } from '~/utils/staticData/home'
-  import { formatArrayOfEmployees, capitalizeSentence } from '~/utils'
+  import { formatArrayOfEmployees, capitalizeSentence, decodeHtmlEntities } from '~/utils'
 
   import RubricaCard from '~/components/home/RubricaCard.vue'
   import EmployeeCard from '~/components/common/EmployeeCard.vue'
   import HeaderComponent from '~/components/common/HeaderComponent.vue'
   import LoaderComponent from '~/components/common/LoaderComponent.vue'
+
+  const accessibilityStore = useAccessibilityStore()
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
 
   const route = useRoute()
 
@@ -118,6 +122,20 @@
     },
   ]
 
+  const accessibilityClasses = computed(() => {
+    const classes = ref('transition-all duration-300 ')
+    if (isLargeFont.value) {
+      classes.value += 'text-xl '
+    }
+    if (!isLargeFont.value) {
+      classes.value += 'text-base '
+    }
+    if (isHighContrast.value) {
+      classes.value += 'bg-black text-white '
+    }
+    return classes.value
+  })
+
   const columns = [
     {
       title: 'Nome',
@@ -125,7 +143,7 @@
       resizable: true,
       minWidth: 200,
       render(row) {
-        return capitalizeSentence(row.name)
+        return h('div', { class: `${accessibilityClasses.value}` }, capitalizeSentence(decodeHtmlEntities(row.name)))
       },
     },
     {
@@ -133,6 +151,9 @@
       key: 'phone',
       resizable: true,
       minWidth: 200,
+      render(row) {
+        return h('div', { class: `${accessibilityClasses.value}` }, row.phone)
+      },
     },
     {
       title: 'Email',
@@ -146,7 +167,7 @@
             strong: true,
             secondary: true,
             type: 'info',
-            size: 'small',
+            size: isLargeFont.value ? 'large' : 'small',
             onClick: async () => await navigateTo(`mailto:${row.email}`, { external: true }),
           },
           { default: () => row.email }
@@ -158,21 +179,33 @@
       key: 'room',
       resizable: true,
       minWidth: 200,
+      render(row) {
+        return h('div', { class: `${accessibilityClasses.value}` }, row.room)
+      },
     },
     {
       title: 'Dir.',
       key: 'department',
       minWidth: 300,
+      render(row) {
+        return h('div', { class: `${accessibilityClasses.value}` }, row.department)
+      },
     },
     {
       title: 'Serv.',
       key: 'service',
       minWidth: 300,
+      render(row) {
+        return h('div', { class: `${accessibilityClasses.value}` }, row.service)
+      },
     },
     {
       title: 'Uff.',
       key: 'office',
       minWidth: 300,
+      render(row) {
+        return h('div', { class: `${accessibilityClasses.value}` }, row.office)
+      },
     },
   ]
 
@@ -187,6 +220,8 @@
       employeesData.value = formatArrayOfEmployees(employees.value.data)
       if (employeesData.value.length >= 10) {
         chosenLayout.value = 'table'
+      } else {
+        chosenLayout.value = 'cards'
       }
       pagination.value.total = employees.value.pagination.total
       pagination.value.page = employees.value.pagination.page || 1

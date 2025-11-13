@@ -1,19 +1,13 @@
 <template>
   <div class="flex flex-col gap-8">
     <div
-      class="flex flex-row items-center justify-between gap-2 p-4 rounded-lg shadow-md bg-zinc-100 text-primary border-secondaryLight shadow-zinc-300"
+      class="flex flex-col gap-2 p-4 rounded-lg"
+      :class="{
+        'bg-white border-2 border-zinc-800 ': isHighContrast,
+        ' bg-zinc-100 shadow-zinc-300 shadow-md text-primary': !isHighContrast,
+      }"
     >
-      <div class="flex flex-row gap-2">
-        <Icon :icon="icon" height="32" />
-        <div class="text-xl font-semibold">{{ title }}</div>
-      </div>
-      <div
-        class="flex flex-row items-center gap-2 px-4 py-2 font-semibold tracking-widest text-white uppercase transition-all duration-300 rounded-lg bg-primary bg-opacity-90 hover:cursor-pointer hover:bg-opacity-95"
-        @click="$router.push('/news')"
-      >
-        tutte le news
-        <Icon icon="solar:arrow-right-line-duotone" height="24" />
-      </div>
+      <CardTitle :icon="icon" :title="title" button-destination="/news" button-title="Tutte le news" />
     </div>
     <div class="flex flex-wrap w-full gap-4">
       <NewsCard v-for="post in news" :key="post.slug" :post="post" />
@@ -23,12 +17,17 @@
 
 <script setup>
   import NewsCard from '~/components/common/NewsCard.vue'
-  import { Icon } from '@iconify/vue'
+  import CardTitle from '~/components/common/CardTitle.vue'
   import { getPosts } from '~/api/posts'
 
   // stores
   import { useCategoriesStore } from '~/stores/categories'
   import { useTagsStore } from '~/stores/tags'
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
+
+  const accessibilityStore = useAccessibilityStore()
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
+
   const categoriesStore = useCategoriesStore()
   const tagsStore = useTagsStore()
 
@@ -54,7 +53,8 @@
   onMounted(async () => {
     const categories = await categoriesStore.getCategories()
     const tags = await tagsStore.getTags()
-    const res = await getPosts({ categories: ['news'], limit: 6 }, categories, tags)
+    console.log("LatestNews fetching posts");
+    const res = await getPosts({ categories: ['news'], limit: 6, excerpt: 20 }, categories, tags)
     news.value = res.posts
     pagination.value = res.pagination
   })

@@ -1,12 +1,71 @@
 <template>
-  <NSpace vertical size="large">
-    <div class="flex flex-row p-2 from-zinc-200 to-zinc-300 bg-gradient-to-b">
-      <div class="fixed flex h-full pb-6">
+  <NSpace
+    vertical
+    size="large"
+    class="transition-all duration-300"
+    :class="{
+      'text-xl': isLargeFont,
+      'bg-white text-black': isHighContrast,
+      'bg-gradient-to-br from-neutral-200 to-neutral-300': !isHighContrast,
+    }"
+  >
+    <NModal v-model:show="showA11yModal">
+      <NCard
+        style="width: 600px"
+        title="Impostazioni accessibilità"
+        :bordered="true"
+        size="huge"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div class="flex flex-row justify-between w-full gap-12 text-lg text-black">
+          <div class="flex flex-col gap-1">
+            <NButton
+              strong
+              secondary
+              size="large"
+              round
+              class="transition-all duration-300 hover:ring-2 ring-black"
+              @click="toggleLargeFont"
+            >
+              <div class="flex flex-row items-center gap-2">
+                <Icon icon="fluent:text-font-20-filled" height="28" class="text-black" />
+                <div class="text-lg text-black">Dimensione testo</div>
+              </div>
+            </NButton>
+            <span>Aumenta la dimensione del testo</span>
+          </div>
+          <div class="flex flex-col gap-1">
+            <NButton
+              strong
+              secondary
+              size="large"
+              round
+              class="transition-all duration-300 hover:ring-2 ring-black"
+              @click="toggleHighContrast"
+            >
+              <div class="flex flex-row items-center gap-2">
+                <Icon icon="fluent-mdl2:contrast" height="28" class="text-black" />
+                <div class="text-lg text-black">Alto contrasto</div>
+              </div>
+            </NButton>
+            <span> Attiva l'alto contrasto per una migliore leggibilità </span>
+          </div>
+        </div>
+        <template #footer> <Button title="Chiudi" color="darkGray" @clicked="showA11yModal = false" /> </template>
+      </NCard>
+    </NModal>
+
+    <div class="flex flex-row p-2">
+      <div class="fixed flex w-2/12 h-full pb-6">
+        <!-- <div class="fixed flex h-full pb-6 z-top"> -->
         <div
-          class="z-40 text-white transition-all duration-300 shadow-lg rounded-2xl from-zinc-600 to-zinc-500 bg-gradient-to-b shadow-zinc-300"
+          class="text-white transition-all duration-300 rounded-2xl"
           :class="{
             'w-24': collapsed,
             'w-72': !collapsed,
+            'bg-black text-white': isHighContrast,
+            'bg-primary shadow-zinc-300 shadow-lg': !isHighContrast,
           }"
           @update:collapsed="updateCollapsed"
         >
@@ -15,7 +74,9 @@
               <div class="flex flex-row items-center gap-4 hover:cursor-pointer" @click="goto('/')">
                 <img :src="websiteIdentity.logo.img" :alt="websiteIdentity.logo.alt" width="50" />
                 <div v-if="showLabels" class="flex flex-col">
-                  <div class="text-2xl font-bold">{{ websiteIdentity.name }}</div>
+                  <div class="text-2xl font-bold">
+                    {{ websiteIdentity.name }}
+                  </div>
                   <div class="pt-2 font-semibold">Rivoli, {{ formattedToday }}</div>
                 </div>
               </div>
@@ -27,7 +88,10 @@
                   :key="menuItem.path"
                   class="items-center justify-center px-2 py-1 cursor-pointer"
                   :class="{
-                    'text-primary bg-white rounded-md font-semibold': active === menuItem.path && !menuItem?.submenu,
+                    'text-primary bg-white rounded-md font-semibold':
+                      active === menuItem.path && !menuItem?.submenu && !isHighContrast,
+                    'text-black bg-white rounded-md font-semibold':
+                      active === menuItem.path && !menuItem?.submenu && isHighContrast,
                     'w-fit': collapsed,
                   }"
                 >
@@ -56,7 +120,10 @@
                               @click="expandMenu(menuItem.title)"
                             >
                               <Icon :icon="menuItem.icon" height="28" />
-                              <div class="text-base transition-all duration-300 hover:font-semibold">
+                              <div
+                                class="text-base transition-all duration-300 hover:font-semibold"
+                                :class="{ 'text-xl': isLargeFont, 'bg-black text-white': isHighContrast }"
+                              >
                                 {{ menuItem.title }}
                               </div>
                             </div>
@@ -68,6 +135,8 @@
                                 :class="{
                                   'text-primary bg-white rounded-md font-semibold': active === subMenuItem.path,
                                   'text-white': active !== subMenuItem.path,
+                                  'text-xl': isLargeFont,
+                                  'bg-black text-white': isHighContrast,
                                 }"
                                 @click="goto(subMenuItem.path)"
                               >
@@ -79,7 +148,10 @@
                       </NCollapse>
                       <div v-else class="flex flex-row items-center w-full gap-2" @click="goto(menuItem.path)">
                         <Icon :icon="menuItem.icon" height="28" />
-                        <div class="text-base transition-all duration-300 hover:font-semibold">
+                        <div
+                          class="text-base transition-all duration-300 hover:font-semibold"
+                          :class="{ 'text-xl': isLargeFont }"
+                        >
                           {{ menuItem.title }}
                         </div>
                       </div>
@@ -98,7 +170,15 @@
                 </div>
               </div>
             </div>
-            <div v-if="showLabels" class="flex flex-col text-xs h-fit">
+            <Button
+              color="white"
+              icon="solar:accessibility-linear"
+              title="Accessibilità"
+              :show-labels="showLabels"
+              show-tooltip
+              @click="showA11yModal = true"
+            />
+            <div v-if="showLabels" class="flex flex-col mt-4 text-xs h-fit">
               <div class="flex flex-wrap">
                 {{ footer.title }}
                 {{ footer.address }}
@@ -122,9 +202,11 @@
           <Icon
             icon="solar:alt-arrow-right-linear"
             height="36"
-            class="fixed z-50 text-white transition-all duration-500 ease-in-out border-2 border-opacity-75 rounded-full cursor-pointer bg-primary border-primary"
+            class="fixed z-50 transition-all duration-500 ease-in-out bg-white border-2 rounded-full cursor-pointer"
             :class="{
               'scale-x-[-1]': !collapsed,
+              'text-primary border-primary': !isHighContrast,
+              'text-black border-black': isHighContrast,
             }"
             @click="collapseSidebar"
           />
@@ -142,13 +224,24 @@
   // components
 
   import { menu, websiteIdentity } from '~/utils/staticData/menu.js'
-  import { NCollapse, NCollapseItem, NTooltip, NSpace, NDivider, NBackTop } from 'naive-ui'
+  import { NCollapse, NCollapseItem, NTooltip, NSpace, NDivider, NBackTop, NSwitch, NButton } from 'naive-ui'
   import { Icon } from '@iconify/vue'
+  import { useAccessibilityStore } from '@/stores/accessibilityStore'
   import { useHead } from '#imports'
   import { delay } from '~/utils/index.js'
+  import Button from '~/components/common/Button.vue'
 
   const router = useRouter()
   const route = useRoute()
+
+  // A11y
+  const accessibilityStore = useAccessibilityStore()
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
+  const largeFont = ref(isLargeFont.value)
+  const highContrast = ref(isHighContrast.value)
+
+  const showA11yModal = ref(false)
 
   const subMenusCollapsed = ref([])
   const collapsed = ref(false)
@@ -176,6 +269,27 @@
       }
     }
   )
+
+  watch(
+    () => largeFont.value,
+    () => {
+      accessibilityStore.toggleFontSize()
+    }
+  )
+
+  watch(
+    () => highContrast.value,
+    () => {
+      accessibilityStore.toggleContrast()
+    }
+  )
+
+  const toggleLargeFont = () => {
+    accessibilityStore.toggleFontSize()
+  }
+  const toggleHighContrast = async () => {
+    accessibilityStore.toggleContrast()
+  }
 
   useHead({
     title: pageTitle,
@@ -205,4 +319,10 @@
   const updateCollapsed = (value) => {
     collapsed.value = value
   }
+
+  // Toggle accessibility features
+
+  onMounted(() => {
+    accessibilityStore.initializePreferences()
+  })
 </script>
