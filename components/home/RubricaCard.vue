@@ -93,15 +93,15 @@
   })
 
   const optionsDepartment = computed(() =>
-    departments.value.map((department) => ({ label: department?.title?.rendered, value: department?.id }))
+    departments.value?.map((department) => ({ label: department?.title, value: department?.documentId }))
   )
 
   const optionsOffice = computed(() =>
-    offices.value.map((office) => ({ label: office?.title?.rendered, value: office?.id }))
+    offices.value?.map((office) => ({ label: office?.title, value: office?.documentId }))
   )
 
   const optionsService = computed(() =>
-    services.value.map((service) => ({ label: service?.title?.rendered, value: service?.id }))
+    services.value?.map((service) => ({ label: service?.title, value: service?.documentId }))
   )
 
   const runSearch = () => {

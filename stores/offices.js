@@ -1,51 +1,53 @@
 // stores/office.js
-import { defineStore } from 'pinia'
-import { WORDPRESS_BASE_URL } from '~/utils/staticData/constants'
+import { defineStore } from "pinia";
+import { WORDPRESS_BASE_URL } from "~/utils/staticData/constants";
+import { getData } from "#imports";
 
-export const useOfficeStore = defineStore('offices', {
+export const useOfficeStore = defineStore("offices", {
   state: () => ({
     offices: [], // Initial state for your offices array
   }),
   actions: {
     async getOffices() {
       if (this.fetched && this.offices.length > 0) {
-        return this.offices
+        return this.offices;
       }
 
       try {
-        const res = await useFetch(`${WORDPRESS_BASE_URL}/office?per_page=100`)
-        this.offices = res?.data || []
-        this.fetched = true
-        return this.offices
+        const res = await getData("offices");
+        this.offices = res.data || [];
+        this.fetched = true;
+        return this.offices;
       } catch (err) {
-        console.error('Failed to fetch offices', err)
-        throw err
+        console.error("Failed to fetch offices", err);
+        throw err;
       }
     },
     async getOfficeBySlug(slug) {
       try {
-        if (!slug) return
-        const res = await useFetch(`${WORDPRESS_BASE_URL}/office?slug=${slug}`)
-        this.offices = res?.data || []
-        this.fetched = true
-        return this.offices
+        if (!slug) return;
+        const res = await useFetch(`${WORDPRESS_BASE_URL}/office?slug=${slug}`);
+        this.offices = res?.data || [];
+        this.fetched = true;
+        return this.offices;
       } catch (err) {
-        console.error('Failed to fetch offices', err)
-        throw err
+        console.error("Failed to fetch offices", err);
+        throw err;
       }
     },
     setOffices(officeArray) {
-      this.offices = officeArray
+      this.offices = officeArray;
     },
     addOffice(office) {
-      this.offices.push(office)
+      this.offices.push(office);
     },
     clearOffices() {
-      this.offices = []
+      this.offices = [];
     },
   },
   getters: {
     officeCount: (state) => state.offices.length,
-    getOfficeById: (state) => (id) => state.offices.find((office) => office.id === id),
+    getOfficeById: (state) => (id) =>
+      state.offices.find((office) => office.id === id),
   },
-})
+});

@@ -8,8 +8,9 @@ export const getCategories = async (query) => {
     if (query?.page) q.value += `page=${query.page}&`
     if (query?.parent) q.value += `parent=${query.parent}&`
 
-    const res = await useFetch(`${WORDPRESS_BASE_URL}/categories?${q.value}`)
-    return res?.data?.value
+    // TODO: Switch to Strapi
+    // const res = await useFetch(`${WORDPRESS_BASE_URL}/categories?${q.value}`)
+    // return res?.data?.value
   } catch (err) {
     console.error(err)
   }

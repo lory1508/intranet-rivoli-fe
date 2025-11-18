@@ -41,9 +41,6 @@ export const getPosts = async (queryObj, categories, tags) => {
         total: resStrapi.meta.pagination.total,
         limit: resStrapi.meta.pagination.limit,
         start: resStrapi.meta.pagination.start,
-        // total: res.headers.get("x-wp-total"),
-        // totalPages: res.headers.get("x-wp-totalpages"),
-        // page: queryObj?.page || 1,
       },
     };
   } catch (err) {

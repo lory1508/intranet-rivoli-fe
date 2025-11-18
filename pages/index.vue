@@ -80,16 +80,17 @@
     try {
       loading.value = true
 
-      const modulistica = await getCategories({ search: 'modulistica', perPage: 1 })
-      const tmp = ref([])
-      tmp.value = await getCategories({ parent: modulistica[0]?.id, perPage: 100 })
-      tmp.value.forEach((cat) => {
-        catModulistica.value.push({
-          title: cat.name,
-          slug: getCatFromLink(cat.link),
-          href: getCatFromLink(cat.link),
-        })
-      })
+      // TODO: switch to Strapi
+      // const modulistica = await getCategories({ search: 'modulistica', perPage: 1 })
+      // const tmp = ref([])
+      // tmp.value = await getCategories({ parent: modulistica[0]?.id, perPage: 100 })
+      // tmp.value.forEach((cat) => {
+      //   catModulistica.value.push({
+      //     title: cat.name,
+      //     slug: getCatFromLink(cat.link),
+      //     href: getCatFromLink(cat.link),
+      //   })
+      // })
 
       personalTools.value = await getExternalLinksByType('strumenti-personali')
 

@@ -1,6 +1,6 @@
 // stores/department.js
 import { defineStore } from 'pinia'
-import { WORDPRESS_BASE_URL } from '~/utils/staticData/constants'
+import { getData } from '#imports'
 
 export const useDepartmentStore = defineStore('departments', {
   state: () => ({
@@ -14,20 +14,8 @@ export const useDepartmentStore = defineStore('departments', {
       }
 
       try {
-        const res = await useFetch(`${WORDPRESS_BASE_URL}/department`)
-        this.departments = res?.data || []
-        this.fetched = true
-        return this.departments
-      } catch (err) {
-        console.error('Failed to fetch departments', err)
-        throw err
-      }
-    },
-    async getDepartmentBySlug(slug) {
-      try {
-        if (!slug) return
-        const res = await useFetch(`${WORDPRESS_BASE_URL}/department?slug=${slug}`)
-        this.departments = res?.data || []
+        const res = await getData('departments')
+        this.departments = res.data || []
         this.fetched = true
         return this.departments
       } catch (err) {

@@ -1,6 +1,7 @@
 // stores/employee.js
 import { defineStore } from 'pinia'
 import { WORDPRESS_BASE_URL } from '~/utils/staticData/constants'
+import { getData } from '#imports'
 
 export const useEmployeeStore = defineStore('employees', {
   state: () => ({
@@ -14,7 +15,26 @@ export const useEmployeeStore = defineStore('employees', {
       }
 
       try {
-        let params = ''
+        let params = {
+          populate: ['*'],
+          sort: ['surname:asc'],
+        }
+
+        console.log("Query in store/employees.js:", query);
+        if(query?.department)
+          params["filters[department][documentId][$eq]"] = query?.department
+        if(query?.office);
+          params["filters[office][documentId][$eq]"] = query?.office
+        if(query?.service)
+          params["filters[service][documentId][$eq]"] = query?.service
+
+        if(query?.query && isNaN(query?.query))
+          params["filters[fullname][$containsi]"] = query?.query
+        console.log(query?.query && !isNaN(query?.query))
+        if(query?.query && !isNaN(query?.query))
+          params["filters[phone][$containsi]"] = query?.query
+
+          /*
         if (pagination) params += `per_page=${pagination.perPage}&page=${pagination.page}`
         else params += `per_page=100&page=1`
 
@@ -24,17 +44,21 @@ export const useEmployeeStore = defineStore('employees', {
 
         if (query?.query && !isNaN(query?.query)) params += `&phone=${query?.query}`
         if (query?.query && isNaN(query?.query)) params += `&search=${query?.query}`
+*/
 
-        const res = await $fetch.raw(`${WORDPRESS_BASE_URL}/employee?${params}`)
+        // TODO: Switch to Strapi
+        const res = await getData(`employees?${pagination}`, params)
+        this.employees = res || []
+        // const res = await $fetch.raw(`${WORDPRESS_BASE_URL}/employee?${params}`)
 
-        this.employees = {
-          data: res._data || [],
-          pagination: {
-            total: res.headers.get('x-wp-total'),
-            totalPages: res.headers.get('x-wp-totalpages'),
-            page: pagination?.page || 1,
-          },
-        }
+        // this.employees = {
+        //   data: res._data || [],
+        //   pagination: {
+        //     total: res.headers.get('x-wp-total'),
+        //     totalPages: res.headers.get('x-wp-totalpages'),
+        //     page: pagination?.page || 1,
+        //   },
+        // }
 
         this.fetched = true
         return this.employees

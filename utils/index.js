@@ -1,3 +1,26 @@
+import { capitalizeSentence } from "#imports";
+
+export const getData = async (endpoint, params={}) => {
+  try {
+    const config = useRuntimeConfig();
+    const token = config.public.strapi.token;
+
+    const resStrapi = await $fetch(
+      `${config.public.strapi.url}/api/${endpoint}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {...params},
+      }
+    );
+
+    return resStrapi;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export const setIntervalMethod = (callback, interval) => {
@@ -24,15 +47,15 @@ export const decodeHtmlEntities = (str) => {
 
 export const formatEmployeeObject = (employee) => {
   return {
-    id: employee?.id,
-    name: employee?.title.rendered,
-    email: `${employee?.acf?.email}@comune.rivoli.to.it`,
-    phone: employee?.acf?.phone || '',
-    room: employee?.acf?.room || '',
-    photo: employee?.acf?.photo || '',
-    department: employee?.acf?.department[0]?.post_title || '',
-    service: employee?.acf?.service[0]?.post_title || '',
-    office: employee?.acf?.office[0]?.post_title || '',
+    id: employee?.docuemntId,
+    name: capitalizeSentence(employee?.fullname),
+    email: `${employee?.email}@comune.rivoli.to.it`,
+    phone: employee?.phone || '',
+    room: employee?.room || '',
+    photo: employee?.photo || '',
+    department: employee?.department?.title || '',
+    service: employee?.service?.title || '',
+    office: employee?.office?.title || '',
   }
 }
 

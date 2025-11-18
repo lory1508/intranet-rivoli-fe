@@ -15,20 +15,21 @@ export const useCategoriesStore = defineStore('categories', {
       }
 
       try {
-        const res = await useFetch(`${WORDPRESS_BASE_URL}/categories?per_page=100`)
-        this.categories =
-          res?.data?.value.map((category) => {
-            const link = category.parent
-              ? `/${res?.data?.value.find((c) => c?.id === category?.parent)?.slug}/${category?.slug}`
-              : `/${category?.slug}`
-            return {
-              id: category?.id,
-              parent: category?.parent || null,
-              name: category?.name,
-              slug: category?.slug,
-              link: link,
-            }
-          }) || []
+        // TODO: Switch to Strapi
+        // const res = await useFetch(`${WORDPRESS_BASE_URL}/categories?per_page=100`)
+        // this.categories =
+        //   res?.data?.value.map((category) => {
+        //     const link = category.parent
+        //       ? `/${res?.data?.value.find((c) => c?.id === category?.parent)?.slug}/${category?.slug}`
+        //       : `/${category?.slug}`
+        //     return {
+        //       id: category?.id,
+        //       parent: category?.parent || null,
+        //       name: category?.name,
+        //       slug: category?.slug,
+        //       link: link,
+        //     }
+        //   }) || []
         this.fetched = true
         return this.categories
       } catch (err) {

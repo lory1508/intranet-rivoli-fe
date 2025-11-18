@@ -89,7 +89,10 @@
         </div>
       </div>
       <div class="flex flex-col gap-1">
-        <div v-if="employee?.department" class="flex flex-row items-center gap-2">
+        <div
+          v-if="employee?.department"
+          class="flex flex-row items-center gap-2"
+        >
           <div
             class="font-semibold transition-all duration-300"
             :class="{
@@ -163,27 +166,31 @@
           'bg-primary': !isHighContrast,
         }"
       >
-        <Icon icon="fluent:mail-arrow-up-24-filled" height="36" class="text-white" />
+        <Icon
+          icon="fluent:mail-arrow-up-24-filled"
+          height="36"
+          class="text-white"
+        />
       </a>
     </div>
   </div>
 </template>
 
 <script setup>
-  import { Icon } from '@iconify/vue'
-  import { NImage, NTooltip } from 'naive-ui'
-  import { useAccessibilityStore } from '@/stores/accessibilityStore'
-  import { decodeHtmlEntities } from '~/utils'
+  import { Icon } from "@iconify/vue";
+  import { NImage, NTooltip } from "naive-ui";
+  import { useAccessibilityStore } from "@/stores/accessibilityStore";
+  import { decodeHtmlEntities } from "~/utils";
 
   const props = defineProps({
     employee: {
       type: Object,
       default: () => {},
     },
-  })
+  });
 
-  const accessibilityStore = useAccessibilityStore()
-  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
-  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
-  const title = decodeHtmlEntities(props.employee?.name)
+  const accessibilityStore = useAccessibilityStore();
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont);
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast);
+  const title = decodeHtmlEntities(props.employee?.name);
 </script>
