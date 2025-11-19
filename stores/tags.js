@@ -1,8 +1,8 @@
 // stores/categorie.js
-import { defineStore } from 'pinia'
-import { WORDPRESS_BASE_URL } from '~/utils/staticData/constants'
+import { defineStore } from "pinia";
+import { getData } from "#imports";
 
-export const useTagsStore = defineStore('tags', {
+export const useTagsStore = defineStore("tags", {
   state: () => ({
     tags: [], // Initial state for your tags array
     fetched: false,
@@ -11,26 +11,18 @@ export const useTagsStore = defineStore('tags', {
   actions: {
     async getTags() {
       if (this.fetched && this.tags.length > 0) {
-        return this.tags
+        return this.tags;
       }
 
       try {
-        // TODO: Switch to Strapi
-        // const res = await useFetch(`${WORDPRESS_BASE_URL}/tags?per_page=100`)
-        // this.tags =
-        //   res?.data?.value.map((tag) => {
-        //     return {
-        //       id: tag?.id,
-        //       name: tag?.name,
-        //       slug: tag?.slug,
-        //     }
-        //   }) || []
-        this.fetched = true
-        return this.tags
+        const res = await getData("tags");
+        this.tags = res?.data || []; 
+        this.fetched = true;
+        return this.tags;
       } catch (err) {
-        console.error('Failed to fetch tags', err)
-        throw err
+        console.error("Failed to fetch tags", err);
+        throw err;
       }
     },
   },
-})
+});

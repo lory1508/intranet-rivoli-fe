@@ -5,7 +5,7 @@ export const getPosts = async (queryObj, pagination) => {
   try {
     const query = {
       populate: ["*"],
-      sort: ["publishedAt:desc"],
+      sort: ["createdAt:desc"],
     };
 
     if (queryObj?.categories) {
@@ -21,11 +21,19 @@ export const getPosts = async (queryObj, pagination) => {
       query["filters[content][$containsi]"] = queryObj?.query;
     }
 
+    // Start date
     if (queryObj?.startDate) {
-      query["filters[start][$gte]"] = queryObj?.startDate;
+      query["filters[$and][0][start][$gte]"] = queryObj?.startDate;
     }
     if (queryObj?.endDate) {
-      query["filters[end][$lte]"] = queryObj?.endDate;
+      query["filters[$and][1][start][$lte]"] = queryObj?.endDate;
+    }
+
+    // Tags
+    if (queryObj?.tags && queryObj?.tags.length > 0) {
+      queryObj?.tags.forEach((tag, index) => {
+        query[`filters[$or][${index}][tags][documentId][$eq]`] = tag;
+      });
     }
 
     const resStrapi = await getData(`articles?${pagination}`, query);

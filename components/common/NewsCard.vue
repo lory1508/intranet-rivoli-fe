@@ -33,9 +33,10 @@
 
       <div class="flex flex-col items-start gap-2">
         <!-- Attachment -->
+        <div  class="flex flex-wrap w-full gap-8">
         <div
-          v-if="post?.attachment?.id"
-          class="flex flex-row items-center gap-1"
+        v-for="attachment in post?.attachments" :key="attachment.documentId"
+          class="flex flex-row items-center gap-1 border-b-2 border-opacity-50 w-fit border-primary"
           :class="{
             'text-black font-semibold': isHighContrast,
             'text-primary': !isHighContrast,
@@ -44,14 +45,15 @@
           <Icon icon="solar:paperclip-bold" width="20" />
           <NTooltip trigger="hover">
             <template #trigger>
-              <div class="truncate max-w-40">{{ post?.attachment?.title }}</div>
+              <div class="truncate max-w-40">{{ attachment?.name }}</div>
             </template>
-            <div>{{ post?.attachment?.title }}</div>
+            <div>{{ attachment?.name }}</div>
           </NTooltip>
+        </div>
         </div>
 
         <!-- Tags -->
-        <div v-if="post?.tag?.length" class="flex flex-wrap items-center gap-1">
+        <div v-if="post?.tags?.length" class="flex flex-wrap items-center gap-1">
           <span
             class="pr-1 font-semibold"
             :class="{
@@ -60,7 +62,7 @@
             }"
             >Tag:</span
           >
-          <div v-for="tag in post?.tag" :key="tag.id">
+          <div v-for="tag in post?.tags" :key="tag.id">
             <TagComponent :tag="tag" color="indigo" />
           </div>
         </div>

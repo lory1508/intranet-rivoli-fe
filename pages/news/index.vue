@@ -90,7 +90,7 @@
     tags: [],
     range: null,
   })
-  const optionsTags = computed(() => tags.value.map((tag) => ({ label: tag?.name, value: tag?.id })))
+  const optionsTags = computed(() => tags.value.map((tag) => ({ label: tag?.name, value: tag?.documentId })))
   const loading = ref(false)
   const news = ref([])
   const breadcrumb = ref([
@@ -116,6 +116,13 @@
       if(filters.value.search){
         filtersToRun.value.query = filters.value.search
       }
+      if(filters.value.range){
+        filtersToRun.value.startDate = new Date(filters.value.range[0]).toISOString().split("T")[0]
+        filtersToRun.value.endDate = new Date(filters.value.range[1]).toISOString().split("T")[0]
+      }
+      if(filters.value.tags.length > 0){
+        filtersToRun.value.tags = filters.value.tags
+      }
       // const filtersToRun = { categories: ['news'], limit: 4, page: page, ...filters.value }
       
       // if (filtersToRun.tags.length === 0) delete filtersToRun.tags
@@ -140,27 +147,6 @@
     news.value = [];
     await getNews();
   };
-
-  const runSearch = async () => {
-    try {
-      loading.value = true
-      const filtersToRun = { categories: ['news'], limit: 4, page: 1, ...filters.value }
-      if (filtersToRun.tags.length === 0) delete filtersToRun.tags
-      if (!filtersToRun.range) delete filtersToRun.range
-
-      categories.value = await categoriesStore.getCategories()
-      tags.value = await tagsStore.getTags()
-
-      const res = await getPosts(filtersToRun, pagination.value)
-      news.value = res.data
-      total.value = res.meta.pagination.total
-      pagination.value = {...res.meta.pagination}
-    } catch (err) {
-      console.error(err)
-    } finally {
-      loading.value = false
-    }
-  }
 
   onMounted(async () => {
     await getNews()
