@@ -21,15 +21,10 @@
   import { getPosts } from '~/api/posts'
 
   // stores
-  import { useCategoriesStore } from '~/stores/categories'
-  import { useTagsStore } from '~/stores/tags'
   import { useAccessibilityStore } from '@/stores/accessibilityStore'
 
   const accessibilityStore = useAccessibilityStore()
   const isHighContrast = computed(() => accessibilityStore.isHighContrast)
-
-  const categoriesStore = useCategoriesStore()
-  const tagsStore = useTagsStore()
 
   const props = defineProps({
     icon: {
@@ -44,17 +39,9 @@
 
   const news = ref([])
   const pagination = ref()
-  const router = useRouter()
-
-  const goTo = (path) => {
-    router.push(path)
-  }
 
   onMounted(async () => {
-    const categories = await categoriesStore.getCategories()
-    const tags = await tagsStore.getTags()
-    console.log("LatestNews fetching posts");
-    const res = await getPosts({ categories: ['news'], limit: 6, excerpt: 20 }, categories, tags)
+    const res = await getPosts({ categories: ['news'], limit: 6, excerpt: 20 })
     news.value = res.posts
     pagination.value = res.pagination
   })

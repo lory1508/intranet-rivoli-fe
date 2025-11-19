@@ -33,7 +33,7 @@
           placeholder="Cerca..."
           type="text"
           clearable
-          @keypress.enter="runSearch"
+          @keypress.enter="getNews(true)"
         />
         <n-date-picker
           v-model:value="filters.range"
@@ -44,7 +44,7 @@
           clearable
         />
         <n-select v-model:value="filters.tags" :options="optionsTags" placeholder="Tag" filterable multiple clearable />
-        <n-button strong secondary type="error" @click="runSearch">
+        <n-button strong secondary type="error" @click="getNews(true)">
           Cerca
           <template #icon>
             <n-icon>
@@ -104,19 +104,26 @@
     },
   ])
 
-  const getNews = async (page) => {
+  const getNews = async (search=false) => {
     try {
       loading.value = true
-      const filtersToRun = { categories: ['news'], limit: 4, page: page, ...filters.value }
-      if (filtersToRun.tags.length === 0) delete filtersToRun.tags
-      if (!filtersToRun.range) delete filtersToRun.range
+      if(search){
+        currentPage.value = 1
+      }
 
-      categories.value = await categoriesStore.getCategories()
-      tags.value = await tagsStore.getTags()
+      const filtersToRun = ref({categories: ['news']})
+
+      if(filters.value.search){
+        filtersToRun.value.query = filters.value.search
+      }
+      // const filtersToRun = { categories: ['news'], limit: 4, page: page, ...filters.value }
+      
+      // if (filtersToRun.tags.length === 0) delete filtersToRun.tags
+      // if (!filtersToRun.range) delete filtersToRun.range
+      
 
       pagination.value  =`pagination[page]=${currentPage.value}&pagination[pageSize]=${perPage.value}`
-      const res = await getPosts(filtersToRun, pagination.value)
-      console.log(res)
+      const res = await getPosts(filtersToRun.value, pagination.value)
       news.value = res.data
       total.value = res.meta.pagination.total
       pagination.value = {...res.meta.pagination}
@@ -144,9 +151,10 @@
       categories.value = await categoriesStore.getCategories()
       tags.value = await tagsStore.getTags()
 
-      const res = await getPosts(filtersToRun, categories.value, tags.value)
-      news.value = res.posts
-      pagination.value = res.pagination
+      const res = await getPosts(filtersToRun, pagination.value)
+      news.value = res.data
+      total.value = res.meta.pagination.total
+      pagination.value = {...res.meta.pagination}
     } catch (err) {
       console.error(err)
     } finally {
@@ -155,7 +163,9 @@
   }
 
   onMounted(async () => {
-    await getNews(1)
-    // tags.value = tagsStore.getTags
+    await getNews()
+    
+      categories.value = await categoriesStore.getCategories()
+      tags.value = await tagsStore.getTags()
   })
 </script>

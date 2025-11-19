@@ -211,7 +211,6 @@
   ];
 
   const runSearch = async (query) => {
-    console.log("Query ricevuta in rubrica.vue:", query);
     rubricaSearch.value = query;
     await searchEmployees();
   };
@@ -233,7 +232,6 @@
       pagination.value = {
         ...employees.value.meta.pagination,
       };
-      console.log("Pagination", pagination.value);
     } catch (error) {
       console.error(error);
     } finally {

@@ -20,7 +20,6 @@ export const useEmployeeStore = defineStore('employees', {
           sort: ['surname:asc'],
         }
 
-        console.log("Query in store/employees.js:", query);
         if(query?.department)
           params["filters[department][documentId][$eq]"] = query?.department
         if(query?.office);
@@ -30,7 +29,6 @@ export const useEmployeeStore = defineStore('employees', {
 
         if(query?.query && isNaN(query?.query))
           params["filters[fullname][$containsi]"] = query?.query
-        console.log(query?.query && !isNaN(query?.query))
         if(query?.query && !isNaN(query?.query))
           params["filters[phone][$containsi]"] = query?.query
 

@@ -137,7 +137,6 @@
   const title = ref('')
 
   const goToNews = async () => {
-    console.log("Navigating to news:", props.post);
     const path = `${props.post.category.slug}/${props.post.slug}`
     await navigateTo({
       path: path,

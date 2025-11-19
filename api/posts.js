@@ -8,27 +8,35 @@ export const getPosts = async (queryObj, pagination) => {
       sort: ["publishedAt:desc"],
     };
 
-    if(queryObj?.categories){
+    if (queryObj?.categories) {
       query["filters[category][slug][$eq]"] = queryObj?.categories[0];
     }
 
-    // if(queryObj?.limit){
-    //   query["pagination[limit]"] = queryObj?.limit;
-    // }
-
-    if(queryObj?.excerpt){
+    if (queryObj?.excerpt) {
       query["excerptLength"] = queryObj?.excerpt;
+    }
+
+    if (queryObj?.query) {
+      query["filters[title][$containsi]"] = queryObj?.query;
+      query["filters[content][$containsi]"] = queryObj?.query;
+    }
+
+    if (queryObj?.startDate) {
+      query["filters[start][$gte]"] = queryObj?.startDate;
+    }
+    if (queryObj?.endDate) {
+      query["filters[end][$lte]"] = queryObj?.endDate;
     }
 
     const resStrapi = await getData(`articles?${pagination}`, query);
 
     resStrapi.data.forEach((post) => {
       post.createdAt = new Date(post.createdAt).toLocaleDateString("it-IT");
-      if(post.start) new Date(post.start).toLocaleDateString("it-IT");
-      if(post.end) new Date(post.end).toLocaleDateString("it-IT");
-    })
-    
-    return resStrapi
+      if (post.start) new Date(post.start).toLocaleDateString("it-IT");
+      if (post.end) new Date(post.end).toLocaleDateString("it-IT");
+    });
+
+    return resStrapi;
   } catch (err) {
     console.error(err);
   }
@@ -117,15 +125,18 @@ export const getPostById = async (id, categories = [], tags = []) => {
     const config = useRuntimeConfig();
     const token = config.public.strapi.token;
 
-    const resStrapi = await $fetch(`${config.public.strapi.url}/api/articles/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      params: {
-        populate: ["*"],
-      },
-    });
-    return resStrapi.data
+    const resStrapi = await $fetch(
+      `${config.public.strapi.url}/api/articles/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          populate: ["*"],
+        },
+      }
+    );
+    return resStrapi.data;
   } catch (err) {
     console.error(err);
   }
