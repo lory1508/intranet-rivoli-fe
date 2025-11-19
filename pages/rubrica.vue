@@ -44,6 +44,7 @@
         <RubricaCard
           :title="homeStaticData.rubrica.title"
           :icon="homeStaticData.rubrica.icon"
+          :current-search="rubricaSearch"
           compact
           @search="runSearch"
         />

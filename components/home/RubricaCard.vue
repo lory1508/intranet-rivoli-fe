@@ -7,13 +7,13 @@
     }"
   >
     <CardTitle :icon="icon" :title="title" />
-
     <div class="flex flex-col gap-2">
       <div class="flex gap-2" :class="compact ? 'flex-col' : 'flex-row'">
         <n-input
           v-model:value="rubricaSearch.query"
           placeholder="Nome o interno"
           type="text"
+          clearable
           @keypress.enter="runSearch"
         />
         <n-select
@@ -75,6 +75,10 @@
       type: Boolean,
       default: false,
     },
+    currentSearch: {
+      type: Object,
+      default: () => ({}),
+    },
   })
 
   const departmentStore = useDepartmentStore()
@@ -109,6 +113,9 @@
   }
 
   onMounted(async () => {
+    if(props.currentSearch) {
+      rubricaSearch.value = { ...props.currentSearch }
+    }
     departments.value = await departmentStore.getDepartments()
     offices.value = await officeStore.getOffices()
     services.value = await serviceStore.getServices()
