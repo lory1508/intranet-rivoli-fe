@@ -1,10 +1,8 @@
 import { WORDPRESS_BASE_URL } from "../utils/staticData/constants";
+import { getData } from "#imports";
 
-export const getPosts = async (queryObj, categories, tags) => {
+export const getPosts = async (queryObj, pagination) => {
   try {
-    const config = useRuntimeConfig();
-    const token = config.public.strapi.token;
-    
     const query = {
       populate: ["*"],
       sort: ["publishedAt:desc"],
@@ -14,20 +12,15 @@ export const getPosts = async (queryObj, categories, tags) => {
       query["filters[category][slug][$eq]"] = queryObj?.categories[0];
     }
 
-    if(queryObj?.limit){
-      query["pagination[limit]"] = queryObj?.limit;
-    }
+    // if(queryObj?.limit){
+    //   query["pagination[limit]"] = queryObj?.limit;
+    // }
 
     if(queryObj?.excerpt){
       query["excerptLength"] = queryObj?.excerpt;
     }
 
-    const resStrapi = await $fetch(`${config.public.strapi.url}/api/articles`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      query,
-    });
+    const resStrapi = await getData(`articles?${pagination}`, query);
 
     resStrapi.data.forEach((post) => {
       post.createdAt = new Date(post.createdAt).toLocaleDateString("it-IT");
@@ -35,14 +28,7 @@ export const getPosts = async (queryObj, categories, tags) => {
       if(post.end) new Date(post.end).toLocaleDateString("it-IT");
     })
     
-    return {
-      posts: resStrapi.data,
-      pagination: {
-        total: resStrapi.meta.pagination.total,
-        limit: resStrapi.meta.pagination.limit,
-        start: resStrapi.meta.pagination.start,
-      },
-    };
+    return resStrapi
   } catch (err) {
     console.error(err);
   }

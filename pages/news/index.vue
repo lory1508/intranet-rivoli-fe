@@ -11,11 +11,18 @@
         <div class="flex flex-col gap-6">
           <NewsCard v-for="post in news" :key="post.slug" :post="post" :vertical="false" />
         </div>
-        <NPagination
+        <!-- <NPagination
           v-model:page="pagination.page"
           :page-count="pagination.totalPages"
           size="large"
           @update:page="updatePage"
+        /> -->
+        <PaginationComponent
+          :total="total"
+          :per-page="perPage"
+          :current-page="currentPage"
+          :per-page-options="[3, 6, 12, 24]"
+          @page-change="handlePageChange"
         />
       </div>
       <div
@@ -52,11 +59,11 @@
 
 <script setup>
   import { getPosts } from '~/api/posts'
-  import { NPagination } from 'naive-ui'
   import { Icon } from '@iconify/vue'
 
   import LoaderComponent from '~/components/common/LoaderComponent.vue'
   import HeaderComponent from '~/components/common/HeaderComponent.vue'
+  import PaginationComponent from '~/components/common/PaginationComponent.vue'
   import NewsCard from '~/components/common/NewsCard.vue'
 
   // store
@@ -67,6 +74,17 @@
   const categories = ref([])
   const tags = ref([])
 
+  const currentPage = ref(1);
+  const total = ref(0);
+  const perPage = ref(6);
+  
+  const pagination = ref({
+    page: currentPage.value,
+    itemCount: total.value,
+    perPage: perPage.value,
+    "show-size-picker": true,
+  });
+  
   const filters = ref({
     search: null,
     tags: [],
@@ -86,11 +104,7 @@
     },
   ])
 
-  const pagination = ref({
-    page: 1,
-  })
-
-  const updatePage = async (page) => {
+  const getNews = async (page) => {
     try {
       loading.value = true
       const filtersToRun = { categories: ['news'], limit: 4, page: page, ...filters.value }
@@ -100,15 +114,25 @@
       categories.value = await categoriesStore.getCategories()
       tags.value = await tagsStore.getTags()
 
-      const res = await getPosts(filtersToRun, categories.value, tags.value)
-      news.value = res.posts
-      pagination.value = res.pagination
+      pagination.value  =`pagination[page]=${currentPage.value}&pagination[pageSize]=${perPage.value}`
+      const res = await getPosts(filtersToRun, pagination.value)
+      console.log(res)
+      news.value = res.data
+      total.value = res.meta.pagination.total
+      pagination.value = {...res.meta.pagination}
     } catch (err) {
       console.error(err)
     } finally {
       loading.value = false
     }
   }
+
+  const handlePageChange = async (page, itemsPerPage) => {
+    currentPage.value = page;
+    perPage.value = itemsPerPage;
+    news.value = [];
+    await getNews();
+  };
 
   const runSearch = async () => {
     try {
@@ -131,7 +155,7 @@
   }
 
   onMounted(async () => {
-    await updatePage(1)
+    await getNews(1)
     // tags.value = tagsStore.getTags
   })
 </script>

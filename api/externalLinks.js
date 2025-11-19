@@ -1,18 +1,16 @@
-import { slugify } from "../utils/index.js";
+import { slugify, getData } from "../utils/index.js";
 
 export const getExternalLinks = async (
   onlyHighlight = false,
   typeTitle = null,
-  sort = []
+  sort = ["title:asc"],
+  limit = 1000
 ) => {
   try {
-    const config = useRuntimeConfig();
-    const token = config.public.strapi.token;
-
-
     const query = {
       populate: ["types"],
       sort: sort,
+      "pagination[limit]": limit,
     };
 
     if (typeTitle) {
@@ -23,15 +21,7 @@ export const getExternalLinks = async (
       query["filters[highlight][$eq]"] = true;
     }
 
-    const resStrapi = await $fetch(
-      `${config.public.strapi.url}/api/external-links`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        query,
-      }
-    );
+    const resStrapi = await getData("external-links", query);
     
     const el = resStrapi.data
     .map((item) => {
