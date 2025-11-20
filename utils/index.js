@@ -21,6 +21,15 @@ export const getData = async (endpoint, params={}) => {
   }
 };
 
+export const goToTop = () => {
+  if (process.client) {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+}
+
 export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export const setIntervalMethod = (callback, interval) => {

@@ -42,7 +42,7 @@
 
   onMounted(async () => {
     const res = await getPosts({ categories: ['news'], limit: 6, excerpt: 20 })
-    news.value = res.posts
-    pagination.value = res.pagination
+    news.value = res.data
+    pagination.value = res.meta.pagination
   })
 </script>

@@ -20,12 +20,9 @@
   import CardTitle from '~/components/common/CardTitle.vue'
   import { getPosts } from '~/api/posts'
   // stores
-  import { useCategoriesStore } from '~/stores/categories'
-  import { useTagsStore } from '~/stores/tags'
   import { useAccessibilityStore } from '@/stores/accessibilityStore'
 
   const accessibilityStore = useAccessibilityStore()
-  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
   const isHighContrast = computed(() => accessibilityStore.isHighContrast)
 
   const props = defineProps({
@@ -39,17 +36,12 @@
     },
   })
 
-  const categoriesStore = useCategoriesStore()
-  const tagsStore = useTagsStore()
-
   const news = ref([])
   const pagination = ref()
 
   onMounted(async () => {
-    const categories = await categoriesStore.getCategories()
-    const tags = await tagsStore.getTags()
-    const res = await getPosts({ categories: ['bacheca-dipendenti'], limit: 3, excerpt: 15 }, categories, tags)
-    news.value = res.posts
-    pagination.value = res.pagination
+    const res = await getPosts({ categories: ['bacheca-dipendenti'], limit: 3, excerpt: 15 })
+    news.value = res.data
+    pagination.value = res.meta.pagination
   })
 </script>

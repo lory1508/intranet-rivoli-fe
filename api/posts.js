@@ -8,6 +8,10 @@ export const getPosts = async (queryObj, pagination) => {
       sort: ["createdAt:desc"],
     };
 
+    if(queryObj?.perPage) query["pagination[limit]"] = queryObj?.perPage
+    if(queryObj?.page) query["pagination[page]"] = queryObj?.page
+    if(queryObj?.limit) query["pagination[limit]"] = queryObj?.limit
+
     if (queryObj?.categories) {
       query["filters[category][slug][$eq]"] = queryObj?.categories[0];
     }
@@ -36,7 +40,7 @@ export const getPosts = async (queryObj, pagination) => {
       });
     }
 
-    const resStrapi = await getData(`articles?${pagination}`, query);
+    const resStrapi = await getData(`articles?${pagination||''}`, query);
 
     resStrapi.data.forEach((post) => {
       post.createdAt = new Date(post.createdAt).toLocaleDateString("it-IT");
