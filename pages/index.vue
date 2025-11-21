@@ -20,7 +20,11 @@
         />
 
         <!-- Modulistica -->
-        <ModulisticaTools title="Modulistica" icon="hugeicons:document-validation" :links="catModulistica" />
+        <ModulisticaTools
+          title="Modulistica"
+          icon="hugeicons:document-validation"
+          :links="catModulistica"
+        />
       </div>
 
       <!-- Applicativi -->
@@ -32,54 +36,85 @@
       />
 
       <!-- Bacheca dipendenti -->
-      <EmployeesBoard :title="homeStaticData.employeesBoard.title" :icon="homeStaticData.employeesBoard.icon" />
+      <EmployeesBoard
+        :title="homeStaticData.employeesBoard.title"
+        :icon="homeStaticData.employeesBoard.icon"
+      />
     </div>
 
     <NDivider />
 
     <!-- News -->
-    <LatestNews :title="homeStaticData.news.title" :icon="homeStaticData.news.icon" />
+    <LatestNews
+      :title="homeStaticData.news.title"
+      :icon="homeStaticData.news.icon"
+    />
   </div>
 </template>
 
 <script setup>
-  import RubricaCard from '~/components/home/RubricaCard.vue'
-  import EmployeesBoard from '~/components/home/EmployeesBoard.vue'
-  import UsefulLinks from '~/components/home/UsefulLinks.vue'
-  import LatestNews from '~/components/home/LatestNews.vue'
-  import PersonalTools from '~/components/home/PersonalTools.vue'
-  import ModulisticaTools from '~/components/home/ModulisticaTools.vue'
-  import HeaderComponent from '~/components/common/HeaderComponent.vue'
+  import RubricaCard from "~/components/home/RubricaCard.vue";
+  import EmployeesBoard from "~/components/home/EmployeesBoard.vue";
+  import UsefulLinks from "~/components/home/UsefulLinks.vue";
+  import LatestNews from "~/components/home/LatestNews.vue";
+  import PersonalTools from "~/components/home/PersonalTools.vue";
+  import ModulisticaTools from "~/components/home/ModulisticaTools.vue";
+  import HeaderComponent from "~/components/common/HeaderComponent.vue";
 
-  import { getExternalLinksByType, getExternalLinks } from '~/api/externalLinks'
-  import { getCategories } from '~/api/categories'
-  import { homeStaticData } from '~/utils/staticData/home'
+  import {
+    getExternalLinksByType,
+    getExternalLinks,
+  } from "~/api/externalLinks";
+  import { homeStaticData } from "~/utils/staticData/home";
+  import { getData } from "#imports";
 
-  const personalTools = ref([])
-  const usefulLinks = ref([])
-  const usefulLinksCategories = ref([])
-  const catModulistica = ref([])
+  const personalTools = ref([]);
+  const usefulLinks = ref([]);
+  const usefulLinksCategories = ref([]);
+  const catModulistica = ref([]);
 
-  const loading = ref(false)
+  const loading = ref(false);
 
   const searchRubrica = async (query) => {
     await navigateTo({
-      path: '/rubrica',
+      path: "/rubrica",
       query,
-    })
-  }
+    });
+  };
 
   const getCatFromLink = (link) => {
-    const linkToArray = link.split('/')
-    const catIndex = linkToArray.indexOf('category') + 1
-    const str = linkToArray.slice(catIndex).join('/')
-    return str.substring(0, str.length - 1)
-  }
+    const linkToArray = link.split("/");
+    const catIndex = linkToArray.indexOf("category") + 1;
+    const str = linkToArray.slice(catIndex).join("/");
+    return str.substring(0, str.length - 1);
+  };
+
+  const getModulisticaCategory = async () => {
+    try {
+      const query = {
+        populate: ["*"],
+      };
+      query["filters[name][$eq]"] = "Modulistica";
+
+      const modulistica = await getData("categories", query);
+
+      modulistica.data[0].categories.forEach((cat) => {
+        catModulistica.value.push({
+          title: cat.name,
+          slug: cat.slug,
+          href: `/modulistica/${cat.slug}`,
+        });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   onMounted(async () => {
     try {
-      loading.value = true
+      loading.value = true;
 
+      await getModulisticaCategory();
       // TODO: switch to Strapi
       // const modulistica = await getCategories({ search: 'modulistica', perPage: 1 })
       // const tmp = ref([])
@@ -92,11 +127,11 @@
       //   })
       // })
 
-      personalTools.value = await getExternalLinksByType('strumenti-personali')
+      personalTools.value = await getExternalLinksByType("strumenti-personali");
 
       usefulLinks.value = (await getExternalLinks(true))
-        .filter((link) => link.slugType !== 'strumenti-personali')
-        .sort((a, b) => (a.title > b.title ? 1 : -1))
+        .filter((link) => link.slugType !== "strumenti-personali")
+        .sort((a, b) => (a.title > b.title ? 1 : -1));
       usefulLinksCategories.value = Array.from(
         new Map(
           usefulLinks.value
@@ -110,12 +145,14 @@
             // remove duplicates by slug
             .map((obj) => [obj.slug, obj])
         ).values()
-      )
-      usefulLinksCategories.value.sort((a, b) => a.title.localeCompare(b.title))
+      );
+      usefulLinksCategories.value.sort((a, b) =>
+        a.title.localeCompare(b.title)
+      );
     } catch (error) {
-      console.error(error)
+      console.error(error);
     } finally {
-      loading.value = false
+      loading.value = false;
     }
-  })
+  });
 </script>

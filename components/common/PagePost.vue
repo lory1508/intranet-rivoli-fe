@@ -41,16 +41,11 @@
   import TagComponent from "~/components/common/TagComponent.vue";
   import AttachmentComponent from "~/components/common/AttachmentComponent.vue";
 
-  import { useCategoriesStore } from "~/stores/categories";
-  import { useTagsStore } from "~/stores/tags";
   import { getPostById } from "~/api/posts";
 
   const route = useRoute();
 
-  const categoriesStore = useCategoriesStore();
-  const tagsStore = useTagsStore();
-  const categories = ref([]);
-  const tags = ref([]);
+  // const categories = ref([]);
   const post = ref(null);
   const loading = ref(false);
 
@@ -79,10 +74,7 @@
           });
         });
 
-      categories.value = await categoriesStore.getCategories();
-      tags.value = await tagsStore.getTags();
-
-      const resPost = await getPostById(id, categories.value, tags.value);
+      const resPost = await getPostById(id);
       post.value = resPost;
     } catch (err) {
       console.error(err);

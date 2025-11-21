@@ -138,7 +138,7 @@ export const getPostBySlug = async (slug, categories, tags) => {
   }
 };
 
-export const getPostById = async (id, categories = [], tags = []) => {
+export const getPostById = async (id) => {
   try {
     const config = useRuntimeConfig();
     const token = config.public.strapi.token;
