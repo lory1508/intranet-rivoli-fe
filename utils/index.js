@@ -1,5 +1,3 @@
-import { capitalizeSentence } from "#imports";
-
 export const getData = async (endpoint, params={}) => {
   try {
     const config = useRuntimeConfig();

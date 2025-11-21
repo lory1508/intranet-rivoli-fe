@@ -1,4 +1,3 @@
-import { WORDPRESS_BASE_URL } from "../utils/staticData/constants";
 import { getData } from "#imports";
 
 export const getAlert = async () => {
