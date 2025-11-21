@@ -8,9 +8,13 @@ export const getPosts = async (queryObj, pagination) => {
       sort: ["createdAt:desc"],
     };
 
-    if(queryObj?.perPage) query["pagination[limit]"] = queryObj?.perPage
-    if(queryObj?.page) query["pagination[page]"] = queryObj?.page
-    if(queryObj?.limit) query["pagination[limit]"] = queryObj?.limit
+    if (queryObj?.perPage) query["pagination[limit]"] = queryObj?.perPage;
+    if (queryObj?.page) query["pagination[page]"] = queryObj?.page;
+    if (queryObj?.limit) query["pagination[limit]"] = queryObj?.limit;
+
+    if (queryObj?.highlight) {
+      query["filters[highlight][$eq]"] = queryObj?.highlight;
+    }
 
     if (queryObj?.categories) {
       query["filters[category][slug][$eq]"] = queryObj?.categories[0];
@@ -40,10 +44,12 @@ export const getPosts = async (queryObj, pagination) => {
       });
     }
 
-    const resStrapi = await getData(`articles?${pagination||''}`, query);
+    const resStrapi = await getData(`articles?${pagination || ""}`, query);
 
     resStrapi.data.forEach((post) => {
       post.createdAt = new Date(post.createdAt).toLocaleDateString("it-IT");
+      if (post.updatedAt)
+        post.updatedAt = new Date(post.updatedAt).toLocaleString("it-IT");
       if (post.start) new Date(post.start).toLocaleDateString("it-IT");
       if (post.end) new Date(post.end).toLocaleDateString("it-IT");
     });

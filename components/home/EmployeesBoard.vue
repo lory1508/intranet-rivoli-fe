@@ -7,41 +7,58 @@
         ' bg-zinc-100 shadow-zinc-300 shadow-md text-primary': !isHighContrast,
       }"
     >
-      <CardTitle :icon="icon" :title="title" button-destination="/bacheca-dipendenti" button-title="Tutti gli avvisi" />
+      <CardTitle
+        :icon="icon"
+        :title="title"
+        button-destination="/bacheca-dipendenti"
+        button-title="Tutti gli avvisi"
+      />
     </div>
     <div class="flex flex-wrap gap-4">
-      <NewsCard v-for="post in news" :key="post.slug" :post="post" :vertical="false" />
+      <NewsCard
+        v-for="post in news"
+        :key="post.slug"
+        :post="post"
+        :vertical="false"
+        :show-created-at="false"
+        show-updated-at
+        hide-content
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-  import NewsCard from '~/components/common/NewsCard.vue'
-  import CardTitle from '~/components/common/CardTitle.vue'
-  import { getPosts } from '~/api/posts'
+  import NewsCard from "~/components/common/NewsCard.vue";
+  import CardTitle from "~/components/common/CardTitle.vue";
+  import { getPosts } from "~/api/posts";
   // stores
-  import { useAccessibilityStore } from '@/stores/accessibilityStore'
+  import { useAccessibilityStore } from "@/stores/accessibilityStore";
 
-  const accessibilityStore = useAccessibilityStore()
-  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
+  const accessibilityStore = useAccessibilityStore();
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast);
 
   const props = defineProps({
     icon: {
       type: String,
-      default: '',
+      default: "",
     },
     title: {
       type: String,
-      default: '',
+      default: "",
     },
-  })
+  });
 
-  const news = ref([])
-  const pagination = ref()
+  const news = ref([]);
+  const pagination = ref();
 
   onMounted(async () => {
-    const res = await getPosts({ categories: ['bacheca-dipendenti'], limit: 3, excerpt: 15 })
-    news.value = res.data
-    pagination.value = res.meta.pagination
-  })
+    const res = await getPosts({
+      categories: ["bacheca-dipendenti"],
+      excerpt: 15,
+      highlight: true,
+    });
+    news.value = res.data;
+    pagination.value = res.meta.pagination;
+  });
 </script>

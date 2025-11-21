@@ -100,11 +100,18 @@
         Leggi di più
       </div>
       <div
-        v-if="!vertical"
+        v-if="!vertical && showCreatedAt"
         class="px-4 text-sm w-fit text-end"
         :class="{ 'text-black': isHighContrast, 'text-primary': !isHighContrast }"
       >
         Creato il {{ post.createdAt }}
+      </div>
+      <div
+        v-if="!vertical && showUpdatedAt"
+        class="px-4 text-sm w-fit text-end"
+        :class="{ 'text-black': isHighContrast, 'text-primary': !isHighContrast }"
+      >
+        Aggiornato il {{ post.updatedAt }}
       </div>
     </div>
   </div>
@@ -131,6 +138,14 @@
       default: true,
     },
     hideContent: {
+      type: Boolean,
+      default: false,
+    },
+    showCreatedAt: {
+      type: Boolean,
+      default: true,
+    },
+    showUpdatedAt: {
       type: Boolean,
       default: false,
     },
