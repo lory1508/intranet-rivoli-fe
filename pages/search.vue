@@ -33,12 +33,10 @@
         <div class="flex flex-wrap gap-2">
           <div v-for="m in media" :key="m.id">
             <AttachmentComponent
-              :title="m.title"
+              :title="m.name"
               :url="m.url"
-              :type="m.type"
+              :type="m.mime"
               :size="m.size"
-              :categories="m.categories"
-              :tags="m.tags"
             />
           </div>
         </div>
@@ -61,7 +59,7 @@
 
   import { getPostById } from '~/api/posts'
   import { getEmployeeById } from '~/api/employees'
-  import { mediaGlobalSearchAPI, postsGlobalSearchAPI } from '~/api/globalSearch'
+  import { mediaGlobalSearchAPI, postsGlobalSearchAPI, runGlobalSearchAPI } from '~/api/globalSearch'
 
   const route = useRoute()
   const categoriesStore = useCategoriesStore()
@@ -74,6 +72,8 @@
   const posts = ref([])
   const employees = ref([])
   const media = ref([])
+  const links = ref([])
+  const results = ref([])
 
   const breadcrumb = ref([
     {
@@ -124,18 +124,21 @@
 
         categories.value = await categoriesStore.getCategories()
         tags.value = await tagsStore.getTags()
-        // results.value = await runGlobalSearchAPI(route.query.query, categories.value, tags.value)
-        media.value = await mediaGlobalSearchAPI(route.query.query, categories.value, tags.value)
-        const allPosts = await postsGlobalSearchAPI(route.query.query)
-        posts.value = allPosts.filter((post) => !post.url.startsWith('/employee'))
-        const allEmployees = allPosts.filter((post) => post.url.startsWith('/employee'))
-        await Promise.all(
-          allEmployees.map(async (e) => {
-            const res = await getEmployeeById(e.id)
-            employees.value.push(res.value)
-          })
-        )
-        employees.value = formatArrayOfEmployees(employees.value)
+        results.value = await runGlobalSearchAPI(route.query.query)
+
+        posts.value = results.value['api::article.article'] || []
+        media.value = results.value['plugin::upload.file'] || []
+        employees.value = formatArrayOfEmployees(results.value['api::employee.employee'] || [])
+        links.value = results.value['api::external-link.external-link'] || []
+
+        // const allEmployees = allPosts.filter((post) => post.url.startsWith('/employee'))
+        // await Promise.all(
+        //   allEmployees.map(async (e) => {
+        //     const res = await getEmployeeById(e.id)
+        //     employees.value.push(res.value)
+        //   })
+        // )
+        // employees.value = formatArrayOfEmployees(employees.value)
       }
     } catch (err) {
       console.error(err)

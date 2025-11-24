@@ -1,4 +1,5 @@
-import { WORDPRESS_BASE_URL, BASE_URL } from '../utils/staticData/constants'
+import { WORDPRESS_BASE_URL, BASE_URL } from "../utils/staticData/constants";
+import { getData } from "#imports";
 
 /**
  * Run a global search on both posts and media.
@@ -7,36 +8,36 @@ import { WORDPRESS_BASE_URL, BASE_URL } from '../utils/staticData/constants'
  * @param {array} tags The tags to map returned posts tags
  * @returns {Promise<Object[]>} An array of posts and media objects
  */
-export const runGlobalSearchAPI = async (qs = '', categories = [], tags = []) => {
+export const runGlobalSearchAPI = async (
+  qs = ""
+) => {
   try {
-    let posts = []
-    const res = await postsGlobalSearchAPI(qs)
-    if (res?.data?.value?.length >= 0) {
-      posts = cleanPostUrl(res?.data?.value)
-    }
-
-    const media = await mediaGlobalSearchAPI(qs, categories, tags)
-    posts = [...posts, ...media]
-    return posts
+    const params = {
+      q: qs,
+    };
+    const data = await getData("search", params);
+    return data;
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
 /**
  * Runs a global search on WordPress posts.
  * @param {string} qs The search query string
  * @returns {Promise<Post[]>} An array of posts
  */
-export const postsGlobalSearchAPI = async (qs = '') => {
+export const postsGlobalSearchAPI = async (qs = "") => {
   try {
-    const res = await useFetch(`${WORDPRESS_BASE_URL}/search/?search=${qs}&per_page=100`)
-    let posts = cleanPostUrl(res?.data?.value)
-    return posts
+    const res = await useFetch(
+      `${WORDPRESS_BASE_URL}/search/?search=${qs}&per_page=100`
+    );
+    let posts = cleanPostUrl(res?.data?.value);
+    return posts;
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
 /**
  * Runs a global search on WordPress media.
@@ -45,26 +46,34 @@ export const postsGlobalSearchAPI = async (qs = '') => {
  * @param {array} tags The tags to map returned media tags
  * @returns {Promise<Media[]>} An array of media objects
  */
-export const mediaGlobalSearchAPI = async (qs = '', categories = [], tags = []) => {
+export const mediaGlobalSearchAPI = async (
+  qs = "",
+  categories = [],
+  tags = []
+) => {
   try {
-    const res = await useFetch(`${WORDPRESS_BASE_URL}/media/?search=${qs}&per_page=100`)
-    let rawMedia = res?.data?.value
+    const res = await useFetch(
+      `${WORDPRESS_BASE_URL}/media/?search=${qs}&per_page=100`
+    );
+    let rawMedia = res?.data?.value;
     let media = rawMedia.map((m) => {
       return {
         id: m.id,
         title: m.title.rendered,
-        categories: m.categories.map((category) => categories.find((c) => c?.id === category)),
+        categories: m.categories.map((category) =>
+          categories.find((c) => c?.id === category)
+        ),
         tags: m.tags.map((tag) => tags.find((t) => t?.id === tag)),
         url: m.source_url,
         type: m.mime_type,
         size: m.media_details.filesize,
-      }
-    })
-    return media
+      };
+    });
+    return media;
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
 /**
  * Takes an array of posts and returns a new array with the same posts
@@ -76,10 +85,10 @@ export const mediaGlobalSearchAPI = async (qs = '', categories = [], tags = []) 
 const cleanPostUrl = (posts) => {
   let p = posts.map((post) => ({
     ...post,
-    url: post.url.replace(BASE_URL, ''),
-  }))
+    url: post.url.replace(BASE_URL, ""),
+  }));
   p.forEach((pl) => {
-    delete pl._links
-  })
-  return p
-}
+    delete pl._links;
+  });
+  return p;
+};

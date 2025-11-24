@@ -192,7 +192,7 @@
         </div>
       </div>
       <div
-        class="flex flex-row overflow-x-hidden w-fit"
+        class="flex flex-row w-full overflow-x-hidden"
         :class="{
           'ml-24': collapsed,
           'ml-72': !collapsed,
