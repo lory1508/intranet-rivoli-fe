@@ -80,7 +80,7 @@
         :value="i"
         class="font-semibold"
       >
-        {{ i }}
+        {{ i }} per pagina
       </option>
     </select>
   </div>

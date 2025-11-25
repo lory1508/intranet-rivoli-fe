@@ -1,68 +1,62 @@
 <template>
   <div
-    class="flex flex-col items-center gap-4 transition-all duration-300 bg-white border rounded-lg h-fit w-fit max-w-72 border-zinc-200 hover:shadow-lg"
+    class="flex flex-row items-center justify-between transition-all duration-300 border-b-2 border-opacity-25 hover:scale-110 w-80 hover:bg-primary hover:bg-opacity-10 gap-x-4 h-fit max-w-96 border-primary"
   >
-    <div class="flex flex-row items-center w-full gap-4 px-2 pt-2">
-      <Icon :icon="ICON_FILE_TYPE[props.type]" height="36" class="w-24 text-primary" />
-      <div class="flex flex-col gap-1 overflow-hidden text-ellipsis">
+    <div class="flex flex-row items-center gap-2">
+      <div class="w-10 h-10">
+        <Icon
+          :icon="ICON_FILE_TYPE[props.type]"
+          height="36"
+          class="flex text-primary"
+        />
+      </div>
+      <div
+        class="flex flex-col justify-start gap-1 overflow-hidden text-ellipsis w-52"
+      >
         <NTooltip trigger="hover">
           <template #trigger>
-            <div class="font-semibold truncate">{{ title }}</div>
+            <div class="flex justify-start w-48 font-semibold truncate">
+              {{ title }}
+            </div>
           </template>
           <div class="font-semibold">{{ title }}</div>
         </NTooltip>
         <div class="font-mono">{{ size }}KB</div>
       </div>
     </div>
-
-    <div class="flex w-full gap-4 px-2" :class="tags.length && categories.length ? 'flex-col' : 'flex-row'">
-      <!-- Tags -->
-      <div v-if="tags.length" class="flex flex-wrap gap-1">
-        <span class="pr-1 font-semibold text-emerald-700">Tag:</span>
-        <div v-for="tag in tags" :key="tag.id">
-          <TagComponent :tag="tag" color="emerald" />
-        </div>
-      </div>
-      <!-- Caegories -->
-      <div v-if="categories.length" class="flex flex-wrap gap-1">
-        <span class="pr-1 font-semibold text-purple-700">Categorie:</span>
-        <div v-for="category in categories" :key="category.id">
-          <TagComponent :tag="category" color="purple" />
-        </div>
-      </div>
-    </div>
-
     <div
-      class="flex items-center justify-center w-full h-full py-1 transition-all duration-300 rounded-b-lg bg-primary bg-opacity-90 hover:cursor-pointer hover:bg-opacity-95"
+      class="flex items-center justify-center h-full py-1 transition-all duration-300 rounded-md w-fit bg-primary bg-opacity-90 hover:cursor-pointer hover:bg-opacity-95"
       @click="goToAttachment"
     >
-      <Icon icon="material-symbols:download-rounded" height="36" class="h-full text-white" />
+      <Icon
+        icon="material-symbols:download-rounded"
+        height="36"
+        class="h-full text-white"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-  import { Icon } from '@iconify/vue'
-  import { ICON_FILE_TYPE, STRAPI_API_URL } from '~/utils/staticData/constants'
-
-  import TagComponent from '~/components/common/TagComponent.vue'
+  import { Icon } from "@iconify/vue";
+  import { ICON_FILE_TYPE } from "~/utils/staticData/constants";
 
   const props = defineProps({
     title: {
       type: String,
-      default: '',
+      default: "",
     },
     url: {
       type: String,
-      default: '',
+      default: "",
     },
     type: {
       type: String,
-      default: '',
+      default: "",
     },
     size: {
       type: String,
-      default: 0,
+      default: "",
     },
     categories: {
       type: Array,
@@ -72,11 +66,13 @@
       type: Array,
       default: () => [],
     },
-  })
-
+  });
+  const config = useRuntimeConfig();
 
   const goToAttachment = async () => {
-    await navigateTo(`${STRAPI_API_URL}${props.url}`, { external: true, open: { target: '_blank' } })
-  }
-
+    await navigateTo(`${config.public.strapi.url}${props.url}`, {
+      external: true,
+      open: { target: "_blank" },
+    });
+  };
 </script>

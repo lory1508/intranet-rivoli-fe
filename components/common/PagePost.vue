@@ -20,8 +20,9 @@
       <!-- Attachments -->
       <div v-if="post?.attachments?.length" class="flex flex-col gap-2">
         <div class="text-xl font-semibold text-primary">Allegati</div>
-        <div v-for="attachment in post?.attachments" :key="attachment.id">
+        <div class="flex flex-wrap gap-x-8 gap-y-4">
           <AttachmentComponent
+          v-for="attachment in post?.attachments" :key="attachment.id"
             :title="attachment?.name"
             :url="attachment?.url"
             :type="attachment?.ext"
@@ -76,6 +77,7 @@
 
       const resPost = await getPostById(id);
       post.value = resPost;
+      post.value.attachments = post.value?.attachments.sort((a, b) => (a.name > b.name ? 1 : -1) )
     } catch (err) {
       console.error(err);
     } finally {
