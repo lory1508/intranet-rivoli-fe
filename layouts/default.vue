@@ -57,7 +57,7 @@
     </NModal>
 
     <div class="flex flex-row p-2">
-      <div class="fixed flex w-2/12 h-full pb-6">
+      <div class="fixed flex h-full pb-6">
         <!-- <div class="fixed flex h-full pb-6 z-top"> -->
         <div
           class="text-white transition-all duration-300 rounded-2xl"
