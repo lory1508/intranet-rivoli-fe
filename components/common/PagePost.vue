@@ -15,14 +15,15 @@
       </div>
 
       <!-- Content -->
-      <div v-html="post.content" class="flex flex-col gap-4 pt-4" />
+      <div v-html="content" class="flex flex-col gap-4 pt-4" />
 
       <!-- Attachments -->
       <div v-if="post?.attachments?.length" class="flex flex-col gap-2">
         <div class="text-xl font-semibold text-primary">Allegati</div>
         <div class="flex flex-wrap gap-x-8 gap-y-4">
           <AttachmentComponent
-          v-for="attachment in post?.attachments" :key="attachment.id"
+            v-for="attachment in post?.attachments"
+            :key="attachment.id"
             :title="attachment?.name"
             :url="attachment?.url"
             :type="attachment?.ext"
@@ -41,10 +42,14 @@
   import HeaderComponent from "~/components/common/HeaderComponent.vue";
   import TagComponent from "~/components/common/TagComponent.vue";
   import AttachmentComponent from "~/components/common/AttachmentComponent.vue";
+  import markdownit from "markdown-it";
 
   import { getPostById } from "~/api/posts";
 
   const route = useRoute();
+
+  const md = markdownit();
+  const content = ref("");
 
   // const categories = ref([]);
   const post = ref(null);
@@ -77,7 +82,13 @@
 
       const resPost = await getPostById(id);
       post.value = resPost;
-      post.value.attachments = post.value?.attachments.sort((a, b) => (a.name > b.name ? 1 : -1) )
+      if (post.value.attachments?.length) {
+        post.value.attachments = post.value?.attachments.sort((a, b) =>
+          a.name > b.name ? 1 : -1
+        );
+      }
+      console.log(post.value.content);
+      content.value = md.render(post.value.content || "");
     } catch (err) {
       console.error(err);
     } finally {
@@ -85,3 +96,14 @@
     }
   });
 </script>
+
+<style >
+ul {
+  list-style-type: disc !important;
+  padding-left: 1.5rem;
+}
+
+a {
+  color: #B10015 !important;
+}
+</style>
