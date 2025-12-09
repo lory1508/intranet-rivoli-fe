@@ -15,7 +15,7 @@
       slug: '/',
     },
     {
-      title: 'Modlustica',
+      title: 'Modulistica',
       slug: '/modulistica',
     },
     {
