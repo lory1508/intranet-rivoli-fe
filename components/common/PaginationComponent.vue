@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-row items-center justify-center gap-4 py-4">
-    <span v-if="currentPage > 1" :class="itemClasses" @click="goToPage(1)">
+    <!-- <span v-if="currentPage > 1" :class="itemClasses" @click="goToPage(1)">
       «
     </span>
     <span
@@ -10,32 +10,34 @@
     >
       ‹
     </span>
-    <span v-if="currentPage > 2" >...</span>
-    <!-- <Icon
+    <span v-if="currentPage > 2" >...</span> -->
+    <Icon
       v-if="currentPage > 1"
       icon="solar:double-alt-arrow-left-line-duotone"
-      width="32"
+      class="bg-white"
       :class="itemClasses"
       @click="goToPage(1)"
     />
     <Icon
       v-if="currentPage > 1"
       icon="solar:alt-arrow-left-linear"
-      width="32"
+      class="bg-white"
       :class="itemClasses"
       @click="goToPage(currentPage - 1)"
     />
-    <Icon v-if="currentPage > 2" icon="solar:menu-dots-bold" width="28" /> -->
+    <Icon v-if="currentPage > 2" icon="solar:menu-dots-bold" width="28" />
     <div
       v-for="i in pagesToShow"
       :key="`page_${i}`"
       class="flex items-center justify-center w-8 h-8 text-lg font-semibold border border-black sharp-shadow-sm"
-      :class="[itemClasses, currentPage === i ? 'bg-red-600' : '']"
+      :class="
+        [itemClasses, currentPage == i ? 'bg-red-400' : 'bg-white'].join(' ')
+      "
       @click="goToPage(i)"
     >
       {{ i }}
     </div>
-    <!-- <Icon
+    <Icon
       v-if="totalPages - currentPage > 1"
       icon="solar:menu-dots-bold"
       width="28"
@@ -43,18 +45,18 @@
     <Icon
       v-if="currentPage < totalPages"
       icon="solar:alt-arrow-right-linear"
-      width="32"
+      class="bg-white"
       :class="itemClasses"
       @click="goToPage(currentPage + 1)"
     />
     <Icon
       v-if="currentPage < totalPages"
       icon="solar:double-alt-arrow-right-line-duotone"
-      width="32"
+      class="bg-white"
       :class="itemClasses"
       @click="goToPage(totalPages)"
-    /> -->
-    <span v-if="totalPages - currentPage > 1" >...</span>
+    />
+    <!-- <span v-if="totalPages - currentPage > 1" >...</span>
     <span
       v-if="currentPage < totalPages"
       :class="itemClasses"
@@ -68,7 +70,7 @@
       @click="goToPage(totalPages)"
     >
       »
-    </span>
+    </span> -->
     <select
       v-model="itemsPerPage"
       class="h-8 px-2 border border-black sharp-shadow-sm"
@@ -88,6 +90,7 @@
 
 <script setup>
   import { Icon } from "@iconify/vue/dist/iconify.js";
+  import { goToTop } from "#imports";
 
   const props = defineProps({
     total: {
@@ -109,7 +112,7 @@
   });
   const emit = defineEmits(["pageChange"]);
   const itemClasses =
-    "transition-all bg-white w-8 h-8 flex items-center justify-center text-xl font-semibold cursor-pointer border border-black sharp-shadow-sm from-neutral-300 hover:bg-amber-300";
+    "transition-all w-8 h-8 flex items-center justify-center text-xl font-semibold cursor-pointer border border-black sharp-shadow-sm from-neutral-300 hover:bg-amber-300";
 
   const itemsPerPage = ref(props.perPage);
   const totalPages = computed(() => Math.ceil(props.total / props.perPage));
@@ -120,6 +123,7 @@
   });
 
   const goToPage = (page) => {
+    goToTop();
     emit("pageChange", page, itemsPerPage.value);
   };
 </script>
