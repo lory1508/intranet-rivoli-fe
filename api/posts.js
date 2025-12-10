@@ -73,7 +73,6 @@ export const getAttachmentDetails = async (attachmentId, categories, tags) => {
         sort: ["publishedAt:desc"],
       },
     });
-    console.log("ARTICLES getAttachmentDetails", resStrapi);
     const res = await fetch(`${WORDPRESS_BASE_URL}/media/${attachmentId}`);
     if (!res.ok) {
       throw new Error(`Response status: ${res.status}`);
@@ -110,7 +109,6 @@ export const getPostBySlug = async (slug, categories, tags) => {
         sort: ["publishedAt:desc"],
       },
     });
-    console.log("ARTICLES getPostBySlug", resStrapi);
     const res = await useFetch(`${WORDPRESS_BASE_URL}/posts?slug=${slug}`);
     const post = res?.data?.value[0];
     return {
@@ -150,7 +148,7 @@ export const getPostById = async (id) => {
           Authorization: `Bearer ${token}`,
         },
         params: {
-          populate: ["*"],
+          populate: ["category.parent", "attachments", "tags"],
         },
       }
     );

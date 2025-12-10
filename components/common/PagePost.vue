@@ -87,7 +87,6 @@
           a.name > b.name ? 1 : -1
         );
       }
-      console.log(post.value.content);
       content.value = md.render(post.value.content || "");
     } catch (err) {
       console.error(err);
@@ -97,13 +96,13 @@
   });
 </script>
 
-<style >
-ul {
-  list-style-type: disc !important;
-  padding-left: 1.5rem;
-}
+<style>
+  ul {
+    list-style-type: disc !important;
+    padding-left: 1.5rem;
+  }
 
-a {
-  color: #B10015 !important;
-}
+  a {
+    color: #b10015 !important;
+  }
 </style>
