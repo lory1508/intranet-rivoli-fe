@@ -57,6 +57,7 @@
       categories: ["bacheca-dipendenti"],
       excerpt: 15,
       highlight: true,
+      limit: 4,
     });
     news.value = res.data;
     pagination.value = res.meta.pagination;
