@@ -1,5 +1,5 @@
 import { WORDPRESS_BASE_URL } from "../utils/staticData/constants";
-import { getData } from "#imports";
+import { getData, formatDate } from "#imports";
 
 export const getPosts = async (queryObj, pagination) => {
   try {
@@ -47,11 +47,10 @@ export const getPosts = async (queryObj, pagination) => {
     const resStrapi = await getData(`articles?${pagination || ""}`, query);
 
     resStrapi.data.forEach((post) => {
-      post.createdAt = new Date(post.createdAt).toLocaleDateString("it-IT");
-      if (post.updatedAt)
-        post.updatedAt = new Date(post.updatedAt).toLocaleString("it-IT");
-      if (post.start) new Date(post.start).toLocaleDateString("it-IT");
-      if (post.end) new Date(post.end).toLocaleDateString("it-IT");
+      post.createdAt = formatDate(post.createdAt);
+      if (post.updatedAt) post.updatedAt = formatDate(post.updatedAt);
+      if (post.start) formatDate(post.start);
+      if (post.end) formatDate(post.end);
     });
 
     return resStrapi;
@@ -122,7 +121,7 @@ export const getPostBySlug = async (slug, categories, tags) => {
       start: post?.acf?.start,
       end: post?.acf?.end,
       slug: post?.slug,
-      createdAt: new Date(post?.date).toLocaleDateString("it-IT"),
+      createdAt: formatDate(post?.date),
       attachment: {
         id: post?.acf?.attachment?.ID,
         url: post?.acf?.attachment?.url,

@@ -82,13 +82,6 @@
     });
   };
 
-  const getCatFromLink = (link) => {
-    const linkToArray = link.split("/");
-    const catIndex = linkToArray.indexOf("category") + 1;
-    const str = linkToArray.slice(catIndex).join("/");
-    return str.substring(0, str.length - 1);
-  };
-
   const getModulisticaCategory = async () => {
     try {
       const query = {
@@ -115,18 +108,6 @@
       loading.value = true;
 
       await getModulisticaCategory();
-      // TODO: switch to Strapi
-      // const modulistica = await getCategories({ search: 'modulistica', perPage: 1 })
-      // const tmp = ref([])
-      // tmp.value = await getCategories({ parent: modulistica[0]?.id, perPage: 100 })
-      // tmp.value.forEach((cat) => {
-      //   catModulistica.value.push({
-      //     title: cat.name,
-      //     slug: getCatFromLink(cat.link),
-      //     href: getCatFromLink(cat.link),
-      //   })
-      // })
-
       personalTools.value = await getExternalLinksByType("strumenti-personali");
 
       usefulLinks.value = (await getExternalLinks(true))

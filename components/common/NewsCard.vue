@@ -75,7 +75,11 @@
                 <div>{{ attachment?.name }}</div>
               </NTooltip>
             </div>
-            <span v-if="post?.attachments?.length" class="flex items-center h-8 px-2 transition-all duration-300 border-b-2 border-opacity-50 hover:bg-primary hover:bg-opacity-20 text-primary border-primary sharp-shadow-sm">+ {{ post?.attachments?.length - 3 }} allegati</span>
+            <span
+              v-if="post?.attachments?.length"
+              class="flex items-center h-8 px-2 transition-all duration-300 border-b-2 border-opacity-50 hover:bg-primary hover:bg-opacity-20 text-primary border-primary sharp-shadow-sm"
+              >+ {{ post?.attachments?.length - 3 }} allegati</span
+            >
           </div>
         </div>
 
@@ -165,7 +169,7 @@
   import TagComponent from "~/components/common/TagComponent.vue";
   import Button from "~/components/common/Button.vue";
   import { Icon } from "@iconify/vue";
-  import { decodeHtmlEntities } from "~/utils";
+  import { decodeHtmlEntities, formatDate } from "~/utils";
   import { useAccessibilityStore } from "@/stores/accessibilityStore";
 
   const accessibilityStore = useAccessibilityStore();
