@@ -13,14 +13,16 @@
         v-for="tool in tools"
         v-else
         :key="tool.slug"
-        class="flex flex-col items-center justify-start gap-1 p-2 transition-all duration-300 border text-primary bg-opacity-85 h-fit rounded-2xl hover:ring-2 hover:shadow-md hover:cursor-pointer"
+        class="flex flex-col items-center justify-start gap-1 p-2 transition-all duration-300 border bg-opacity-85 h-fit rounded-2xl hover:ring-2 hover:shadow-md hover:cursor-pointer"
         :class="{
-          'bg-black hover:ring-zinc-800 border-zinc-600': isHighContrast,
-          ' bg-red-100  hover:ring-primary border-primary': !isHighContrast,
+          'bg-black hover:ring-zinc-800 border-zinc-600 text-white':
+            isHighContrast,
+          ' bg-red-100  hover:ring-primary border-primary text-primary':
+            !isHighContrast,
         }"
         @click="goToTool(tool.href)"
       >
-        <a :href="tool.href" target="_blank" class="text-primary">
+        <a :href="tool.href" target="_blank">
           <Icon :icon="tool.icon" height="36" />
         </a>
         <span
