@@ -18,7 +18,9 @@
         role="dialog"
         aria-modal="true"
       >
-        <div class="flex flex-row justify-between w-full gap-12 text-lg text-black">
+        <div
+          class="flex flex-row justify-between w-full gap-12 text-lg text-black"
+        >
           <div class="flex flex-col gap-1">
             <NButton
               strong
@@ -29,7 +31,11 @@
               @click="toggleLargeFont"
             >
               <div class="flex flex-row items-center gap-2">
-                <Icon icon="fluent:text-font-20-filled" height="28" class="text-black" />
+                <Icon
+                  icon="fluent:text-font-20-filled"
+                  height="28"
+                  class="text-black"
+                />
                 <div class="text-lg text-black">Dimensione testo</div>
               </div>
             </NButton>
@@ -45,14 +51,24 @@
               @click="toggleHighContrast"
             >
               <div class="flex flex-row items-center gap-2">
-                <Icon icon="fluent-mdl2:contrast" height="28" class="text-black" />
+                <Icon
+                  icon="fluent-mdl2:contrast"
+                  height="28"
+                  class="text-black"
+                />
                 <div class="text-lg text-black">Alto contrasto</div>
               </div>
             </NButton>
             <span> Attiva l'alto contrasto per una migliore leggibilità </span>
           </div>
         </div>
-        <template #footer> <Button title="Chiudi" color="darkGray" @clicked="showA11yModal = false" /> </template>
+        <template #footer>
+          <Button
+            title="Chiudi"
+            color="darkGray"
+            @clicked="showA11yModal = false"
+          />
+        </template>
       </NCard>
     </NModal>
 
@@ -70,14 +86,25 @@
           @update:collapsed="updateCollapsed"
         >
           <div class="flex flex-col justify-between h-full p-6">
-            <div class="flex flex-col h-full overflow-y-scroll grow no-scrollbar">
-              <div class="flex flex-row items-center gap-4 hover:cursor-pointer" @click="goto('/')">
-                <img :src="websiteIdentity.logo.img" :alt="websiteIdentity.logo.alt" width="50" />
+            <div
+              class="flex flex-col h-full overflow-y-scroll grow no-scrollbar"
+            >
+              <div
+                class="flex flex-row items-center gap-4 hover:cursor-pointer"
+                @click="goto('/')"
+              >
+                <img
+                  :src="websiteIdentity.logo.img"
+                  :alt="websiteIdentity.logo.alt"
+                  width="50"
+                />
                 <div v-if="showLabels" class="flex flex-col">
                   <div class="text-2xl font-bold">
                     {{ websiteIdentity.name }}
                   </div>
-                  <div class="pt-2 font-semibold">Rivoli, {{ formattedToday }}</div>
+                  <div class="pt-2 font-semibold">
+                    Rivoli, {{ formattedToday }}
+                  </div>
                 </div>
               </div>
               <NDivider />
@@ -89,15 +116,22 @@
                   class="items-center justify-center px-2 py-1 cursor-pointer"
                   :class="{
                     'text-primary bg-white rounded-md font-semibold':
-                      active === menuItem.path && !menuItem?.submenu && !isHighContrast,
+                      active === menuItem.path &&
+                      !menuItem?.submenu &&
+                      !isHighContrast,
                     'text-black bg-white rounded-md font-semibold':
-                      active === menuItem.path && !menuItem?.submenu && isHighContrast,
+                      active === menuItem.path &&
+                      !menuItem?.submenu &&
+                      isHighContrast,
                     'w-fit': collapsed,
                   }"
                 >
                   <div class="flex flex-row items-center gap-2">
                     <!-- Full Menu -->
-                    <div v-if="showLabels" class="flex flex-row items-center w-full gap-2">
+                    <div
+                      v-if="showLabels"
+                      class="flex flex-row items-center w-full gap-2"
+                    >
                       <NCollapse
                         v-if="menuItem.submenu"
                         arrow-placement="right"
@@ -122,18 +156,26 @@
                               <Icon :icon="menuItem.icon" height="28" />
                               <div
                                 class="text-base transition-all duration-300 hover:font-semibold"
-                                :class="{ 'text-xl': isLargeFont, 'bg-black text-white': isHighContrast }"
+                                :class="{
+                                  'text-xl': isLargeFont,
+                                  'bg-black text-white': isHighContrast,
+                                }"
                               >
                                 {{ menuItem.title }}
                               </div>
                             </div>
                           </template>
                           <div class="flex flex-col gap-1 hover:cursor-default">
-                            <div v-for="subMenuItem in menuItem.submenu" :key="subMenuItem.path" class="w-full">
+                            <div
+                              v-for="subMenuItem in menuItem.submenu"
+                              :key="subMenuItem.path"
+                              class="w-full"
+                            >
                               <div
                                 class="pl-2 transition-all duration-300 hover:cursor-pointer hover:font-semibold"
                                 :class="{
-                                  'text-primary bg-white rounded-md font-semibold': active === subMenuItem.path,
+                                  'text-primary bg-white rounded-md font-semibold':
+                                    active === subMenuItem.path,
                                   'text-white': active !== subMenuItem.path,
                                   'text-xl': isLargeFont,
                                   'bg-black text-white': isHighContrast,
@@ -146,7 +188,11 @@
                           </div>
                         </NCollapseItem>
                       </NCollapse>
-                      <div v-else class="flex flex-row items-center w-full gap-2" @click="goto(menuItem.path)">
+                      <div
+                        v-else
+                        class="flex flex-row items-center w-full gap-2"
+                        @click="goto(menuItem.path)"
+                      >
                         <Icon :icon="menuItem.icon" height="28" />
                         <div
                           class="text-base transition-all duration-300 hover:font-semibold"
@@ -160,7 +206,11 @@
                     <!-- Collapsed Menu -->
                     <NTooltip v-else placement="right" trigger="hover">
                       <template #trigger>
-                        <Icon :icon="menuItem.icon" height="28" @click="goto(menuItem.path)" />
+                        <Icon
+                          :icon="menuItem.icon"
+                          height="28"
+                          @click="goto(menuItem.path)"
+                        />
                       </template>
                       <div>
                         {{ menuItem.title }}
@@ -186,7 +236,16 @@
               <div>{{ footer.phone.label }} {{ footer.phone.number }}</div>
               <div>{{ footer.fax.label }} {{ footer.fax.number }}</div>
               <div>{{ footer.cf.label }} {{ footer.cf.number }}</div>
-              <div class="flex flex-row gap-1">{{ footer.title }} - {{ footer.author }}</div>
+              <div class="flex flex-col gap-1 mt-4 text-sm font-semibold">
+                Piattaforma realizzata da:<br />
+                <a
+                  href="https://www.comune.rivoli.to.it/Amministrazione/Uffici/Servizio-Sistemi-informativi-e-archivistici"
+                  target="_blank"
+                >
+                  {{ footer.author }} -
+                  {{ footer.title }}
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -223,106 +282,117 @@
 <script setup>
   // components
 
-  import { menu, websiteIdentity } from '~/utils/staticData/menu.js'
-  import { NCollapse, NCollapseItem, NTooltip, NSpace, NDivider, NBackTop, NSwitch, NButton } from 'naive-ui'
-  import { Icon } from '@iconify/vue'
-  import { useAccessibilityStore } from '@/stores/accessibilityStore'
-  import { useHead } from '#imports'
-  import { delay } from '~/utils/index.js'
-  import Button from '~/components/common/Button.vue'
+  import { menu, websiteIdentity } from "~/utils/staticData/menu.js";
+  import {
+    NCollapse,
+    NCollapseItem,
+    NTooltip,
+    NSpace,
+    NDivider,
+    NBackTop,
+    NSwitch,
+    NButton,
+  } from "naive-ui";
+  import { Icon } from "@iconify/vue";
+  import { useAccessibilityStore } from "@/stores/accessibilityStore";
+  import { useHead } from "#imports";
+  import { delay } from "~/utils/index.js";
+  import Button from "~/components/common/Button.vue";
 
-  const router = useRouter()
-  const route = useRoute()
+  const router = useRouter();
+  const route = useRoute();
 
   // A11y
-  const accessibilityStore = useAccessibilityStore()
-  const isLargeFont = computed(() => accessibilityStore.isLargeFont)
-  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
-  const largeFont = ref(isLargeFont.value)
-  const highContrast = ref(isHighContrast.value)
+  const accessibilityStore = useAccessibilityStore();
+  const isLargeFont = computed(() => accessibilityStore.isLargeFont);
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast);
+  const largeFont = ref(isLargeFont.value);
+  const highContrast = ref(isHighContrast.value);
 
-  const showA11yModal = ref(false)
+  const showA11yModal = ref(false);
 
-  const subMenusCollapsed = ref([])
-  const collapsed = ref(false)
-  const showLabels = ref(true)
-  const footer = ref(websiteIdentity.footer)
-  const active = ref(route.path)
-  const formattedToday = ref(new Date().toLocaleDateString('it-IT'))
+  const subMenusCollapsed = ref([]);
+  const collapsed = ref(false);
+  const showLabels = ref(true);
+  const footer = ref(websiteIdentity.footer);
+  const active = ref(route.path);
+  const formattedToday = ref(new Date().toLocaleDateString("it-IT"));
   const pageTitle = computed(() =>
     route.path
-      .split('/')
+      .split("/")
       .at(-1)
-      .split('-')
+      .split("-")
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(' ')
-  )
+      .join(" ")
+  );
 
   watch(
     () => route.path,
     () => {
-      active.value = route.path
-      const tmpPath = route.path.split('/').splice(1)
-      const menuItem = menu.find((item) => item.path === `/${tmpPath[0]}`)
+      active.value = route.path;
+      const tmpPath = route.path.split("/").splice(1);
+      const menuItem = menu.find((item) => item.path === `/${tmpPath[0]}`);
       if (menuItem?.submenu) {
-        subMenusCollapsed.value.push(menuItem.title)
+        subMenusCollapsed.value.push(menuItem.title);
       }
     }
-  )
+  );
 
   watch(
     () => largeFont.value,
     () => {
-      accessibilityStore.toggleFontSize()
+      accessibilityStore.toggleFontSize();
     }
-  )
+  );
 
   watch(
     () => highContrast.value,
     () => {
-      accessibilityStore.toggleContrast()
+      accessibilityStore.toggleContrast();
     }
-  )
+  );
 
   const toggleLargeFont = () => {
-    accessibilityStore.toggleFontSize()
-  }
+    accessibilityStore.toggleFontSize();
+  };
   const toggleHighContrast = async () => {
-    accessibilityStore.toggleContrast()
-  }
+    accessibilityStore.toggleContrast();
+  };
 
   useHead({
     title: pageTitle,
-  })
+  });
 
   const collapseSidebar = async () => {
-    collapsed.value = !collapsed.value
+    collapsed.value = !collapsed.value;
     if (!collapsed.value) {
-      await delay(200)
+      await delay(200);
     }
-    showLabels.value = !showLabels.value
-  }
+    showLabels.value = !showLabels.value;
+  };
 
   const expandMenu = (title) => {
     if (subMenusCollapsed.value.includes(title)) {
-      subMenusCollapsed.value = subMenusCollapsed.value.filter((item) => item !== title)
+      subMenusCollapsed.value = subMenusCollapsed.value.filter(
+        (item) => item !== title
+      );
     } else {
-      subMenusCollapsed.value.push(title)
+      subMenusCollapsed.value.push(title);
     }
-  }
+  };
 
   const goto = (path) => {
-    subMenusCollapsed.value = []
-    router.push(path)
-  }
+    subMenusCollapsed.value = [];
+    router.push(path);
+  };
 
   const updateCollapsed = (value) => {
-    collapsed.value = value
-  }
+    collapsed.value = value;
+  };
 
   // Toggle accessibility features
 
   onMounted(() => {
-    accessibilityStore.initializePreferences()
-  })
+    accessibilityStore.initializePreferences();
+  });
 </script>
