@@ -85,7 +85,7 @@
   const currentPage = ref(1);
   const perPage = ref(10);
   const total = ref(0);
-  
+
   const pagination = ref({
     page: 1,
     itemCount: 0,
@@ -217,17 +217,15 @@
   const searchEmployees = async () => {
     try {
       loading.value = true;
-      pagination.value  =`pagination[page]=${currentPage.value}&pagination[pageSize]=${perPage.value}`
+      pagination.value = `pagination[page]=${currentPage.value}&pagination[pageSize]=${perPage.value}`;
       employees.value = await employeeStore.searchEmployees(
         rubricaSearch.value,
         pagination.value
       );
-      total.value = employees.value.meta.pagination.total
+      total.value = employees.value.meta.pagination.total;
       employeesData.value = formatArrayOfEmployees(employees.value.data);
       if (employeesData.value.length >= 10) {
         chosenLayout.value = "table";
-      } else {
-        chosenLayout.value = "cards";
       }
       pagination.value = {
         ...employees.value.meta.pagination,
@@ -243,6 +241,7 @@
     currentPage.value = page;
     perPage.value = itemsPerPage;
     employees.value = [];
+    chosenLayout.value = "table";
     await searchEmployees();
   };
 
