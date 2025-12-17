@@ -3,13 +3,21 @@
   <div v-else class="flex flex-col gap-4">
     <HeaderComponent :title="title" :breadcrumb="breadcrumb" />
 
-    <div class="flex flex-col-reverse gap-8 xl:flex-row">
+    <div class="flex flex-col-reverse gap-8 mt-28 xl:flex-row">
       <div v-if="posts.length === 0" class="w-full">
-        <NEmpty description="Nessun risultato trovato" class="p-4 bg-white border w-fit h-fit rounded-xl" />
+        <NEmpty
+          description="Nessun risultato trovato"
+          class="p-4 bg-white border w-fit h-fit rounded-xl"
+        />
       </div>
       <div v-else class="flex flex-col w-full gap-4 xl:w-2/3">
         <div class="flex flex-col gap-6">
-          <NewsCard v-for="post in posts" :key="post.slug" :post="post" :vertical="false" />
+          <NewsCard
+            v-for="post in posts"
+            :key="post.slug"
+            :post="post"
+            :vertical="false"
+          />
         </div>
         <PaginationComponent
           :total="total"
@@ -37,7 +45,14 @@
           end-placeholder="A"
           clearable
         />
-        <n-select v-model:value="filters.tags" :options="optionsTags" placeholder="Tag" filterable multiple clearable />
+        <n-select
+          v-model:value="filters.tags"
+          :options="optionsTags"
+          placeholder="Tag"
+          filterable
+          multiple
+          clearable
+        />
         <n-button strong secondary type="info" @click="runSearch(true)">
           Cerca
           <template #icon>
@@ -52,33 +67,33 @@
 </template>
 
 <script setup>
-  import { getPosts } from '~/api/posts'
-  import { Icon } from '@iconify/vue'
+  import { getPosts } from "~/api/posts";
+  import { Icon } from "@iconify/vue";
 
-  import LoaderComponent from '~/components/common/LoaderComponent.vue'
-  import HeaderComponent from '~/components/common/HeaderComponent.vue'
+  import LoaderComponent from "~/components/common/LoaderComponent.vue";
+  import HeaderComponent from "~/components/common/HeaderComponent.vue";
   import PaginationComponent from "~/components/common/PaginationComponent.vue";
-  import NewsCard from '~/components/common/NewsCard.vue'
+  import NewsCard from "~/components/common/NewsCard.vue";
 
   // store
-  import { useTagsStore } from '~/stores/tags'
-  const tagsStore = useTagsStore()
-  const tags = ref([])
+  import { useTagsStore } from "~/stores/tags";
+  const tagsStore = useTagsStore();
+  const tags = ref([]);
 
   const props = defineProps({
     title: {
       type: String,
-      default: '',
+      default: "",
     },
     category: {
       type: String,
-      default: '',
+      default: "",
     },
     breadcrumb: {
       type: Array,
       default: () => [],
     },
-  })
+  });
 
   const currentPage = ref(1);
   const total = ref(0);
@@ -95,20 +110,20 @@
     search: null,
     tags: [],
     range: null,
-  })
+  });
   const optionsTags = computed(() =>
     tags.value.map((tag) => ({ label: tag?.name, value: tag?.documentId }))
   );
-  const loading = ref(false)
-  const posts = ref([])
+  const loading = ref(false);
+  const posts = ref([]);
 
   const fetchPosts = async (search = false) => {
     try {
-      loading.value = true
+      loading.value = true;
       if (search) {
         currentPage.value = 1;
       }
-      
+
       const filtersToRun = ref({ categories: [props.category] });
 
       if (filters.value.search) {
@@ -132,11 +147,11 @@
       total.value = res.meta.pagination.total;
       pagination.value = { ...res.meta.pagination };
     } catch (err) {
-      console.error(err)
+      console.error(err);
     } finally {
-      loading.value = false
+      loading.value = false;
     }
-  }
+  };
 
   const handlePageChange = async (page, itemsPerPage) => {
     currentPage.value = page;
@@ -146,7 +161,7 @@
   };
 
   onMounted(async () => {
-    await fetchPosts(1)
+    await fetchPosts(1);
     tags.value = await tagsStore.getTags();
-  })
+  });
 </script>

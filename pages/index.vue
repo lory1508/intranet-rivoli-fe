@@ -2,7 +2,7 @@
   <div class="flex flex-col w-full gap-2">
     <HeaderComponent :title="homeStaticData.title" />
 
-    <div class="grid w-full grid-cols-1 gap-4 xl:grid-cols-3">
+    <div class="grid w-full grid-cols-1 gap-4 mt-20 xl:grid-cols-3">
       <div class="flex flex-col gap-4">
         <!-- Rubrica -->
         <RubricaCard

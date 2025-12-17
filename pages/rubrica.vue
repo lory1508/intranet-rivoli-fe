@@ -5,7 +5,7 @@
       <div class="flex flex-col mb-2">
         <HeaderComponent title="Rubrica" :breadcrumb="breadcrumb" />
 
-        <NRadioGroup v-model:value="chosenLayout" name="layout">
+        <NRadioGroup v-model:value="chosenLayout" name="layout" class="mt-28">
           <NRadioButton value="cards" label="Vista a schede" />
           <NRadioButton value="table" label="Vista a tabella" />
         </NRadioGroup>
@@ -36,7 +36,7 @@
               :total="total"
               :per-page="perPage"
               :current-page="currentPage"
-              :per-page-options="[2, 10, 20, 30]"
+              :per-page-options="[10, 20, 30]"
               @page-change="handlePageChange"
             />
           </div>
@@ -83,13 +83,13 @@
   const chosenLayout = ref("cards");
 
   const currentPage = ref(1);
-  const perPage = ref(10);
+  const perPage = ref(20);
   const total = ref(0);
 
   const pagination = ref({
     page: 1,
     itemCount: 0,
-    perPage: 10,
+    perPage: perPage.value,
     "show-size-picker": true,
   });
   const rubricaSearch = ref({

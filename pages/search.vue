@@ -3,7 +3,7 @@
     <LoaderComponent v-if="loading" />
     <div v-else>
       <HeaderComponent title="Ricerca" :breadcrumb="breadcrumb" />
-      <div class="flex flex-wrap items-stretch gap-4">
+      <div class="flex flex-wrap items-stretch gap-4 mt-28">
         <div
           v-for="post in posts"
           :key="post.id"

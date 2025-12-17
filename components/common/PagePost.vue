@@ -4,33 +4,35 @@
     <div v-if="post">
       <HeaderComponent :title="post.title" :breadcrumb="breadcrumb" />
 
-      <!-- Tags -->
-      <div v-if="post.tags?.length" class="flex flex-row gap-2 mt-2">
-        <TagComponent
-          v-for="tag in post.tags"
-          :key="tag.slug"
-          :tag="tag"
-          color="rose"
-        />
-      </div>
-
-      <!-- Content -->
-      <div v-html="content" class="flex flex-col gap-4 pt-4" />
-
-      <!-- Attachments -->
-      <div v-if="post?.attachments?.length" class="flex flex-col gap-2">
-        <div class="text-xl font-semibold text-primary">Allegati</div>
-        <div class="flex flex-wrap gap-x-8 gap-y-4">
-          <AttachmentComponent
-            v-for="attachment in post?.attachments"
-            :key="attachment.id"
-            :title="attachment?.name"
-            :url="attachment?.url"
-            :type="attachment?.ext"
-            :size="attachment?.size"
+      <div class="mt-20">
+        <!-- Tags -->
+        <div v-if="post.tags?.length" class="flex flex-row gap-2 mt-2">
+          <TagComponent
+            v-for="tag in post.tags"
+            :key="tag.slug"
+            :tag="tag"
+            color="rose"
           />
-          <!-- :tags="attachment?.tags" -->
-          <!-- :categories="attachment?.categories" -->
+        </div>
+
+        <!-- Content -->
+        <div v-html="content" class="flex flex-col gap-4 pt-4" />
+
+        <!-- Attachments -->
+        <div v-if="post?.attachments?.length" class="flex flex-col gap-2">
+          <div class="text-xl font-semibold text-primary">Allegati</div>
+          <div class="flex flex-wrap gap-x-8 gap-y-4">
+            <AttachmentComponent
+              v-for="attachment in post?.attachments"
+              :key="attachment.id"
+              :title="attachment?.name"
+              :url="attachment?.url"
+              :type="attachment?.ext"
+              :size="attachment?.size"
+            />
+            <!-- :tags="attachment?.tags" -->
+            <!-- :categories="attachment?.categories" -->
+          </div>
         </div>
       </div>
     </div>
