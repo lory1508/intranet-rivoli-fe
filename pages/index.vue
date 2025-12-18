@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col w-full gap-2">
-    <HeaderComponent :title="homeStaticData.title" />
+    <HeaderComponent :title="homeStaticData.title" @new-alert="showAlert" />
 
     <div class="grid w-full grid-cols-1 gap-4 mt-20 xl:grid-cols-3">
       <div class="flex flex-col gap-4">
@@ -10,6 +10,9 @@
           :icon="homeStaticData.rubrica.icon"
           @search="searchRubrica"
         />
+
+        <!-- Warning -->
+        <WarningCard :alert="alert" />
 
         <!-- Strumenti personali -->
         <PersonalTools
@@ -60,6 +63,7 @@
   import PersonalTools from "~/components/home/PersonalTools.vue";
   import ModulisticaTools from "~/components/home/ModulisticaTools.vue";
   import HeaderComponent from "~/components/common/HeaderComponent.vue";
+  import WarningCard from "~/components/home/WarningCard.vue";
 
   import {
     getExternalLinksByType,
@@ -72,6 +76,7 @@
   const usefulLinks = ref([]);
   const usefulLinksCategories = ref([]);
   const catModulistica = ref([]);
+  const alert = ref({});
 
   const loading = ref(false);
 
@@ -80,6 +85,13 @@
       path: "/rubrica",
       query,
     });
+  };
+
+  const showAlert = (showAlert, text) => {
+    alert.value = {
+      show: showAlert,
+      text,
+    };
   };
 
   const getModulisticaCategory = async () => {

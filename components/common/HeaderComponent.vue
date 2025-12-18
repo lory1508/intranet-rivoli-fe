@@ -120,6 +120,7 @@
       default: () => [],
     },
   });
+  const emit = defineEmits(["newAlert"]);
 
   // A11y
   const accessibilityStore = useAccessibilityStore();
@@ -148,6 +149,7 @@
     const end = new Date(res.end);
     showAlert.value = start <= new Date() && end >= new Date();
     latestAlert.value = res.content;
+    emit("newAlert", showAlert.value, latestAlert.value);
   };
 
   const goTo = (path) => {
