@@ -38,7 +38,10 @@
       <div class="flex flex-col items-start gap-2">
         <!-- Attachment -->
         <div class="flex flex-wrap w-full gap-8">
-          <div v-if="post?.attachments?.length <= 3">
+          <div
+            v-if="post?.attachments?.length <= 3"
+            class="flex flex-wrap w-full gap-8"
+          >
             <div
               v-for="attachment in post?.attachments"
               :key="attachment.documentId"

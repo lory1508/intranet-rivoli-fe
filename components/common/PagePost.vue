@@ -4,7 +4,7 @@
     <div v-if="post">
       <HeaderComponent :title="post.title" :breadcrumb="breadcrumb" />
 
-      <div class="mt-20">
+      <div class="relative">
         <!-- Tags -->
         <div v-if="post.tags?.length" class="flex flex-row gap-2 mt-2">
           <TagComponent

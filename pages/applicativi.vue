@@ -4,7 +4,7 @@
     <div v-else>
       <HeaderComponent title="Applicativi" :breadcrumb="breadcrumb" />
 
-      <div class="mt-24">
+      <div class="mt-2">
         <!-- Ricerca -->
         <div class="flex flex-col py-4">
           <div class="flex flex-col gap-1">

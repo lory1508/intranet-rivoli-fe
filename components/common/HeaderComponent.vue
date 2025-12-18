@@ -1,9 +1,11 @@
 <template>
   <div
-    class="fixed top-0 z-10 flex flex-col-reverse items-center justify-between w-full gap-8 pt-2 mr-6 font-bold lg:flex-row backdrop-blur-sm text-primary"
+    class="top-0 z-10 flex flex-col-reverse items-start justify-between w-full gap-8 pt-2 mr-12 font-bold lg:flex-row backdrop-blur-sm text-primary"
   >
-    <div class="flex flex-col-reverse items-start w-full gap-8 lg:flex-row">
-      <div class="flex flex-col w-9/12 gap-1">
+    <div
+      class="flex flex-col-reverse items-start justify-between w-full gap-8 lg:flex-row"
+    >
+      <div class="flex flex-col w-8/12 gap-1">
         <div v-if="showAlert" class="flex flex-row items-start gap-2">
           <span class="relative flex w-3 h-3">
             <span
@@ -72,7 +74,7 @@
       </div>
 
       <div
-        class="flex flex-row items-center justify-end gap-2 -ml-96 lg:justify-end lg:w-3/12"
+        class="flex flex-row items-center justify-end gap-2 -ml-96 lg:justify-end lg:w-4/12"
       >
         <div class="flex flex-row items-center justify-end w-96">
           <div

@@ -1,7 +1,15 @@
 <template>
-  <NSpace
+  <!-- <NSpace
     vertical
-    size="large"
+    size="small"
+    class="transition-all duration-300"
+    :class="{
+      'text-xl': isLargeFont,
+      'bg-white text-black': isHighContrast,
+      'bg-gradient-to-br from-neutral-200 to-neutral-300': !isHighContrast,
+    }"
+  > -->
+  <div
     class="transition-all duration-300"
     :class="{
       'text-xl': isLargeFont,
@@ -9,9 +17,8 @@
       'bg-gradient-to-br from-neutral-200 to-neutral-300': !isHighContrast,
     }"
   >
-    <div class="flex flex-row p-2">
-      <div class="fixed flex h-full pb-6">
-        <!-- <div class="fixed flex h-full pb-6 z-top"> -->
+    <div class="flex flex-row min-h-screen px-2 pt-2">
+      <div class="fixed flex h-full pb-4">
         <div
           class="text-white transition-all duration-300 rounded-2xl"
           :class="{
@@ -173,11 +180,14 @@
               <div>{{ footer.phone.label }} {{ footer.phone.number }}</div>
               <div>{{ footer.fax.label }} {{ footer.fax.number }}</div>
               <div>{{ footer.cf.label }} {{ footer.cf.number }}</div>
-              <div class="flex flex-col gap-1 mt-4 text-sm font-semibold">
+              <div
+                class="flex flex-col gap-1 mt-4 text-sm font-semibold text-white"
+              >
                 Piattaforma realizzata da:<br />
                 <a
                   href="https://www.comune.rivoli.to.it/Amministrazione/Uffici/Servizio-Sistemi-informativi-e-archivistici"
                   target="_blank"
+                  class="!text-white"
                 >
                   {{ footer.author }} -
                   {{ footer.title }}
@@ -194,7 +204,7 @@
           'ml-72': !collapsed,
         }"
       >
-        <div class="flex items-center h-screen -ml-5">
+        <div class="absolute flex items-center -ml-5 top-1/2">
           <Icon
             icon="solar:alt-arrow-right-linear"
             height="36"
@@ -207,7 +217,7 @@
             @click="collapseSidebar"
           />
         </div>
-        <div class="w-full px-2 pb-4 ml-10 h-fit">
+        <div class="w-full h-auto px-2 pb-4 pr-10 ml-8">
           <NuxtPage />
           <NBackTop />
         </div>
@@ -275,7 +285,8 @@
         </template>
       </NCard>
     </NModal>
-  </NSpace>
+  </div>
+  <!-- </NSpace> -->
 </template>
 
 <script setup>

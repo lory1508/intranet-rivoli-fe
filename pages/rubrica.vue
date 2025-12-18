@@ -1,11 +1,11 @@
 <template>
-  <div class="flex flex-col w-11/12 gap-4">
+  <div class="flex flex-col w-full gap-4">
     <LoaderComponent v-if="loading" />
     <div v-else>
       <div class="flex flex-col mb-2">
         <HeaderComponent title="Rubrica" :breadcrumb="breadcrumb" />
 
-        <NRadioGroup v-model:value="chosenLayout" name="layout" class="mt-28">
+        <NRadioGroup v-model:value="chosenLayout" name="layout" class="mt-2">
           <NRadioButton value="cards" label="Vista a schede" />
           <NRadioButton value="table" label="Vista a tabella" />
         </NRadioGroup>

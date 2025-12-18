@@ -3,7 +3,7 @@
   <div v-else class="flex flex-col gap-4">
     <HeaderComponent title="News" :breadcrumb="breadcrumb" />
 
-    <div class="flex flex-col-reverse gap-8 xl:flex-row mt-28">
+    <div class="flex flex-col-reverse gap-8 mt-2 xl:flex-row">
       <div v-if="news.length === 0" class="w-full">
         <NEmpty
           description="Nessun risultato trovato"

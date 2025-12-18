@@ -3,7 +3,7 @@
   <div v-else class="flex flex-col gap-4">
     <HeaderComponent :title="title" :breadcrumb="breadcrumb" />
 
-    <div class="flex flex-col-reverse gap-8 mt-28 xl:flex-row">
+    <div class="flex flex-col-reverse gap-8 mt-2 xl:flex-row">
       <div v-if="posts.length === 0" class="w-full">
         <NEmpty
           description="Nessun risultato trovato"
@@ -34,7 +34,7 @@
           v-model:value="filters.search"
           placeholder="Cerca..."
           type="text"
-          @keypress.enter="runSearch(true)"
+          @keypress.enter="fetchPosts(true)"
           clearable
         />
         <n-date-picker
@@ -53,7 +53,7 @@
           multiple
           clearable
         />
-        <n-button strong secondary type="info" @click="runSearch(true)">
+        <n-button strong secondary type="info" @click="fetchPosts(true)">
           Cerca
           <template #icon>
             <n-icon>
