@@ -33,7 +33,7 @@
       </div>
 
       <!-- Excerpt -->
-      <div v-if="!hideContent" v-html="post.excerpt" />
+      <div v-if="!hideContent" v-html="excerpt" />
 
       <div class="flex flex-col items-start gap-2">
         <!-- Attachment -->
@@ -172,8 +172,9 @@
   import TagComponent from "~/components/common/TagComponent.vue";
   import Button from "~/components/common/Button.vue";
   import { Icon } from "@iconify/vue";
-  import { decodeHtmlEntities, formatDate } from "~/utils";
+  import { decodeHtmlEntities } from "~/utils";
   import { useAccessibilityStore } from "@/stores/accessibilityStore";
+  import markdownit from "markdown-it";
 
   const accessibilityStore = useAccessibilityStore();
   const isLargeFont = computed(() => accessibilityStore.isLargeFont);
@@ -202,7 +203,9 @@
     },
   });
 
+  const md = markdownit();
   const title = ref("");
+  const excerpt = ref("");
 
   const goToNews = async () => {
     const path = `${props.post.category.slug}/${props.post.slug}`;
@@ -215,5 +218,6 @@
 
   onMounted(() => {
     title.value = decodeHtmlEntities(props.post?.title);
+    excerpt.value = md.render(props.post?.excerpt || "");
   });
 </script>
