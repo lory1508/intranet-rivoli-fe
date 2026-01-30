@@ -48,10 +48,11 @@
             class="font-semibold transition-all duration-300"
             :class="{ 'text-2xl': isLargeFont, 'text-lg': !isLargeFont }"
           >
+            <span class="sr-only">Telefono: </span>
             {{ employee?.phone }}
           </div>
         </div>
-        <div class="flex flex-row items-center gap-2">
+        <div v-if="employee?.room" class="flex flex-row items-center gap-2">
           <Icon
             icon="fluent:location-ripple-24-filled"
             height="36"
@@ -65,6 +66,7 @@
             class="font-semibold transition-all duration-300"
             :class="{ 'text-2xl': isLargeFont, 'text-lg': !isLargeFont }"
           >
+            <span class="sr-only">Stanza: </span>
             {{ employee?.room }}
           </div>
         </div>
@@ -84,15 +86,13 @@
             class="font-semibold transition-all duration-300"
             :class="{ 'text-xl': isLargeFont, 'text-base': !isLargeFont }"
           >
+            <span class="sr-only">Email: </span>
             {{ employee?.email }}
           </div>
         </div>
       </div>
       <div class="flex flex-col gap-1">
-        <div
-          v-if="employee?.department"
-          class="flex flex-row items-center gap-2"
-        >
+        <div v-if="employee?.department" class="flex flex-row items-center gap-2">
           <div
             class="font-semibold transition-all duration-300"
             :class="{
@@ -113,7 +113,7 @@
             </div>
           </NTooltip>
         </div>
-        <div v-if="employee?.office" class="flex flex-row items-center gap-2">
+        <div v-if="employee?.offices" class="flex flex-row items-center gap-2">
           <div
             class="font-semibold transition-all duration-300"
             :class="{
@@ -125,14 +125,16 @@
           >
             Ufficio
           </div>
-          <NTooltip trigger="hover">
-            <template #trigger>
-              <div class="truncate max-w-64">{{ employee?.office }}</div>
-            </template>
-            <div>
-              {{ employee?.office }}
-            </div>
-          </NTooltip>
+          <div v-for="office in employee?.offices" :key="office.documentId">
+            <NTooltip trigger="hover">
+              <template #trigger>
+                <div class="truncate max-w-64">{{ office.title }}</div>
+              </template>
+              <div>
+                {{ office.title }}
+              </div>
+            </NTooltip>
+          </div>
         </div>
         <div v-if="employee?.service" class="flex flex-row items-center gap-2">
           <div
@@ -166,31 +168,27 @@
           'bg-primary': !isHighContrast,
         }"
       >
-        <Icon
-          icon="fluent:mail-arrow-up-24-filled"
-          height="36"
-          class="text-white"
-        />
+        <Icon icon="fluent:mail-arrow-up-24-filled" height="36" class="text-white" />
       </a>
     </div>
   </div>
 </template>
 
 <script setup>
-  import { Icon } from "@iconify/vue";
-  import { NImage, NTooltip } from "naive-ui";
-  import { useAccessibilityStore } from "@/stores/accessibilityStore";
-  import { decodeHtmlEntities } from "~/utils";
+import { Icon } from "@iconify/vue";
+import { NImage, NTooltip } from "naive-ui";
+import { useAccessibilityStore } from "@/stores/accessibilityStore";
+import { decodeHtmlEntities } from "~/utils";
 
-  const props = defineProps({
-    employee: {
-      type: Object,
-      default: () => {},
-    },
-  });
+const props = defineProps({
+  employee: {
+    type: Object,
+    default: () => {},
+  },
+});
 
-  const accessibilityStore = useAccessibilityStore();
-  const isLargeFont = computed(() => accessibilityStore.isLargeFont);
-  const isHighContrast = computed(() => accessibilityStore.isHighContrast);
-  const title = decodeHtmlEntities(props.employee?.name);
+const accessibilityStore = useAccessibilityStore();
+const isLargeFont = computed(() => accessibilityStore.isLargeFont);
+const isHighContrast = computed(() => accessibilityStore.isHighContrast);
+const title = decodeHtmlEntities(props.employee?.name);
 </script>

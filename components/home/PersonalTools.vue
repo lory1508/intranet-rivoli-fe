@@ -15,57 +15,62 @@
         :key="tool.slug"
         class="flex flex-col items-center justify-start gap-1 p-2 transition-all duration-300 border bg-opacity-85 h-fit rounded-2xl hover:ring-2 hover:shadow-md hover:cursor-pointer"
         :class="{
-          'bg-black hover:ring-zinc-800 border-zinc-600 text-white':
-            isHighContrast,
-          ' bg-red-100  hover:ring-primary border-primary text-primary':
-            !isHighContrast,
+          'bg-black hover:ring-zinc-800 border-zinc-600 text-white': isHighContrast,
+          ' bg-red-100  hover:ring-primary border-primary text-primary': !isHighContrast,
         }"
         @click="goToTool(tool.href)"
       >
-        <a :href="tool.href" target="_blank">
-          <Icon :icon="tool.icon" height="36" />
-        </a>
-        <span
-          class="font-semibold tracking-tighter text-center"
-          :class="{ 'text-lg': isLargeFont, 'text-xs': !isLargeFont }"
+        <a
+          :href="tool.href"
+          target="_blank"
+          class="flex flex-col justify-center"
+          @keypress.enter="goToTool(tool.href)"
         >
-          {{ tool.title }}
-        </span>
+          <div class="w-full flex justify-center">
+            <Icon :icon="tool.icon" height="36" />
+          </div>
+          <div
+            class="font-semibold tracking-tighter text-center"
+            :class="{ 'text-lg': isLargeFont, 'text-xs': !isLargeFont }"
+          >
+            {{ tool.title }}
+          </div>
+        </a>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-  import { Icon } from "@iconify/vue";
-  import { useAccessibilityStore } from "@/stores/accessibilityStore";
-  import LoaderComponent from "~/components/common/LoaderComponent.vue";
-  import CardTitle from "~/components/common/CardTitle.vue";
+import { Icon } from "@iconify/vue";
+import { useAccessibilityStore } from "@/stores/accessibilityStore";
+import LoaderComponent from "~/components/common/LoaderComponent.vue";
+import CardTitle from "~/components/common/CardTitle.vue";
 
-  const accessibilityStore = useAccessibilityStore();
-  const isLargeFont = computed(() => accessibilityStore.isLargeFont);
-  const isHighContrast = computed(() => accessibilityStore.isHighContrast);
+const accessibilityStore = useAccessibilityStore();
+const isLargeFont = computed(() => accessibilityStore.isLargeFont);
+const isHighContrast = computed(() => accessibilityStore.isHighContrast);
 
-  const props = defineProps({
-    icon: {
-      type: String,
-      default: "",
-    },
-    title: {
-      type: String,
-      default: "",
-    },
-    tools: {
-      type: Array,
-      default: () => [],
-    },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
-  });
+const props = defineProps({
+  icon: {
+    type: String,
+    default: "",
+  },
+  title: {
+    type: String,
+    default: "",
+  },
+  tools: {
+    type: Array,
+    default: () => [],
+  },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+});
 
-  const goToTool = async (tool) => {
-    await navigateTo(tool, { external: true, open: { target: "_blank" } });
-  };
+const goToTool = async (tool) => {
+  await navigateTo(tool, { external: true, open: { target: "_blank" } });
+};
 </script>

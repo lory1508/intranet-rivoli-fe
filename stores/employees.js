@@ -1,9 +1,9 @@
 // stores/employee.js
-import { defineStore } from 'pinia'
-import { WORDPRESS_BASE_URL } from '~/utils/staticData/constants'
-import { getData } from '#imports'
+import { defineStore } from "pinia";
+import { WORDPRESS_BASE_URL } from "~/utils/staticData/constants";
+import { getData } from "#imports";
 
-export const useEmployeeStore = defineStore('employees', {
+export const useEmployeeStore = defineStore("employees", {
   state: () => ({
     employees: [], // Initial state for your employees array
     fetched: false,
@@ -11,28 +11,28 @@ export const useEmployeeStore = defineStore('employees', {
   actions: {
     async getEmployees(query, pagination) {
       if (this.employees.length > 0) {
-        return this.employees
+        return this.employees;
       }
 
       try {
         let params = {
-          populate: ['*'],
-          sort: ['surname:asc'],
-        }
+          populate: ["*"],
+          sort: ["surname:asc"],
+        };
 
-        if(query?.department)
-          params["filters[department][documentId][$eq]"] = query?.department
-        if(query?.office);
-          params["filters[office][documentId][$eq]"] = query?.office
-        if(query?.service)
-          params["filters[service][documentId][$eq]"] = query?.service
+        if (query?.department)
+          params["filters[department][documentId][$eq]"] = query?.department;
+        if (query?.offices);
+        params["filters[offices][documentId][$eq]"] = query?.office;
+        if (query?.service)
+          params["filters[service][documentId][$eq]"] = query?.service;
 
-        if(query?.query && isNaN(query?.query))
-          params["filters[fullname][$containsi]"] = query?.query
-        if(query?.query && !isNaN(query?.query))
-          params["filters[phone][$containsi]"] = query?.query
-
-          /*
+        if (query?.query && isNaN(query?.query))
+          params["filters[fullname][$containsi]"] = query?.query;
+        if (query?.query && !isNaN(query?.query))
+          params["filters[phone][$containsi]"] = query?.query;
+        console.log("Params:", params);
+        /*
         if (pagination) params += `per_page=${pagination.perPage}&page=${pagination.page}`
         else params += `per_page=100&page=1`
 
@@ -45,8 +45,8 @@ export const useEmployeeStore = defineStore('employees', {
 */
 
         // TODO: Switch to Strapi
-        const res = await getData(`employees?${pagination}`, params)
-        this.employees = res || []
+        const res = await getData(`employees?${pagination}`, params);
+        this.employees = res || [];
         // const res = await $fetch.raw(`${WORDPRESS_BASE_URL}/employee?${params}`)
 
         // this.employees = {
@@ -58,42 +58,46 @@ export const useEmployeeStore = defineStore('employees', {
         //   },
         // }
 
-        this.fetched = true
-        return this.employees
+        this.fetched = true;
+        return this.employees;
       } catch (err) {
-        console.error('Failed to fetch employees', err)
-        throw err
+        console.error("Failed to fetch employees", err);
+        throw err;
       }
     },
     async runEmployeeSearch(section, id) {
       try {
-        if (!section || !id) return
-        const res = await useFetch(`${WORDPRESS_BASE_URL}/employee?meta_key=${section}&meta_value=${id}`)
-        this.employees = res?.data || []
-        this.fetched = true
-        return this.employees
+        if (!section || !id) return;
+        const res = await useFetch(
+          `${WORDPRESS_BASE_URL}/employee?meta_key=${section}&meta_value=${id}`,
+        );
+        this.employees = res?.data || [];
+        this.fetched = true;
+        return this.employees;
       } catch (err) {
-        console.error('Failed to fetch employees', err)
-        throw err
+        console.error("Failed to fetch employees", err);
+        throw err;
       }
     },
     async searchEmployees(query, pagination) {
-      await this.getEmployees(query, pagination)
-      return this.employees
+      await this.getEmployees(query, pagination);
+      return this.employees;
     },
     setEmployees(employeeArray) {
-      this.employees = employeeArray
+      this.employees = employeeArray;
     },
     addEmployee(employee) {
-      this.employees.push(employee)
+      this.employees.push(employee);
     },
     clearEmployees() {
-      this.employees = []
+      this.employees = [];
     },
   },
   getters: {
     employeeCount: (state) => state.employees.length,
-    getEmployeeById: (state) => (id) => state.employees.find((employee) => employee.id === id),
-    getEmployeeBySlug: (state) => (slug) => state.employees.find((employee) => employee.slug === slug),
+    getEmployeeById: (state) => (id) =>
+      state.employees.find((employee) => employee.id === id),
+    getEmployeeBySlug: (state) => (slug) =>
+      state.employees.find((employee) => employee.slug === slug),
   },
-})
+});

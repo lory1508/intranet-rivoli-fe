@@ -8,7 +8,7 @@
       ' hover:shadow-xl': !isHighContrast,
     }"
   >
-    <div class="flex flex-col h-full gap-2" :class="vertical ? 'p-4' : ''">
+    <div tabindex="0" class="flex flex-col h-full gap-2" :class="vertical ? 'p-4' : ''">
       <!-- Title -->
       <span
         class="font-semibold transition-all duration-300 hover:cursor-pointer"
@@ -38,10 +38,7 @@
       <div class="flex flex-col items-start gap-2">
         <!-- Attachment -->
         <div class="flex flex-wrap w-full gap-8">
-          <div
-            v-if="post?.attachments?.length <= 3"
-            class="flex flex-wrap w-full gap-8"
-          >
+          <div v-if="post?.attachments?.length <= 3" class="flex flex-wrap w-full gap-8">
             <div
               v-for="attachment in post?.attachments"
               :key="attachment.documentId"
@@ -87,10 +84,7 @@
         </div>
 
         <!-- Tags -->
-        <div
-          v-if="post?.tags?.length"
-          class="flex flex-wrap items-center gap-1"
-        >
+        <div v-if="post?.tags?.length" class="flex flex-wrap items-center gap-1">
           <span
             class="pr-1 font-semibold"
             :class="{
@@ -104,10 +98,7 @@
           </div>
         </div>
         <!-- Categories -->
-        <div
-          v-if="post?.category.length"
-          class="flex flex-wrap items-center gap-1"
-        >
+        <div v-if="post?.category.length" class="flex flex-wrap items-center gap-1">
           <span
             class="pr-1 font-semibold"
             :class="{
@@ -169,55 +160,55 @@
 </template>
 
 <script setup>
-  import TagComponent from "~/components/common/TagComponent.vue";
-  import Button from "~/components/common/Button.vue";
-  import { Icon } from "@iconify/vue";
-  import { decodeHtmlEntities } from "~/utils";
-  import { useAccessibilityStore } from "@/stores/accessibilityStore";
-  import markdownit from "markdown-it";
+import TagComponent from "~/components/common/TagComponent.vue";
+import Button from "~/components/common/Button.vue";
+import { Icon } from "@iconify/vue";
+import { decodeHtmlEntities } from "~/utils";
+import { useAccessibilityStore } from "@/stores/accessibilityStore";
+import markdownit from "markdown-it";
 
-  const accessibilityStore = useAccessibilityStore();
-  const isLargeFont = computed(() => accessibilityStore.isLargeFont);
-  const isHighContrast = computed(() => accessibilityStore.isHighContrast);
+const accessibilityStore = useAccessibilityStore();
+const isLargeFont = computed(() => accessibilityStore.isLargeFont);
+const isHighContrast = computed(() => accessibilityStore.isHighContrast);
 
-  const props = defineProps({
-    post: {
-      type: Object,
-      default: () => {},
-    },
-    vertical: {
-      type: Boolean,
-      default: true,
-    },
-    hideContent: {
-      type: Boolean,
-      default: false,
-    },
-    showCreatedAt: {
-      type: Boolean,
-      default: true,
-    },
-    showUpdatedAt: {
-      type: Boolean,
-      default: false,
-    },
+const props = defineProps({
+  post: {
+    type: Object,
+    default: () => {},
+  },
+  vertical: {
+    type: Boolean,
+    default: true,
+  },
+  hideContent: {
+    type: Boolean,
+    default: false,
+  },
+  showCreatedAt: {
+    type: Boolean,
+    default: true,
+  },
+  showUpdatedAt: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const md = markdownit();
+const title = ref("");
+const excerpt = ref("");
+
+const goToNews = async () => {
+  const path = `${props.post.category.slug}/${props.post.slug}`;
+  await navigateTo({
+    path: path,
+    params: { slug: props.post.slug },
+    query: { id: props.post.documentId },
   });
+};
 
-  const md = markdownit();
-  const title = ref("");
-  const excerpt = ref("");
-
-  const goToNews = async () => {
-    const path = `${props.post.category.slug}/${props.post.slug}`;
-    await navigateTo({
-      path: path,
-      params: { slug: props.post.slug },
-      query: { id: props.post.documentId },
-    });
-  };
-
-  onMounted(() => {
-    title.value = decodeHtmlEntities(props.post?.title);
-    excerpt.value = md.render(props.post?.excerpt || "");
-  });
+onMounted(() => {
+  title.value = decodeHtmlEntities(props.post?.title);
+  excerpt.value = md.render(props.post?.excerpt || "");
+});
 </script>

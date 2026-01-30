@@ -54,201 +54,193 @@
 </template>
 
 <script setup>
-  import { useEmployeeStore } from "~/stores/employees";
-  import { NEmpty, NButton } from "naive-ui";
-  import { homeStaticData } from "~/utils/staticData/home";
-  import {
-    formatArrayOfEmployees,
-    capitalizeSentence,
-    decodeHtmlEntities,
-  } from "~/utils";
+import { useEmployeeStore } from "~/stores/employees";
+import { NEmpty, NButton } from "naive-ui";
+import { homeStaticData } from "~/utils/staticData/home";
+import { formatArrayOfEmployees, capitalizeSentence, decodeHtmlEntities } from "~/utils";
 
-  import RubricaCard from "~/components/home/RubricaCard.vue";
-  import EmployeeCard from "~/components/common/EmployeeCard.vue";
-  import HeaderComponent from "~/components/common/HeaderComponent.vue";
-  import LoaderComponent from "~/components/common/LoaderComponent.vue";
-  import PaginationComponent from "~/components/common/PaginationComponent.vue";
+import RubricaCard from "~/components/home/RubricaCard.vue";
+import EmployeeCard from "~/components/common/EmployeeCard.vue";
+import HeaderComponent from "~/components/common/HeaderComponent.vue";
+import LoaderComponent from "~/components/common/LoaderComponent.vue";
+import PaginationComponent from "~/components/common/PaginationComponent.vue";
 
-  const accessibilityStore = useAccessibilityStore();
-  const isLargeFont = computed(() => accessibilityStore.isLargeFont);
-  const isHighContrast = computed(() => accessibilityStore.isHighContrast);
+const accessibilityStore = useAccessibilityStore();
+const isLargeFont = computed(() => accessibilityStore.isLargeFont);
+const isHighContrast = computed(() => accessibilityStore.isHighContrast);
 
-  const route = useRoute();
+const route = useRoute();
 
-  const loading = ref(false);
-  const loadingData = ref(false);
-  const employeeStore = useEmployeeStore();
-  const employees = ref(() => {});
-  const employeesData = ref([]);
-  const chosenLayout = ref("cards");
+const loading = ref(false);
+const loadingData = ref(false);
+const employeeStore = useEmployeeStore();
+const employees = ref(() => {});
+const employeesData = ref([]);
+const chosenLayout = ref("cards");
 
-  const currentPage = ref(1);
-  const perPage = ref(20);
-  const total = ref(0);
+const currentPage = ref(1);
+const perPage = ref(20);
+const total = ref(0);
 
-  const pagination = ref({
-    page: 1,
-    itemCount: 0,
-    perPage: perPage.value,
-    "show-size-picker": true,
-  });
-  const rubricaSearch = ref({
-    query: null,
-    department: null,
-    office: null,
-    service: null,
-  });
+const pagination = ref({
+  page: 1,
+  itemCount: 0,
+  perPage: perPage.value,
+  "show-size-picker": true,
+});
+const rubricaSearch = ref({
+  query: null,
+  department: null,
+  offices: null,
+  service: null,
+});
 
-  const breadcrumb = ref([
-    {
-      title: "Home",
-      slug: "/",
-    },
-    {
-      title: "Rubrica",
-      slug: "/rubrica",
-    },
-  ]);
+const breadcrumb = ref([
+  {
+    title: "Home",
+    slug: "/",
+  },
+  {
+    title: "Rubrica",
+    slug: "/rubrica",
+  },
+]);
 
-  const accessibilityClasses = computed(() => {
-    const classes = ref("transition-all duration-300 ");
-    if (isLargeFont.value) {
-      classes.value += "text-xl ";
-    }
-    if (!isLargeFont.value) {
-      classes.value += "text-base ";
-    }
-    if (isHighContrast.value) {
-      classes.value += "bg-black text-white ";
-    }
-    return classes.value;
-  });
+const accessibilityClasses = computed(() => {
+  const classes = ref("transition-all duration-300 ");
+  if (isLargeFont.value) {
+    classes.value += "text-xl ";
+  }
+  if (!isLargeFont.value) {
+    classes.value += "text-base ";
+  }
+  if (isHighContrast.value) {
+    classes.value += "bg-black text-white ";
+  }
+  return classes.value;
+});
 
-  const columns = [
-    {
-      title: "Nome",
-      key: "name",
-      resizable: true,
-      minWidth: 200,
-      render(row) {
-        return h(
-          "div",
-          { class: `${accessibilityClasses.value}` },
-          capitalizeSentence(decodeHtmlEntities(row.name))
-        );
-      },
-    },
-    {
-      title: "Tel.",
-      key: "phone",
-      resizable: true,
-      minWidth: 200,
-      render(row) {
-        return h("div", { class: `${accessibilityClasses.value}` }, row.phone);
-      },
-    },
-    {
-      title: "Email",
-      key: "email",
-      resizable: true,
-      minWidth: 200,
-      render(row) {
-        return h(
-          NButton,
-          {
-            strong: true,
-            secondary: true,
-            type: "info",
-            size: isLargeFont.value ? "large" : "small",
-            onClick: async () =>
-              await navigateTo(`mailto:${row.email}`, { external: true }),
-          },
-          { default: () => row.email }
-        );
-      },
-    },
-    {
-      title: "Stanza",
-      key: "room",
-      resizable: true,
-      minWidth: 200,
-      render(row) {
-        return h("div", { class: `${accessibilityClasses.value}` }, row.room);
-      },
-    },
-    {
-      title: "Dir.",
-      key: "department",
-      minWidth: 300,
-      render(row) {
-        return h(
-          "div",
-          { class: `${accessibilityClasses.value}` },
-          row.department
-        );
-      },
-    },
-    {
-      title: "Serv.",
-      key: "service",
-      minWidth: 300,
-      render(row) {
-        return h(
-          "div",
-          { class: `${accessibilityClasses.value}` },
-          row.service
-        );
-      },
-    },
-    {
-      title: "Uff.",
-      key: "office",
-      minWidth: 300,
-      render(row) {
-        return h("div", { class: `${accessibilityClasses.value}` }, row.office);
-      },
-    },
-  ];
-
-  const runSearch = async (query) => {
-    rubricaSearch.value = query;
-    await searchEmployees();
-  };
-  const searchEmployees = async () => {
-    try {
-      loading.value = true;
-      pagination.value = `pagination[page]=${currentPage.value}&pagination[pageSize]=${perPage.value}`;
-      employees.value = await employeeStore.searchEmployees(
-        rubricaSearch.value,
-        pagination.value
+const columns = [
+  {
+    title: "Nome",
+    key: "name",
+    resizable: true,
+    minWidth: 200,
+    render(row) {
+      return h(
+        "div",
+        { class: `${accessibilityClasses.value}` },
+        capitalizeSentence(decodeHtmlEntities(row.name))
       );
-      total.value = employees.value.meta.pagination.total;
-      employeesData.value = formatArrayOfEmployees(employees.value.data);
-      if (employeesData.value.length >= 10) {
-        chosenLayout.value = "table";
-      }
-      pagination.value = {
-        ...employees.value.meta.pagination,
-      };
-    } catch (error) {
-      console.error(error);
-    } finally {
-      loading.value = false;
-    }
-  };
+    },
+  },
+  {
+    title: "Tel.",
+    key: "phone",
+    resizable: true,
+    minWidth: 200,
+    render(row) {
+      return h("div", { class: `${accessibilityClasses.value}` }, row.phone);
+    },
+  },
+  {
+    title: "Email",
+    key: "email",
+    resizable: true,
+    minWidth: 200,
+    render(row) {
+      return h(
+        NButton,
+        {
+          strong: true,
+          secondary: true,
+          type: "info",
+          size: isLargeFont.value ? "large" : "small",
+          onClick: async () =>
+            await navigateTo(`mailto:${row.email}`, { external: true }),
+        },
+        { default: () => row.email }
+      );
+    },
+  },
+  {
+    title: "Stanza",
+    key: "room",
+    resizable: true,
+    minWidth: 200,
+    render(row) {
+      return h("div", { class: `${accessibilityClasses.value}` }, row.room);
+    },
+  },
+  {
+    title: "Dir.",
+    key: "department",
+    minWidth: 300,
+    render(row) {
+      return h("div", { class: `${accessibilityClasses.value}` }, row.department);
+    },
+  },
+  {
+    title: "Serv.",
+    key: "service",
+    minWidth: 300,
+    render(row) {
+      return h("div", { class: `${accessibilityClasses.value}` }, row.service);
+    },
+  },
+  {
+    title: "Uff.",
+    key: "offices",
+    minWidth: 300,
+    render(row) {
+      return h(
+        "div",
+        { class: `${accessibilityClasses.value}` },
+        row.offices.map((office) => office.title).join(", ")
+      );
+    },
+  },
+];
 
-  const handlePageChange = async (page, itemsPerPage) => {
-    currentPage.value = page;
-    perPage.value = itemsPerPage;
-    employees.value = [];
-    chosenLayout.value = "table";
+const runSearch = async (query) => {
+  rubricaSearch.value = query;
+  await searchEmployees();
+};
+const searchEmployees = async () => {
+  try {
+    loading.value = true;
+    pagination.value = `pagination[page]=${currentPage.value}&pagination[pageSize]=${perPage.value}`;
+    employees.value = await employeeStore.searchEmployees(
+      rubricaSearch.value,
+      pagination.value
+    );
+    total.value = employees.value.meta.pagination.total;
+    employeesData.value = formatArrayOfEmployees(employees.value.data);
+    if (employeesData.value.length >= 10) {
+      chosenLayout.value = "table";
+    }
+    pagination.value = {
+      ...employees.value.meta.pagination,
+    };
+  } catch (error) {
+    console.error(error);
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handlePageChange = async (page, itemsPerPage) => {
+  currentPage.value = page;
+  perPage.value = itemsPerPage;
+  employees.value = [];
+  chosenLayout.value = "table";
+  await searchEmployees();
+};
+
+onMounted(async () => {
+  if (route.query) {
+    rubricaSearch.value = route.query;
     await searchEmployees();
-  };
-
-  onMounted(async () => {
-    if (route.query) {
-      rubricaSearch.value = route.query;
-      await searchEmployees();
-    }
-  });
+  }
+});
 </script>

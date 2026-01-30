@@ -10,7 +10,7 @@ export const getData = async (endpoint, params = {}) => {
           Authorization: `Bearer ${token}`,
         },
         params: { ...params },
-      }
+      },
     );
 
     return resStrapi;
@@ -67,7 +67,13 @@ export const formatEmployeeObject = (employee) => {
     photo: employee?.photo || "",
     department: employee?.department?.title || "",
     service: employee?.service?.title || "",
-    office: employee?.office?.title || "",
+    offices:
+      employee?.offices.map((office) => {
+        return {
+          title: office.title,
+          documentId: office.documentId,
+        };
+      }) || "",
   };
 };
 

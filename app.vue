@@ -1,4 +1,5 @@
 <template>
+  <!DOCTYPE html>
   <!-- <NThemeEditor> -->
   <NConfigProvider :theme-overrides="themeOverrides">
     <NModalProvider>
@@ -13,21 +14,21 @@
 </template>
 
 <script setup>
-  // import { NThemeEditor } from 'naive-ui'
-  import { NConfigProvider, NMessageProvider, NModalProvider } from "naive-ui";
+// import { NThemeEditor } from 'naive-ui'
+import { NConfigProvider, NMessageProvider, NModalProvider } from "naive-ui";
 
-  const themeOverrides = {
-    Input: {
-      caretColor: "#1857A0FF",
-      loadingColor: "#1857A0FF",
-    },
-    common: {
-      primaryColor: "#1857A0FF",
-      primaryColorHover: "#3676C1FF",
-      primaryColorPressed: "#0D3F7AFF",
-      primaryColorSuppl: "#5C95D7FF",
-    },
-  };
+const themeOverrides = {
+  Input: {
+    caretColor: "#1857A0FF",
+    loadingColor: "#1857A0FF",
+  },
+  common: {
+    primaryColor: "#1857A0FF",
+    primaryColorHover: "#3676C1FF",
+    primaryColorPressed: "#0D3F7AFF",
+    primaryColorSuppl: "#5C95D7FF",
+  },
+};
 
-  onMounted(async () => {});
+onMounted(async () => {});
 </script>
