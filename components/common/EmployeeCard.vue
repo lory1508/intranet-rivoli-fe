@@ -91,7 +91,7 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-col gap-1">
+      <div class="flex flex-col gap-2">
         <div v-if="employee?.department" class="flex flex-row items-center gap-2">
           <div
             class="font-semibold transition-all duration-300"
@@ -125,15 +125,17 @@
           >
             Ufficio
           </div>
-          <div v-for="office in employee?.offices" :key="office.documentId">
-            <NTooltip trigger="hover">
-              <template #trigger>
-                <div class="truncate max-w-64">{{ office.title }}</div>
-              </template>
-              <div>
-                {{ office.title }}
-              </div>
-            </NTooltip>
+          <div class="flex flex-col leading-tight">
+            <div v-for="office in employee?.offices" :key="office.documentId">
+              <NTooltip trigger="hover">
+                <template #trigger>
+                  <div class="truncate max-w-64">{{ office.title }}</div>
+                </template>
+                <div>
+                  {{ office.title }}
+                </div>
+              </NTooltip>
+            </div>
           </div>
         </div>
         <div v-if="employee?.service" class="flex flex-row items-center gap-2">

@@ -1,9 +1,9 @@
 // stores/service.js
-import { defineStore } from 'pinia'
-import { WORDPRESS_BASE_URL } from '~/utils/staticData/constants'
-import { getData } from '#imports'
+import { defineStore } from "pinia";
+import { WORDPRESS_BASE_URL } from "~/utils/staticData/constants";
+import { getData } from "#imports";
 
-export const useServiceStore = defineStore('services', {
+export const useServiceStore = defineStore("services", {
   state: () => ({
     services: [], // Initial state for your services array
     fetched: false,
@@ -11,43 +11,49 @@ export const useServiceStore = defineStore('services', {
   actions: {
     async getServices() {
       if (this.fetched && this.services.length > 0) {
-        return this.services
+        return this.services;
       }
 
       try {
-        const res = await getData("services");
+        const params = {
+          sort: ["title:asc"],
+        };
+        const res = await getData("services", params);
         this.services = res.data || [];
         this.fetched = true;
         return this.services;
       } catch (err) {
-        console.error('Failed to fetch services', err)
-        throw err
+        console.error("Failed to fetch services", err);
+        throw err;
       }
     },
     async getServiceBySlug(slug) {
       try {
-        if (!slug) return
-        const res = await useFetch(`${WORDPRESS_BASE_URL}/service?slug=${slug}`)
-        this.services = res?.data || []
-        this.fetched = true
-        return this.services
+        if (!slug) return;
+        const res = await useFetch(
+          `${WORDPRESS_BASE_URL}/service?slug=${slug}`,
+        );
+        this.services = res?.data || [];
+        this.fetched = true;
+        return this.services;
       } catch (err) {
-        console.error('Failed to fetch services', err)
-        throw err
+        console.error("Failed to fetch services", err);
+        throw err;
       }
     },
     setServices(serviceArray) {
-      this.services = serviceArray
+      this.services = serviceArray;
     },
     addService(service) {
-      this.services.push(service)
+      this.services.push(service);
     },
     clearServices() {
-      this.services = []
+      this.services = [];
     },
   },
   getters: {
     serviceCount: (state) => state.services.length,
-    getServiceById: (state) => (id) => state.services.find((service) => service.id === id),
+    getServiceById: (state) => (id) =>
+      state.services.find((service) => service.id === id),
   },
-})
+});

@@ -14,7 +14,10 @@ export const useOfficeStore = defineStore("offices", {
       }
 
       try {
-        const res = await getData("offices");
+        const params = {
+          sort: ["title:asc"],
+        };
+        const res = await getData("offices", params);
         this.offices = res.data || [];
         this.fetched = true;
         return this.offices;
