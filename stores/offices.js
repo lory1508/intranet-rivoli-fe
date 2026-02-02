@@ -16,6 +16,7 @@ export const useOfficeStore = defineStore("offices", {
       try {
         const params = {
           sort: ["title:asc"],
+          "pagination[limit]": 200,
         };
         const res = await getData("offices", params);
         this.offices = res.data || [];

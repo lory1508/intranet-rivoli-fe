@@ -1,14 +1,18 @@
 <template>
   <div
-    class="flex flex-col gap-2 p-4 rounded-lg min-w-80 h-fit"
+    class="flex flex-col gap-2 p-4 rounded-lg h-fit"
     :class="{
       'border-2 border-zinc-800 bg-white ': isHighContrast,
-      ' bg-zinc-100 shadow-zinc-300 shadow-md text-neutralDark': !isHighContrast,
+      ' bg-zinc-100 shadow-zinc-300 shadow-md text-neutralDark':
+        !isHighContrast,
     }"
   >
     <CardTitle :icon="icon" :title="title" />
     <div class="flex flex-col gap-2">
-      <div class="flex gap-2" :class="compact ? 'flex-col' : 'flex-row'">
+      <div
+        class="flex flex-col gap-2 2xl:flex-row"
+        :class="compact ? 'flex-col' : 'flex-row'"
+      >
         <n-input
           v-model:value="rubricaSearch.query"
           placeholder="Nome o interno"
@@ -32,16 +36,20 @@
           filterable
           clearable
         />
-        <n-select
+        <!-- <n-select
           v-model:value="rubricaSearch.service"
           :options="optionsService"
           placeholder="Servizio"
           filterable
           clearable
-        />
+        /> -->
       </div>
     </div>
-    <Button title="Cerca" icon="solar:magnifer-line-duotone" @clicked="runSearch" />
+    <Button
+      title="Cerca"
+      icon="solar:magnifer-line-duotone"
+      @clicked="runSearch"
+    />
   </div>
 </template>
 
@@ -51,25 +59,24 @@
    * 1. search by department and/or office and/or service not working
    * 2. filter select by previous selection
    *  */
-  import CardTitle from '~/components/common/CardTitle.vue'
-  import Button from '~/components/common/Button.vue'
-  import { useDepartmentStore } from '~/stores/departments'
-  import { useOfficeStore } from '~/stores/offices'
-  import { useServiceStore } from '~/stores/services'
-  import { useAccessibilityStore } from '@/stores/accessibilityStore'
+  import CardTitle from "~/components/common/CardTitle.vue";
+  import Button from "~/components/common/Button.vue";
+  import { useDepartmentStore } from "~/stores/departments";
+  import { useOfficeStore } from "~/stores/offices";
+  import { useAccessibilityStore } from "@/stores/accessibilityStore";
 
-  const accessibilityStore = useAccessibilityStore()
-  const isHighContrast = computed(() => accessibilityStore.isHighContrast)
+  const accessibilityStore = useAccessibilityStore();
+  const isHighContrast = computed(() => accessibilityStore.isHighContrast);
 
-  const emits = defineEmits(['search'])
+  const emits = defineEmits(["search"]);
   const props = defineProps({
     icon: {
       type: String,
-      default: '',
+      default: "",
     },
     title: {
       type: String,
-      default: '',
+      default: "",
     },
     compact: {
       type: Boolean,
@@ -79,45 +86,43 @@
       type: Object,
       default: () => ({}),
     },
-  })
+  });
 
-  const departmentStore = useDepartmentStore()
-  const officeStore = useOfficeStore()
-  const serviceStore = useServiceStore()
+  const departmentStore = useDepartmentStore();
+  const officeStore = useOfficeStore();
 
-  const departments = ref([])
-  const offices = ref([])
-  const services = ref([])
+  const departments = ref([]);
+  const offices = ref([]);
 
   const rubricaSearch = ref({
     query: null,
     department: null,
     office: null,
-    service: null,
-  })
+  });
 
   const optionsDepartment = computed(() =>
-    departments.value?.map((department) => ({ label: department?.title, value: department?.documentId }))
-  )
+    departments.value?.map((department) => ({
+      label: department?.title,
+      value: department?.documentId,
+    })),
+  );
 
   const optionsOffice = computed(() =>
-    offices.value?.map((office) => ({ label: office?.title, value: office?.documentId }))
-  )
-
-  const optionsService = computed(() =>
-    services.value?.map((service) => ({ label: service?.title, value: service?.documentId }))
-  )
+    offices.value?.map((office) => ({
+      label: office?.title,
+      value: office?.documentId,
+    })),
+  );
 
   const runSearch = () => {
-    emits('search', rubricaSearch.value)
-  }
+    emits("search", rubricaSearch.value);
+  };
 
   onMounted(async () => {
-    if(props.currentSearch) {
-      rubricaSearch.value = { ...props.currentSearch }
+    if (props.currentSearch) {
+      rubricaSearch.value = { ...props.currentSearch };
     }
-    departments.value = await departmentStore.getDepartments()
-    offices.value = await officeStore.getOffices()
-    services.value = await serviceStore.getServices()
-  })
+    departments.value = await departmentStore.getDepartments();
+    offices.value = await officeStore.getOffices();
+  });
 </script>
