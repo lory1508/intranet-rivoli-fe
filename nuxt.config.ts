@@ -6,7 +6,7 @@ import Components from "unplugin-vue-components/vite";
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   ssr: false,
-  target: "static",
+  // target: "static",
   devtools: { enabled: false },
   css: ["~/assets/css/main.css"],
 
@@ -15,6 +15,16 @@ export default defineNuxtConfig({
     public: {
       apiUrl: process.env.NUXT_STRAPI_URL || "http://localhost:1337",
     },
+    session: {
+      // Impostato tramite NUXT_SESSION_PASSWORD
+      password: "",
+    },
+
+    ldapUrl: "",
+    ldapBaseDn: "",
+    ldapBindUser: "",
+    ldapBindPassword: "",
+    ldapUserFilter: "(sAMAccountName={username})",
   },
 
   app: {
@@ -33,7 +43,13 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@nuxt/eslint", "nuxtjs-naive-ui", "@pinia/nuxt", "@nuxtjs/strapi"],
+  modules: [
+    "@nuxt/eslint",
+    "nuxtjs-naive-ui",
+    "@pinia/nuxt",
+    "@nuxtjs/strapi",
+    "nuxt-auth-utils",
+  ],
   strapi: {
     url: process.env.NUXT_STRAPI_URL || "http://localhost:1337",
     token: process.env.NUXT_STRAPI_TOKEN || undefined,
