@@ -164,14 +164,31 @@
                 </div>
               </div>
             </div>
+            <div class="flex flex-col gap-2 mt-4">
+              <div
+                v-if="authStore.isAuthenticated"
+                class="flex flex-row items-center justify-center gap-2 mb-2 text-base font-semibold text-white"
+              >
+                <Icon icon="solar:user-circle-bold" height="28" />
+                <div>{{ authStore.user?.displayName }}</div>
+              </div>
+            </div>
             <Button
               color="white"
-              icon="solar:login-linear"
-              title="Login"
+              :icon="
+                authStore.isAuthenticated ? 'solar:logout-bold' : (
+                  'solar:login-bold'
+                )
+              "
+              :title="authStore.isAuthenticated ? 'Logout' : 'Login'"
               :show-labels="showLabels"
               show-tooltip
               class="mb-2"
-              @click="showLoginModal = true"
+              @click="
+                authStore.isAuthenticated ?
+                  authStore.logout()
+                : (showLoginModal = true)
+              "
             />
             <Button
               color="white"
@@ -328,6 +345,9 @@
               @keypress.enter="login"
             />
           </div>
+          <div v-if="authStore.error" class="text-red-500">
+            {{ authStore.error }}
+          </div>
         </div>
         <template #footer>
           <div class="flex flex-row justify-end gap-2">
@@ -337,11 +357,7 @@
               class="text-white bg-primary hover:bg-opacity-80"
               @clicked="login"
             />
-            <Button
-              title="Chiudi"
-              color="darkGray"
-              @clicked="showLoginModal = false"
-            />
+            <Button title="Chiudi" color="darkGray" @clicked="closeModal" />
           </div>
         </template>
       </NCard>
@@ -366,10 +382,12 @@
   import { useAccessibilityStore } from "@/stores/accessibilityStore";
   import { useHead } from "#imports";
   import { delay } from "~/utils/index.js";
+  import { useAuthStore } from "~/stores/auth";
   import Button from "~/components/common/Button.vue";
 
   const router = useRouter();
   const route = useRoute();
+  const authStore = useAuthStore();
 
   // A11y
   const accessibilityStore = useAccessibilityStore();
@@ -438,29 +456,19 @@
     title: pageTitle,
   });
 
-  const login = async () => {
-    // Implement login logic here
-    console.log("Logging in with", loginForm.value);
-    const result = await $fetch("/api/auth/login", {
-      method: "POST",
-      body: {
-        username: loginForm.value.username,
-        password: loginForm.value.password,
-      },
-    });
-    console.log("Login result:", result);
+  const closeModal = () => {
+    loginForm.value.username = "";
+    loginForm.value.password = "";
+    showLoginModal.value = false;
+  };
 
-    // const isAuthenticated = await authenticateLdapUser(
-    //   loginForm.value.username,
-    //   loginForm.value.password,
-    // );
-    // if (isAuthenticated) {
-    //   console.log("Login successful");
-    //   // Handle successful login
-    // } else {
-    //   console.log("Login failed");
-    //   // Handle failed login
-    // }
+  const login = async () => {
+    try {
+      await authStore.login(loginForm.value.username, loginForm.value.password);
+      if (authStore.isAuthenticated) closeModal();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const collapseSidebar = async () => {
