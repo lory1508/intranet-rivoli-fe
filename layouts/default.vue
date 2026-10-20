@@ -166,7 +166,16 @@
             </div>
             <Button
               color="white"
-              icon="solar:accessibility-linear"
+              icon="solar:login-linear"
+              title="Login"
+              :show-labels="showLabels"
+              show-tooltip
+              class="mb-2"
+              @click="showLoginModal = true"
+            />
+            <Button
+              color="white"
+              icon="solar:accessibility-line-duotone"
               title="Accessibilità"
               :show-labels="showLabels"
               show-tooltip
@@ -285,6 +294,58 @@
         </template>
       </NCard>
     </NModal>
+    <NModal v-model:show="showLoginModal">
+      <NCard
+        style="width: 600px"
+        title="Login"
+        :bordered="true"
+        size="huge"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div class="flex flex-col gap-2">
+          <div
+            class="flex flex-col justify-between w-full gap-1 mb-4 text-lg text-black"
+          >
+            <div class="w-fit">Nome utente</div>
+            <n-input
+              v-model:value="loginForm.username"
+              placeholder="Nome utente"
+              type="text"
+              clearable
+              @keypress.enter="login"
+            />
+          </div>
+          <div
+            class="flex flex-col justify-between w-full gap-1 text-lg text-black"
+          >
+            <div class="w-fit">Password</div>
+            <n-input
+              v-model:value="loginForm.password"
+              placeholder="Password"
+              type="password"
+              clearable
+              @keypress.enter="login"
+            />
+          </div>
+        </div>
+        <template #footer>
+          <div class="flex flex-row justify-end gap-2">
+            <Button
+              title="Login"
+              color="primary"
+              class="text-white bg-primary hover:bg-opacity-80"
+              @clicked="login"
+            />
+            <Button
+              title="Chiudi"
+              color="darkGray"
+              @clicked="showLoginModal = false"
+            />
+          </div>
+        </template>
+      </NCard>
+    </NModal>
   </div>
   <!-- </NSpace> -->
 </template>
@@ -297,7 +358,6 @@
     NCollapse,
     NCollapseItem,
     NTooltip,
-    NSpace,
     NDivider,
     NBackTop,
     NButton,
@@ -319,6 +379,12 @@
   const highContrast = ref(isHighContrast.value);
 
   const showA11yModal = ref(false);
+  const showLoginModal = ref(false);
+
+  const loginForm = ref({
+    username: "",
+    password: "",
+  });
 
   const subMenusCollapsed = ref([]);
   const collapsed = ref(false);
@@ -332,7 +398,7 @@
       .at(-1)
       .split("-")
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(" ")
+      .join(" "),
   );
 
   watch(
@@ -344,21 +410,21 @@
       if (menuItem?.submenu) {
         subMenusCollapsed.value.push(menuItem.title);
       }
-    }
+    },
   );
 
   watch(
     () => largeFont.value,
     () => {
       accessibilityStore.toggleFontSize();
-    }
+    },
   );
 
   watch(
     () => highContrast.value,
     () => {
       accessibilityStore.toggleContrast();
-    }
+    },
   );
 
   const toggleLargeFont = () => {
@@ -372,6 +438,31 @@
     title: pageTitle,
   });
 
+  const login = async () => {
+    // Implement login logic here
+    console.log("Logging in with", loginForm.value);
+    const result = await $fetch("/api/auth/login", {
+      method: "POST",
+      body: {
+        username: loginForm.value.username,
+        password: loginForm.value.password,
+      },
+    });
+    console.log("Login result:", result);
+
+    // const isAuthenticated = await authenticateLdapUser(
+    //   loginForm.value.username,
+    //   loginForm.value.password,
+    // );
+    // if (isAuthenticated) {
+    //   console.log("Login successful");
+    //   // Handle successful login
+    // } else {
+    //   console.log("Login failed");
+    //   // Handle failed login
+    // }
+  };
+
   const collapseSidebar = async () => {
     collapsed.value = !collapsed.value;
     if (!collapsed.value) {
@@ -383,7 +474,7 @@
   const expandMenu = (title) => {
     if (subMenusCollapsed.value.includes(title)) {
       subMenusCollapsed.value = subMenusCollapsed.value.filter(
-        (item) => item !== title
+        (item) => item !== title,
       );
     } else {
       subMenusCollapsed.value.push(title);
